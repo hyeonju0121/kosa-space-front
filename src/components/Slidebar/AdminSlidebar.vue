@@ -48,9 +48,7 @@
                     </a>
                   </li>
                   <li>
-                    <a href="#">
-                      <span class="text">교육과정 관리</span>
-                    </a>
+                    <LouterLink to="/admin/course" style="color: #fff;">교육과정 관리</LouterLink>
                   </li>
                   <li>
                     <a href="#">
@@ -147,6 +145,10 @@ font-family: "Inter", sans-serif;
 }
 body {
 background-color: #dbe2f4;
+}
+
+.text2 {
+  color: #fff;
 }
 /*
 .container {

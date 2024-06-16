@@ -2,6 +2,7 @@
     <div class="wrapper">
         <!--slidebar-->
         <AdminSlidebar/>
+        <RouterView/>
 
     </div>
 </template>
@@ -10,6 +11,7 @@
 import AdminSlidebar from "@/components/Slidebar/AdminSlidebar.vue";
 import TraineeSlidebar from "./components/Slidebar/TraineeSlidebar.vue";
 import ProfessorSlidebar from "./components/Slidebar/ProfessorSlidebar.vue";
+import { RouterView } from "vue-router";
 
 </script>
 
