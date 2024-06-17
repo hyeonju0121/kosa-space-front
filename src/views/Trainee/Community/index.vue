@@ -4,6 +4,7 @@
             <div class="title">
                 <h1 id="itemTitle">반 커뮤니티</h1>
             </div>
+            <PersonalProfileHeader/>
         </div>
 
         <div id="my_box">
@@ -26,6 +27,7 @@
 </template>
 
 <script setup>
+import PersonalProfileHeader from '@/components/UIComponents/PersonalProfileHeader.vue';
 </script>
 
 <style scoped>

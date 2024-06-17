@@ -164,6 +164,12 @@ onMounted(() => {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+
+body, h1, h2, h3, h4, h5, h6, input, span, p, textarea, select {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
 * {
   margin: 0;
   padding: 0;

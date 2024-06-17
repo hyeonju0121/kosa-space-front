@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <!--slidebar-->
-        <AdminSlidebar/>
+        <TraineeSlidebar/>
         <RouterView/>
 
     </div>
