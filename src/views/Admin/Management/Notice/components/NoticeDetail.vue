@@ -4,10 +4,30 @@
 		<div class="title">
 			<h1 id="itemTitle">공지사항 상세 조회</h1>
 		</div>
+
+        <div class="btn_big_wrap">
+            <BaseButtonUpdate @click="handleUpdateBtn">공지사항 수정</BaseButtonUpdate>
+            <BaseButtonCancle style="margin-left: 10px;">공지사항 삭제</BaseButtonCancle>
+            <BaseButtonSubmit @click="handleListBtn">공지사항 목록</BaseButtonSubmit>
+        </div>
 	</div>
 </template>
 
 <script setup>
+import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
+import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
+import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+function handleListBtn() {
+    router.push('/admin/notice/');
+}
+
+function handleUpdateBtn() {
+    router.push('/admin/notice/update');
+}
 </script>
 
 <style scoped>
@@ -26,6 +46,16 @@
 #itemTitle {
 	font-weight: 700;
     font-size: 1.6rem;
+}
+
+.btn_big_wrap {
+    box-sizing: border-box;
+    margin: 0;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding: 0;
+    margin-top: 60px;
 }
 
 </style>

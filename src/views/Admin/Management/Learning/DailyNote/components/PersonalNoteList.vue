@@ -4,10 +4,22 @@
 		<div class="title">
 			<h1 id="itemTitle">개인별 데일리 과제 목록 조회</h1>
 		</div>
+
+        <div>
+            <BaseButtonUpdate class="mt-3" @click="handleDailyNoteBtn">과제 상세 보기</BaseButtonUpdate>
+        </div>
 	</div>
 </template>
 
 <script setup>
+import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+function handleDailyNoteBtn() {
+    router.push('/admin/dailynote/trainee/note/detail');
+}
 </script>
 
 <style scoped>

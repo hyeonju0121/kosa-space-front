@@ -5,9 +5,28 @@
 			<h1 id="itemTitle">교육생 수정</h1>
 		</div>
 	</div>
+
+    <div class="btn_big_wrap">
+        <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
+        <BaseButtonSubmit @click="handleSubmit">완료</BaseButtonSubmit>
+    </div>
 </template>
 
 <script setup>
+import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
+import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+function handleCancle() {
+    router.push('/admin/trainee/');
+}
+
+function handleSubmit() {
+    router.push('/admin/trainee/');
+}
+
 </script>
 
 <style scoped>
@@ -28,4 +47,13 @@
     font-size: 1.6rem;
 }
 
+.btn_big_wrap {
+    box-sizing: border-box;
+    margin: 0;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding: 0;
+    margin-top: 60px;
+}
 </style>

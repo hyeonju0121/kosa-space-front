@@ -11,12 +11,25 @@
                     <h1 id="itemTitle">회원정보수정</h1>
                 </div>
             </div>
+
+            <div class="btn_big_wrap">
+                <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
+                <BaseButtonSubmit>완료</BaseButtonSubmit>
+            </div>
         </div>
-    
     </div>
 </template>
     
 <script setup>
+import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
+import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+function handleCancle() {
+    router.push(`/trainee/dashboard`);
+}
 </script>
     
 <style scoped>
@@ -35,6 +48,16 @@
 #itemTitle {
 	font-weight: 700;
     font-size: 1.6rem;
+}
+
+.btn_big_wrap {
+    box-sizing: border-box;
+    margin: 0;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding: 0;
+    margin-top: 60px;
 }
 </style>
     

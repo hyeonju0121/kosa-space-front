@@ -1,110 +1,110 @@
 <template>
-    <aside class="sidebar">
-      <div class="menu-btn">
-          <i><PhCaretLeft class="icon" weight="bold" /></i>
+  <aside class="sidebar">
+    <div class="menu-btn">
+        <i><PhCaretLeft class="icon" weight="bold" /></i>
+    </div>
+    <div class="head">
+      <div class="sidebar-logo">
+            <!--<img src="@/assets/logo.png" alt="" class="user-img-detail">-->
+            <i><PhSquaresFour class="icon" weight="fill" color="#07b278"/></i>
       </div>
-      <div class="head">
-        <div class="sidebar-logo">
-              <!--<img src="@/assets/logo.png" alt="" class="user-img-detail">-->
-              <i><PhSquaresFour class="icon" weight="fill" color="#07b278"/></i>
-        </div>
-        <div class="logo-text">
-          <p class="title">KOSA SPACE</p>
+      <div class="logo-text">
+        <p class="title">KOSA SPACE</p>
+      </div>
+    </div>
+    <!-- student ----------------------------------------------------------->
+      <div class="nav">
+        <div class="menu">
+          <p class="title">Main</p>
+          <ul>
+            <li>
+              <a href="#">
+                <i><PhUser class="icon"/></i>
+                <span class="text">마이페이지</span>
+                <i class="arrow"><PhCaretDown class="icon"/></i>
+              </a>
+              <ul class="sub-menu">
+                <li>
+                  <RouterLink to="/trainee/dashboard">
+                    대시보드
+                  </RouterLink>
+                </li>
+                <li>
+                  <RouterLink to="/trainee/mypage/info/modify">
+                    회원정보 수정
+                  </RouterLink>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="#">
+                <i><PhMonitor class="icon"/></i>
+                <span class="text">출결관리</span>
+                <i class="arrow"><PhCaretDown class="icon"/></i>
+              </a>
+              <ul class="sub-menu">
+                <li>
+                  <RouterLink to="/trainee/attendance">
+                    출결 현황 조회
+                  </RouterLink>
+                </li>
+                <li>
+                  <RouterLink to="/trainee/attendance/reason/create">
+                    출결 변경 신청
+                  </RouterLink>
+                </li>
+              </ul>
+            </li>
+            <li class="active">
+              <a href="#">
+                <i><PhGraduationCap class="icon"/></i>
+                <span class="text">과제관리</span>
+                <i class="arrow"><PhCaretDown class="icon"/></i>
+              </a>
+              <ul class="sub-menu">
+                  <li>
+                      <a href="#">
+                          <span class="text">과제 제출</span>
+                      </a>
+                  </li>
+                  <li>
+                    <RouterLink to="/trainee/dailynote">
+                      과제 제출 현황 조회
+                    </RouterLink>
+                  </li>
+              </ul>
+            </li>
+            <li>
+              <RouterLink to="/trainee/community">
+                <i><PhBrowser class="icon"/></i>
+                반 커뮤니티
+              </RouterLink>
+            </li>
+          </ul>
         </div>
       </div>
-      <!-- student ----------------------------------------------------------->
-        <div class="nav">
-          <div class="menu">
-            <p class="title">Main</p>
-            <ul>
-              <li>
-                <a href="#">
-                  <i><PhUser class="icon"/></i>
-                  <span class="text">마이페이지</span>
-                  <i class="arrow"><PhCaretDown class="icon"/></i>
-                </a>
-                <ul class="sub-menu">
-                  <li>
-                    <a href="#">
-                      <span class="text">대시보드</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <span class="text">회원정보 수정</span>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a href="#">
-                  <i><PhMonitor class="icon"/></i>
-                  <span class="text">출결관리</span>
-                  <i class="arrow"><PhCaretDown class="icon"/></i>
-                </a>
-                <ul class="sub-menu">
-                  <li>
-                    <a href="#">
-                      <span class="text">출결 현황 조회</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <span class="text">출결 변경 신청</span>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="active">
-                <a href="#">
-                  <i><PhGraduationCap class="icon"/></i>
-                  <span class="text">과제관리</span>
-                  <i class="arrow"><PhCaretDown class="icon"/></i>
-                </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a href="#">
-                            <span class="text">과제 제출</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="text">과제 제출 현황 조회</span>
-                        </a>
-                    </li>
-                </ul>
-              </li>
-              <li>
-                <a href="#">
-                  <i><PhBrowser class="icon"/></i>
-                  <span class="text">반 커뮤니티</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      <div class="menu">
-        <p class="title">Account</p>
-        <ul>
-          <li>
-            <a href="#">
-              <i><PhSignOut class="icon"/></i>
-              <span class="text">로그아웃</span>
-            </a>
-          </li>
-        </ul>
-      </div>
+    <div class="menu">
+      <p class="title">Account</p>
+      <ul>
+        <li>
+          <a href="#">
+            <i><PhSignOut class="icon"/></i>
+            <span class="text">로그아웃</span>
+          </a>
+        </li>
+      </ul>
+    </div>
 
-      <div class="user">
-        <div class="user-img">
-          <img src="@/assets/hyeonju.jpg" alt="" class="user-img-detail">
-        </div>
-        <div class="user-details">
-          <p class="title">M2001</p>
-          <p class="name">유현주</p>
-        </div>
+    <div class="user">
+      <div class="user-img">
+        <img src="@/assets/hyeonju.jpg" alt="" class="user-img-detail">
       </div>
-   </aside>
+      <div class="user-details">
+        <p class="title">M2001</p>
+        <p class="name">유현주</p>
+      </div>
+    </div>
+ </aside>
 </template>
 
 <script setup>
@@ -115,20 +115,20 @@ const $ = jQuery;
 
 onMounted(() => {
 $(".menu > ul > li").click(function () {
-  // 이미 활성화된 active에 대해서 active 제거하기
-  $(this).siblings().removeClass("active");
-  // 클릭했을 때 active 활성화시키기
-  $(this).toggleClass("active");
-  // down 버튼 클릭시 서브카테고리 메뉴 활성화 시키기 
-  $(this).find("ul").slideToggle();
-  // 다른 서브카테코리를 클릭시 현재 활성화된 카테고리 close 시키기
-  $(this).siblings().find("ul").slideUp();
-  // 서브카테고리 아이템의 클래스 actice 제거하기 
-  $(this).siblings().find("ul").find("li").removeClass("active");
+// 이미 활성화된 active에 대해서 active 제거하기
+$(this).siblings().removeClass("active");
+// 클릭했을 때 active 활성화시키기
+$(this).toggleClass("active");
+// down 버튼 클릭시 서브카테고리 메뉴 활성화 시키기 
+$(this).find("ul").slideToggle();
+// 다른 서브카테코리를 클릭시 현재 활성화된 카테고리 close 시키기
+$(this).siblings().find("ul").slideUp();
+// 서브카테고리 아이템의 클래스 actice 제거하기 
+$(this).siblings().find("ul").find("li").removeClass("active");
 });
 
 $(".menu-btn").click(function() {
-  $(".sidebar").toggleClass("active");
+$(".sidebar").toggleClass("active");
 })
 });
 
@@ -155,7 +155,7 @@ min-height: 100vh;
 
 .sidebar {
 position: relative;
-width: 275px;
+width: 290px;
 height: 100vh;
 display: flex;
 flex-direction: column;

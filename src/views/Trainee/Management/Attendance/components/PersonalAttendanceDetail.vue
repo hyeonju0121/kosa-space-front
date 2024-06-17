@@ -5,9 +5,22 @@
 			<h1 id="itemTitle">개인별 출결 현황 조회</h1>
 		</div>
 	</div>
+
+    <div>
+        <BaseButtonUpdate @click="handleCreateBtn">사유 작성</BaseButtonUpdate>
+    </div>
 </template>
 
 <script setup>
+import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+function handleCreateBtn() {
+    router.push(`/trainee/attendance/reason/create`)
+}
+
 </script>
 
 <style scoped>

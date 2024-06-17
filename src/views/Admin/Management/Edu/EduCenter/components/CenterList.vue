@@ -4,10 +4,35 @@
 		<div class="title">
 			<h1 id="itemTitle">교육장 목록</h1>
 		</div>
+
+        <div>
+            <BaseButtonCreate class="mt-3" @click="handleCreateBtn">교육장 등록</BaseButtonCreate>
+        
+            <div class="btn_big_wrap">
+                <BaseButtonUpdate @click="handleUpdateBtn">수정</BaseButtonUpdate>
+                <BaseButtonCancle style="margin-left: 10px;">삭제</BaseButtonCancle>
+            </div>
+        </div>
 	</div>
+
 </template>
 
 <script setup>
+import BaseButtonCreate from '@/components/UIComponents/BaseButtonCreate.vue';
+import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
+import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+function handleCreateBtn() {
+    router.push('/admin/educenter/create');
+}
+
+function handleUpdateBtn() {
+    router.push('/admin/educenter/update');
+}
+
 </script>
 
 <style scoped>
@@ -27,4 +52,15 @@
 	font-weight: 700;
     font-size: 1.6rem;
 }
+
+.btn_big_wrap {
+    box-sizing: border-box;
+    margin: 0;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding: 0;
+    margin-top: 60px;
+}
+
 </style>

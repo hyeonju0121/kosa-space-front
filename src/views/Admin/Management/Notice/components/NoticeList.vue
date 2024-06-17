@@ -4,10 +4,39 @@
 		<div class="title">
 			<h1 id="itemTitle">공지사항 목록</h1>
 		</div>
+
+        <div>
+            <BaseButtonCreate class="mt-3" @click="handleCreateBtn">공지사항 등록</BaseButtonCreate>
+        
+            <div class="btn_big_wrap">
+                <BaseButtonSubmit @click="handleDetailBtn">게시글 보기</BaseButtonSubmit>
+                <BaseButtonUpdate @click="handleUpdateBtn">수정</BaseButtonUpdate>
+                <BaseButtonCancle style="margin-left: 10px;">삭제</BaseButtonCancle>
+            </div>
+        </div>
 	</div>
 </template>
 
 <script setup>
+import BaseButtonCreate from '@/components/UIComponents/BaseButtonCreate.vue';
+import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
+import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
+import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+function handleDetailBtn() {
+    router.push('/admin/notice/detail');
+}
+
+function handleCreateBtn() {
+    router.push('/admin/notice/create');
+}
+
+function handleUpdateBtn() {
+    router.push('/admin/notice/update');
+}
 </script>
 
 <style scoped>
@@ -28,4 +57,13 @@
     font-size: 1.6rem;
 }
 
+.btn_big_wrap {
+    box-sizing: border-box;
+    margin: 0;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding: 0;
+    margin-top: 60px;
+}
 </style>
