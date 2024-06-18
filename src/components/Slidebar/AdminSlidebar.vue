@@ -55,22 +55,22 @@
             </a>
             <ul class="sub-menu">
               <li>
-                <RouterLink to="/admin/educenter">
+                <RouterLink to="/admin/educenter/list">
                   교육장 관리
                 </RouterLink>
               </li>
               <li>
-                <RouterLink to="/admin/course">
+                <RouterLink to="/admin/course/list">
                   교육과정 관리
                 </RouterLink>
               </li>
               <li>
-                <RouterLink to="/admin/room">
+                <RouterLink to="/admin/room/list">
                   강의실 관리
                 </RouterLink>
               </li>
               <li>
-                <RouterLink to="/admin/trainee">
+                <RouterLink to="/admin/trainee/list">
                   교육생 관리
                 </RouterLink>
               </li>
@@ -88,19 +88,19 @@
             </a>
             <ul class="sub-menu">
               <li>
-                <RouterLink to="/admin/attendance">
+                <RouterLink to="/admin/attendance/list">
                   출결 현황 조회
                 </RouterLink>
               </li>
               <li>
-                <RouterLink to="/admin/dailynote">
+                <RouterLink to="/admin/dailynote/list">
                   과제 현황 조회
                 </RouterLink>
               </li>
             </ul>
           </li>
           <li>
-            <RouterLink to="/admin/notice">
+            <RouterLink to="/admin/notice/list">
               <i>
                 <PhBrowser class="icon" />
               </i>

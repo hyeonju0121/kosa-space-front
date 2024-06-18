@@ -1,9 +1,6 @@
 <template>
     <div class="wrapper">
-        <!--slidebar-->
-        <AdminSlidebar/>
         <RouterView/>
-
     </div>
 </template>
 

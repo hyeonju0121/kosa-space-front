@@ -1,5 +1,10 @@
 <template>
-    <div class="main p-3">
+     <div class="main p-3" style="margin-left: 25px;">
+        <div class="item-section mt-2 mb-2" style="font-size: 12px">
+            <span>반 커뮤니티</span>
+        </div>
+
+        <!-- contents -->
         <div class="headingArea">
             <div class="title">
                 <h1 id="itemTitle">반 커뮤니티</h1>

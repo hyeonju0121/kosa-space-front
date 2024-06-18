@@ -44,7 +44,7 @@
               </a>
               <ul class="sub-menu">
                 <li>
-                  <RouterLink to="/trainee/attendance">
+                  <RouterLink to="/trainee/attendance/detail">
                     출결 현황 조회
                   </RouterLink>
                 </li>
@@ -68,7 +68,7 @@
                       </a>
                   </li>
                   <li>
-                    <RouterLink to="/trainee/dailynote">
+                    <RouterLink to="/trainee/dailynote/list">
                       과제 제출 현황 조회
                     </RouterLink>
                   </li>
@@ -77,7 +77,7 @@
             <li>
               <RouterLink to="/trainee/community">
                 <i><PhBrowser class="icon"/></i>
-                반 커뮤니티
+                <span class="text">반 커뮤니티</span>
               </RouterLink>
             </li>
           </ul>
@@ -135,12 +135,19 @@ $(".sidebar").toggleClass("active");
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+
+body, h1, h2, h3, h4, h5, h6, input, span, p, textarea, select {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
 * {
 margin: 0;
 padding: 0;
 box-sizing: border-box;
 font-family: "Inter", sans-serif;
 }
+
 body {
 background-color: #dbe2f4;
 }
