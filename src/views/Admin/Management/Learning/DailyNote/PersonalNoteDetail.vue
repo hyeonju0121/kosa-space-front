@@ -21,19 +21,23 @@
                     </thead>
                     <tbody class="text-center align-middle">
                         <tr style="border-bottom:1px solid #dcdcdc; height: 50px">
-                            <td>Day 70. 2024-06-18 컴포넌트 설계작업</td>
+                            <td><a href="https://opalescent-sternum-860.notion.site/Vue-31b721d5b54141e1b092f759fbae295a?pvs=4"
+                                    target="_blank" style="text-decoration-line: none; color:black; ">Day 70. 2024-06-18
+                                    컴포넌트 설계작업</a></td>
                             <td>40KB</td>
                             <td>2024.06.18</td>
                             <td><span class="btn btn-dark btn-sm">10주차</span></td>
                         </tr>
                         <tr style="border-bottom:1px solid #dcdcdc; height: 50px">
-                            <td>Day 69. 2024-06-17 시각화 자료 추가 보충작업</td>
+                            <td><a href="https://opalescent-sternum-860.notion.site/Vue-31b721d5b54141e1b092f759fbae295a?pvs=4"
+                                target="_blank" style="text-decoration-line: none; color:black; ">Day 69. 2024-06-17 시각화 자료 추가 보충작업</a></td>
                             <td>13MB</td>
                             <td>2024.06.17</td>
                             <td><span class="btn btn-dark btn-sm">10주차</span></td>
                         </tr>
                         <tr style="border-bottom:1px solid #dcdcdc; height: 50px">
-                            <td>Day 68. 2024-06-16 Rest API 구조 설계</td>
+                            <td><a href="https://opalescent-sternum-860.notion.site/Vue-31b721d5b54141e1b092f759fbae295a?pvs=4"
+                                target="_blank" style="text-decoration-line: none; color:black; ">Day 68. 2024-06-16 Rest API 구조 설계</a></td>
                             <td>56KB</td>
                             <td>2024.06.16</td>
                             <td><span class="btn btn-dark btn-sm">10주차</span></td>
@@ -69,8 +73,19 @@ function handleCheck() {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
-body, h1, h2, h3, h4, h5, h6, input,
-p, span, small, textarea, select {
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+p,
+span,
+small,
+textarea,
+select {
     font-family: 'Noto Sans KR', sans-serif;
 }
 
