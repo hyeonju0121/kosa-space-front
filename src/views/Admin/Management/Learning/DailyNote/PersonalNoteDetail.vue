@@ -18,7 +18,6 @@
                         <th style="width: 10%">용량</th>
                         <th style="width: 15%">작성일</th>
                         <th style="width: 10%">주차별 태그</th>
-                        <th style="width: 10%">-</th>
                     </thead>
                     <tbody class="text-center align-middle">
                         <tr style="border-bottom:1px solid #dcdcdc; height: 50px">
@@ -26,21 +25,18 @@
                             <td>40KB</td>
                             <td>2024.06.18</td>
                             <td><span class="btn btn-dark btn-sm">10주차</span></td>
-                            <td><button class="btn btn-danger btn-sm">삭제</button></td>
                         </tr>
                         <tr style="border-bottom:1px solid #dcdcdc; height: 50px">
                             <td>Day 69. 2024-06-17 시각화 자료 추가 보충작업</td>
                             <td>13MB</td>
                             <td>2024.06.17</td>
                             <td><span class="btn btn-dark btn-sm">10주차</span></td>
-                            <td><button class="btn btn-danger btn-sm">삭제</button></td>
                         </tr>
                         <tr style="border-bottom:1px solid #dcdcdc; height: 50px">
                             <td>Day 68. 2024-06-16 Rest API 구조 설계</td>
                             <td>56KB</td>
                             <td>2024.06.16</td>
                             <td><span class="btn btn-dark btn-sm">10주차</span></td>
-                            <td><button class="btn btn-danger btn-sm">삭제</button></td>
                         </tr>
                     </tbody>
                     <tfoot>
