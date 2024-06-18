@@ -1,9 +1,7 @@
 <template>
-    <div>
         <button type="button" class="canclebtn">
             <slot>button</slot>
         </button>
-    </div>
 </template>
 
 <script setup>

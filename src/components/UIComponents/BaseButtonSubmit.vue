@@ -1,9 +1,7 @@
 <template>
-    <div>
         <button type="button" class="submitbtn">
             <slot>button</slot>
         </button>
-    </div>
 </template>
 
 <script setup>
