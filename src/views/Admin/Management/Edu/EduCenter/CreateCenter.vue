@@ -12,69 +12,67 @@
         </div>
 
         <div class="form_table no_line">
-        <form>
-            <!--
-            <di class="tr">
-                <div class="th">
-                    <p class="form_label required">분류 </p>
-                </div>
-                <div class="td">
-                    <select name="bsubcategory" id="bsubcategory">
-                        <option value="general" selected>일반</option>
-                        <option value="product">상품</option>
-                        <option value="delivery">배송</option>
-                    </select>
-                </div>
-            </di>-->
-
-            <div class="tr">
-                <div class="th">
-                    <p class="form_label required">교육장 명</p>
-                </div>
-                <div class="td">
-                    <div class="textarea_group_title sm">
-                        <textarea id="btitle" name="btitle" title="교육장 명 입력" placeholder="교육장 명을 입력해주세요."
-                            maxlength="100"></textarea>
-                        <p class="form_bytes"><span class="byte">0</span>/100</p>
+            <form>
+                <div class="tr">
+                    <div class="th">
+                        <p class="form_label required">교육장 명</p>
                     </div>
-                </div>
-            </div>
-            <div class="tr">
-                <div class="th">
-                    <p class="form_label required">주소 들어가는 부분 </p>
-                </div>
-                <div class="td">
-                    <div class="textarea_group_content lg">
-                        <textarea id="bcontent" name="bcontent" placeholder="주소 들어가는 부분" title="주소 들어가는 부분"
-                            maxlength="1000"></textarea>
-                        <p class="form_bytes"><span class="byte">0</span>/1,000</p>
-                    </div>
-                    <div class="attach_wrap">
-                        <div class="attach_top">
-                            <input type="hidden" name="uploadType" value="notice">
-                            <label class="attach_img" for="battach">사진 첨부</label>
-                            <p class="guide_txt">파일 1개당 10MB까지 첨부 가능합니다. (JPG, JPEG, PNG, GIF만 첨부 가능)</p>
-                            <input class="input_file" id="battach" name="battach" type="file">
+                    <div class="td">
+                        <div class="textarea_group_title sm">
+                            <textarea id="btitle" name="btitle" title="교육장 명 입력" placeholder="교육장 명을 입력해주세요."
+                                maxlength="50"></textarea>
+                            <p class="form_bytes"><span class="byte">0</span>/100</p>
                         </div>
-                        <div class="attached" data-file="battach" id="inputUploadFile"></div>
                     </div>
-
                 </div>
-            </div>
+                <div class="tr">
+                    <div class="th">
+                        <p class="form_label required">교육장 주소 </p>
+                    </div>
+                    <div class="td">
+                        <DaumPostCode2 />
+                    </div>
+                </div>
 
-            <div class="btn_big_wrap">
-                <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
-                <BaseButtonSubmit @click="handleSubmit">완료</BaseButtonSubmit>
-            </div>
-        </form>
-    </div>
-    </div>
+                <div class="tr">
+                    <div class="th">
+                        <p class="form_label required">교육장 사진 </p>
+                    </div>
+                    <div class="td">
+                        <div class="center_wrap">
+                            <div class="center_attach">
+                                <div class="img_box d-flex">
+                                    <div id="defaultImg">
+                                        <PhImage :size="32" color="#636462" weight="duotone" />
+                                    </div>
+                                </div>
+                                <div class="center_edit">
+                                    <p class="tit">교육장의 이미지를 등록해주세요.</p>
+                                    <div class="attach_wrap">
+                                        <p class="guide_txt">파일 1개당 10MB까지 첨부 가능합니다. (JPG, JPEG, PNG, GIF만 첨부 가능)</p>
+                                        <div>
+                                            <input id="battach" type="file" class="form-control-file mt-3" ref="battach" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="btn_big_wrap">
+                    <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
+                    <BaseButtonSubmit @click="handleSubmit">완료</BaseButtonSubmit>
+                </div>
+            </form>
+        </div>
+    </div>
 </template>
 
 <script setup>
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
+import DaumPostCode2 from './DaumPostCode2.vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -86,13 +84,24 @@ function handleCancle() {
 function handleSubmit() {
     router.push('/admin/educenter/list');
 }
-</script>
 
+</script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
-body, h1, h2, h3, h4, h5, h6, input,
-p, span, small, textarea, select {
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+p,
+span,
+small,
+textarea,
+select {
     font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -132,23 +141,6 @@ p, span, small, textarea, select {
     border-top: none;
 }
 
-.writeNoticeForm {
-    border-collapse: collapse;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-.writeNoticeForm input {
-    border-collapse: collapse;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    border: none;
-    font-weight: 500;
-    vertical-align: middle;
-}
-
 .writeNoticeForm .tr {
     line-height: normal;
     font-weight: 500;
@@ -176,7 +168,7 @@ p, span, small, textarea, select {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
     height: 48px;
     margin-top: 0;
@@ -208,86 +200,8 @@ p, span, small, textarea, select {
     margin-left: 30px;
 }
 
-.custom_select_wrap {
-    border-collapse: collapse;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0 14px;
-    border: 1px solid #999999;
-    border-radius: 3px;
-    padding-left: 0;
-    padding-right: 0;
-    width: 400px;
-}
 
-.option_selected {
-    border-collapse: collapse;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    border: none;
-    vertical-align: middle;
-    background: transparent;
-    cursor: pointer;
-    position: relative;
-    width: 100%;
-    height: 48px;
-    line-height: 48px;
-    text-align: left;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    padding-left: 14px;
-    padding-right: 34px;
-}
-
-.option_list {
-    line-height: normal;
-    font-size: 14px;
-    font-weight: 500;
-    border-collapse: collapse;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    border-top: 1px solid #f2f2f2;
-    overflow: auto;
-    max-height: 289px;
-    border-color: #ccc;
-    display: none;
-}
-
-.option_list li {
-    line-height: normal;
-    font-weight: 500;
-    border-collapse: collapse;
-    box-sizing: border-box;
-    margin: 0;
-    list-style: none;
-    position: relative;
-    padding: 0 14px;
-}
-
-.option_list .option {
-    border-collapse: collapse;
-    list-style: none;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    border: none;
-    vertical-align: middle;
-    background: transparent;
-    cursor: pointer;
-    width: 100%;
-    height: 48px;
-    line-height: 48px;
-    text-align: left;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-/* 게시글 제목 입력 폼 ----------------------------*/
+/* 교육장 이름 입력 폼 ----------------------------*/
 .textarea_group_title {
     font-weight: 500;
     border-collapse: collapse;
@@ -310,40 +224,7 @@ p, span, small, textarea, select {
     width: 100%;
     height: 48px;
     font-size: 14px;
-    background: white;
-    border-radius: 3px;
-    transition: all 0.5s;
-    vertical-align: middle;
-    resize: none;
-    padding: 0 10px 0 5px;
-    border: 0;
-    min-height: 42px;
-}
-
-/* 게시글 내용 입력 폼 ----------------------------*/
-.textarea_group_content {
-    font-weight: 500;
-    border-collapse: collapse;
-    box-sizing: border-box;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    border: 1px solid #cccccc;
-    border-radius: 3px;
-    padding: 15px 10px;
-    min-height: 250px;
-}
-
-.textarea_group_content textarea {
-    border-collapse: collapse;
-    box-sizing: border-box;
-    margin: 0;
-    font-weight: 500;
-    width: 100%;
-    height: 280px;
-    font-size: 14px;
-    background: white;
+    background: #f0f4fd;
     border-radius: 3px;
     transition: all 0.5s;
     vertical-align: middle;
@@ -377,96 +258,6 @@ p, span, small, textarea, select {
     box-sizing: border-box;
 }
 
-.attach_wrap {
-    line-height: normal;
-    font-size: 14px;
-    font-weight: 500;
-    border-collapse: collapse;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-.attach_top {
-    line-height: normal;
-    font-size: 14px;
-    font-weight: 500;
-    border-collapse: collapse;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: flex-start;
-    margin-top: 16px;
-}
-
-.attach_img {
-    border-collapse: collapse;
-    box-sizing: border-box;
-    margin: 0;
-    vertical-align: middle;
-    flex: 0 0 auto;
-    height: 22px;
-    padding: 3px 10px;
-    background-color: black;
-    border-radius: 2px;
-    font-size: 12px;
-    cursor: pointer;
-    color: white;
-}
-
-.guide_txt {
-    line-height: normal;
-    font-weight: 500;
-    border-collapse: collapse;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    margin-left: 10px;
-    padding-top: 2px;
-    font-size: 12px;
-    color: #999999;
-}
-
-.input_file {
-    border-collapse: collapse;
-    box-sizing: border-box;
-    margin: 0;
-    font-weight: 500;
-    width: 100%;
-    height: 48px;
-    padding: 0 15px;
-    font-size: 14px;
-    color: #333333;
-    border: 1px solid #cccccc;
-    background: white;
-    border-radius: 3px;
-    transition: all 0.5s;
-    vertical-align: middle;
-    display: none;
-}
-
-.list_type1 {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    margin-top: 30px;
-}
-
-.list_type1 li {
-    line-height: normal;
-    font-weight: 500;
-    box-sizing: border-box;
-    margin: 0;
-    list-style: none;
-    position: relative;
-    padding: 0 0 10px 8px;
-    font-size: 13px;
-    color: #999999;
-    word-break: keep-all;
-}
-
 .btn_big_wrap {
     box-sizing: border-box;
     margin: 0;
@@ -477,43 +268,92 @@ p, span, small, textarea, select {
     margin-top: 60px;
 }
 
-.white {
+
+/* educenter image -------------------------*/
+.center_wrap {
+    border-collapse: collapse;
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-weight: 500;
-    vertical-align: middle;
-    background: transparent;
-    cursor: pointer;
-    font-size: 16px;
-    height: 52px;
-    line-height: 50px;
-    text-align: center;
-    border-radius: 3px;
-    width: 200px;
-    flex: 0 0 200px;
-    background-color: white;
-    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    background: white;
+    min-height: 120px;
 }
 
-.btnInsert {
+.center_attach {
+    line-height: normal;
+    font-size: 14px;
+    font-weight: 500;
+    border-collapse: collapse;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+
+.img_box {
+    line-height: normal;
+    border-collapse: collapse;
+    box-sizing: border-box;
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    padding-bottom: 0;
+    /* border-radius: 50%; */
+    background: #F2F2F2;
+    color: #b1b1b1;
+    font-size: 32px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+
+.center_edit {
+    line-height: normal;
+    font-weight: 500;
+    border-collapse: collapse;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    border: none;
-    font-weight: 500;
-    vertical-align: middle;
-    background: transparent;
-    cursor: pointer;
-    font-size: 16px;
-    height: 52px;
-    line-height: 50px;
-    text-align: center;
-    border-radius: 3px;
-    width: 200px;
-    flex: 0 0 200px;
-    margin-left: 10px;
-    background-color: #ccc;
-    color: #fff;
+    margin-left: 30px;
 }
+
+.tit {
+    line-height: normal;
+    font-size: 14px;
+    font-weight: 500;
+    border-collapse: collapse;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* product img */
+.attach_wrap {
+    line-height: normal;
+    font-size: 14px;
+    font-weight: 500;
+    border-collapse: collapse;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.guide_txt {
+    line-height: normal;
+    font-weight: 500;
+    border-collapse: collapse;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    margin-left: 5px;
+    padding-top: 2px;
+    font-size: 12px;
+    color: #999999;
+}
+
 </style>
