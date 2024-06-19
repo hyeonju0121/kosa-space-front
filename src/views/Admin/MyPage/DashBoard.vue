@@ -97,8 +97,7 @@
                         <div class="row">
                             <table class="table align-middle" style="width: 100%;">
                                 <tr>
-                                    <td style="width: 5%;"><img src="@/assets/dashboardimages/admindashboardimg1.png"
-                                            alt=""></td>
+                                    <td style="width: 5%;"><img src="@/assets/icons/admindashboardimg1.png" alt=""></td>
                                     <td style="width: 30%;"><b>MSA 2차 채용연계과정</b></td>
                                     <td style="width: 35%;">
                                         <div class="d-flex flex-row">
@@ -109,8 +108,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width: 5%;"><img src="@/assets/dashboardimages/admindashboardimg1.png"
-                                            alt=""></td>
+                                    <td style="width: 5%;"><img src="@/assets/icons/admindashboardimg1.png" alt=""></td>
                                     <td style="width: 30%;"><b>MSA 2차 채용연계과정</b></td>
                                     <td style="width: 35%;">
                                         <div class="d-flex flex-row">
@@ -121,8 +119,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width: 5%;"><img src="@/assets/dashboardimages/admindashboardimg1.png"
-                                            alt=""></td>
+                                    <td style="width: 5%;"><img src="@/assets/icons/admindashboardimg1.png" alt=""></td>
                                     <td style="width: 30%;"><b>MSA 2차 채용연계과정</b></td>
                                     <td style="width: 35%;">
                                         <div class="d-flex flex-row">
