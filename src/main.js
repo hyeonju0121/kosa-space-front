@@ -13,6 +13,15 @@ import PhosphorIcons from "@phosphor-icons/vue"
 // jquery import
 import jQuery from 'jquery'
 
-createApp(App).use(store).use(router).use(PhosphorIcons).use(jQuery).mount('#app')
+// Daum postcode import
+import VueDaumPostcode from "vue-daum-postcode"
+
+createApp(App)
+.use(store)
+.use(router)
+.use(PhosphorIcons)
+.use(VueDaumPostcode)
+.use(jQuery)
+.mount('#app')
 
 global.$ = jQuery
