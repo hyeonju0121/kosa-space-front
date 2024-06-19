@@ -16,19 +16,23 @@
             <table class="table-secondary text-center" style="width: 40%; border-bottom: 4px solid lightgray;">
                 <thead>
                     <th :style="thstyle1">
-                        <RouterLink class="mt-3" to="/trainee/community/notice/list"
-                        style="text-decoration-line: none; color:black; font-size:1.4rem" :style="rcolor1" @click="handleStyle1()">
-                        <b>공지사항</b></RouterLink>
+                        <RouterLink to="/trainee/community/notice/list"
+                            style="text-decoration-line: none; color:black; font-size:1.4rem" :style="rcolor1"
+                            @click="handleStyle1()">
+                            <b>공지사항</b>
+                        </RouterLink>
                     </th>
                     <th :style="thstyle2">
                         <RouterLink to="/trainee/community/assignment/list"
-                        style="text-decoration: none; color:black; font-size:1.4rem" :style="rcolor2" @click="handleStyle2()"><b>과제
-                            자료실</b></RouterLink>
+                            style="text-decoration: none; color:black; font-size:1.4rem" :style="rcolor2"
+                            @click="handleStyle2()"><b>과제
+                                자료실</b></RouterLink>
                     </th>
                     <th :style="thstyle3">
                         <RouterLink to="/trainee/community/reference/list"
-                        style="text-decoration: none; color:black; font-size:1.4rem" :style="rcolor3" @click="handleStyle3()"><b>수업
-                            자료실</b></RouterLink>
+                            style="text-decoration: none; color:black; font-size:1.4rem" :style="rcolor3"
+                            @click="handleStyle3()"><b>수업
+                                자료실</b></RouterLink>
                     </th>
                 </thead>
             </table>
@@ -43,35 +47,35 @@
 import PersonalProfileHeader from '@/components/UIComponents/PersonalProfileHeader.vue';
 import { ref } from 'vue';
 
-let thstyle1 = ref("border-bottom: 4px solid lightgray; padding-bottom: 8px;");
-let thstyle2 = ref("border-bottom: 4px solid lightgray; padding-bottom: 8px;");
-let thstyle3 = ref("border-bottom: 4px solid lightgray; padding-bottom: 8px;");
+let thstyle1 = ref("padding-bottom: 6px;");
+let thstyle2 = ref("padding-bottom: 6px;");
+let thstyle3 = ref("padding-bottom: 6px;");
 let rcolor1 = ref("");
 let rcolor2 = ref("");
 let rcolor3 = ref("");
 
 function handleStyle1() {
-    thstyle1.value = "border-bottom: 4px solid #22C55E; padding-bottom: 8px; color:#22C55E;"
-    thstyle2.value = ""
-    thstyle3.value = ""
+    thstyle1.value = "padding-bottom: 6px;"
+    thstyle2.value = "padding-bottom: 6px;"
+    thstyle3.value = "padding-bottom: 6px;"
     rcolor1.value = "color:#22C55E;"
     rcolor2.value = ""
     rcolor3.value = ""
 }
 
 function handleStyle2() {
-    thstyle1.value = ""
-    thstyle2.value = "border-bottom: 4px solid #22C55E; padding-bottom: 8px;"
-    thstyle3.value = ""
+    thstyle1.value = "padding-bottom: 6px;"
+    thstyle2.value = "border-bottom: 4px solid #22C55E; padding-bottom: 10px;"
+    thstyle3.value = "padding-bottom: 6px;"
     rcolor1.value = ""
     rcolor2.value = "color:#22C55E;"
     rcolor3.value = ""
 }
 
 function handleStyle3() {
-    thstyle1.value = ""
-    thstyle2.value = ""
-    thstyle3.value = "border-bottom: 4px solid #22C55E; padding-bottom: 8px;"
+    thstyle1.value = "padding-bottom: 6px;"
+    thstyle2.value = "padding-bottom: 6px;"
+    thstyle3.value = "border-bottom: 4px solid #22C55E; padding-bottom: 10px;"
     rcolor1.value = ""
     rcolor2.value = ""
     rcolor3.value = "color:#22C55E;"
