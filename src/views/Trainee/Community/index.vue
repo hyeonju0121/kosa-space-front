@@ -1,29 +1,37 @@
 <template>
-     <div class="main p-3" style="margin-left: 25px;">
+    <div class="main p-3" style="margin-left: 25px; width: 1200px;">
         <div class="item-section mt-2 mb-2" style="font-size: 12px">
             <span>반 커뮤니티</span>
         </div>
 
         <!-- contents -->
-        <div class="headingArea">
+        <div class="headingArea mb-5">
             <div class="title">
                 <h1 id="itemTitle">반 커뮤니티</h1>
             </div>
-            <PersonalProfileHeader/>
+            <PersonalProfileHeader />
         </div>
 
-        <div id="my_box">
-            <ul class="my_menu">
-                <li id="menu1" style="margin-right: 10px;">
-                    <RouterLink to="/trainee/community/notice/list">공지사항</RouterLink>
-                </li>
-                <li id="menu2" style="margin-right: 10px;">
-                    <RouterLink to="/trainee/community/assignment/list">과제 자료실</RouterLink>
-                </li>
-                <li id="menu3" style="margin-right: 10px;">
-                    <RouterLink to="/trainee/community/reference/list">수업 자료실</RouterLink>
-                </li>
-            </ul>
+        <div id="my_box" class="mb-4">
+            <table class="table-secondary text-center" style="width: 40%; border-bottom: 4px solid lightgray;">
+                <thead>
+                    <th :style="thstyle1">
+                        <RouterLink class="mt-3" to="/trainee/community/notice/list"
+                        style="text-decoration-line: none; color:black; font-size:1.4rem" :style="rcolor1" @click="handleStyle1()">
+                        <b>공지사항</b></RouterLink>
+                    </th>
+                    <th :style="thstyle2">
+                        <RouterLink to="/trainee/community/assignment/list"
+                        style="text-decoration: none; color:black; font-size:1.4rem" :style="rcolor2" @click="handleStyle2()"><b>과제
+                            자료실</b></RouterLink>
+                    </th>
+                    <th :style="thstyle3">
+                        <RouterLink to="/trainee/community/reference/list"
+                        style="text-decoration: none; color:black; font-size:1.4rem" :style="rcolor3" @click="handleStyle3()"><b>수업
+                            자료실</b></RouterLink>
+                    </th>
+                </thead>
+            </table>
         </div>
 
         <!-- 중첩된 라우트의 컴포넌트가 보여질 위치 -->
@@ -33,13 +41,57 @@
 
 <script setup>
 import PersonalProfileHeader from '@/components/UIComponents/PersonalProfileHeader.vue';
+import { ref } from 'vue';
+
+let thstyle1 = ref("border-bottom: 4px solid lightgray; padding-bottom: 8px;");
+let thstyle2 = ref("border-bottom: 4px solid lightgray; padding-bottom: 8px;");
+let thstyle3 = ref("border-bottom: 4px solid lightgray; padding-bottom: 8px;");
+let rcolor1 = ref("");
+let rcolor2 = ref("");
+let rcolor3 = ref("");
+
+function handleStyle1() {
+    thstyle1.value = "border-bottom: 4px solid #22C55E; padding-bottom: 8px; color:#22C55E;"
+    thstyle2.value = ""
+    thstyle3.value = ""
+    rcolor1.value = "color:#22C55E;"
+    rcolor2.value = ""
+    rcolor3.value = ""
+}
+
+function handleStyle2() {
+    thstyle1.value = ""
+    thstyle2.value = "border-bottom: 4px solid #22C55E; padding-bottom: 8px;"
+    thstyle3.value = ""
+    rcolor1.value = ""
+    rcolor2.value = "color:#22C55E;"
+    rcolor3.value = ""
+}
+
+function handleStyle3() {
+    thstyle1.value = ""
+    thstyle2.value = ""
+    thstyle3.value = "border-bottom: 4px solid #22C55E; padding-bottom: 8px;"
+    rcolor1.value = ""
+    rcolor2.value = ""
+    rcolor3.value = "color:#22C55E;"
+}
 </script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
-body, h1, h2, h3, h4, h5, h6, input, textarea, select {
-	font-family: 'Noto Sans KR', sans-serif;
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+textarea,
+select {
+    font-family: 'Noto Sans KR', sans-serif;
 }
 
 .headingArea {
@@ -62,8 +114,7 @@ body, h1, h2, h3, h4, h5, h6, input, textarea, select {
 }
 
 .my_menu {
-	list-style:none; 
-	width:30rem;
+    list-style: none;
+    width: 30rem;
 }
-
 </style>
