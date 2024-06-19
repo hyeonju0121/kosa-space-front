@@ -11,6 +11,59 @@
             </div>
 
             <div>
+                <div class="mb-3">
+                    <PersonalProfileHeader/>        
+                </div>
+
+                <div class="mb-3">
+                    <VueDatePicker v-model="date" range />
+                </div>
+        
+
+                <div class="container">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>날짜</th>
+                                <th>입실 시간</th>
+                                <th>퇴실 시간</th>
+                                <th>상태</th>
+                                <th>비고</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024.06.17</td>
+                                <td>08:30</td>
+                                <td>17:55</td>
+                                <td>정상 출결</td>
+                                <td></td> 
+                            </tr>
+                            <tr>
+                                <td>2024.06.18</td>
+                                <td>08:45</td>
+                                <td>17:58</td>
+                                <td>결석</td>
+                                <td><router-link class="btn btn-danger btn-sm">사유 제출</router-link></td>
+                            </tr>
+                            <tr>
+                                <td>2024.06.18</td>
+                                <td>08:45</td>
+                                <td>17:58</td>
+                                <td>결석</td>
+                                <td><router-link class="btn btn-danger btn-sm">사유 제출</router-link></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div>
                 <BaseButtonUpdate @click="handleCreateBtn">사유 작성</BaseButtonUpdate>
             </div>
         </div>
@@ -18,6 +71,7 @@
 </template>
 
 <script setup>
+import PersonalProfileHeader from '@/components/UIComponents/PersonalProfileHeader.vue'
 import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
 import { useRouter } from 'vue-router';
 
@@ -26,6 +80,22 @@ const router = useRouter();
 function handleCreateBtn() {
     router.push(`/trainee/attendance/reason/create`)
 }
+
+//datepicker  
+import { ref, onMounted } from 'vue';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+
+const date = ref();
+
+
+onMounted(() => {
+  const startDate = new Date();
+  const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
+  date.value = [startDate, endDate];
+})
+
+
 
 </script>
 
