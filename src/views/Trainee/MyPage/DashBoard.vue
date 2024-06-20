@@ -25,16 +25,23 @@
                                         style="background-color: rgba(236, 236, 236, 0.452); width: 180px; height: 100px;">
                                         <div class="attendance-info">
                                             <h5>입실</h5>
-                                            <span class="checkin-text">09:10</span>
+                                            <button type="button" v-if="!isCheckIn" @click="showCheckInDialog" 
+                                                class="btn btn-primary btn-lg" style="width: 90%;">
+                                                <span>입실하기</span>
+                                            </button>
+                                            <span class="checkin-text" v-if="isCheckIn">09:10</span>
                                         </div>
                                     </div>
                                     <div class="attendance-box check-out"
                                         style="background-color:  rgba(236, 236, 236, 0.452); width: 180px; height: 100px; margin-left: 10px;">
                                         <div class="attendance-info">
                                             <h5>퇴실</h5>
-                                            <button type="button" class="btn btn-primary btn-lg" style="width: 90%;">
+                                            <!--퇴실하기 버튼 클릭시, 퇴실하기 모달 활성화 함수 호출-->
+                                            <button type="button" v-if="!isCheckOut" @click="showCheckOutDialog" 
+                                                class="btn btn-primary btn-lg" style="width: 90%;">
                                                 <span>퇴실하기</span>
                                             </button>
+                                            <span class="checkin-text" v-if="isCheckOut">17:55</span>
                                         </div>
                                     </div>
                                 </div>
@@ -108,7 +115,8 @@
                                         <p class="reference-createdat" style="margin-top: 11px;">2024-06-19 10:30</p>
                                     </div>
                                 </div>
-                                <div class="card" style="width: 16rem; margin-left: 14px; height: 14rem;">
+
+                                <div class="card" v-if="!isDailyNote" style="width: 16rem; margin-left: 14px; height: 14rem;">
                                     <div class="img_box d-flex">
                                         <div id="defaultImg">
                                             <img src="@/assets/icons/warning_icon2.png" style="width:50px; height: 50px;">
@@ -117,11 +125,12 @@
 
                                     <div class="card-body">
                                         <h5 class="card-title-dailynote">오늘의 데일리 과제가<br>아직 제출되지 않았어요!</h5>
-                                        <BaseButtonSubmit>제출하기</BaseButtonSubmit>
+                                        <BaseButtonSubmit @click="showDailyNoteDialog">제출하기</BaseButtonSubmit>
                                     </div>
                                 </div>
-                                <!--
-                                <div class="card" style="width: 16rem; margin-left: 14px; height: 14rem;">
+                                
+                                
+                                <div class="card" v-if="isDailyNote" style="width: 16rem; margin-left: 14px; height: 14rem;">
                                     <div class="img_box d-flex">
                                         <div id="defaultImg">
                                             <img src="@/assets/icons/terms_icon.png" style="width:50px; height: 50px;">
@@ -133,21 +142,120 @@
                                         <BaseButtonSubmit>제출완료</BaseButtonSubmit>
                                     </div>
                                 </div>
-                                 -->
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
+    <!--부트스트랩에서 다이얼로그는 고유한 id를 필수로 갖고 있어야 함-->
+    <DailyNoteSubmitDialog id="dailyNoteSubmitDialog" @clickHandler="handleDailyNoteSubmit"/>
+    <CheckInDialog id="checkInSubmitDialog" @submitCheckIn="submitCheckInDialog"/>
+    <CheckOutDialog id="checkOutSubmitDialog" @submitCheckOut="submitCheckOutDialog"/>
+    
 </template>
     
 <script setup>
 import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
+import DailyNoteSubmitDialog from './DailyNoteSubmitDialog.vue';
+import CheckOutDialog from './CheckOutDialog.vue';
+import CheckInDialog from './CheckInDialog.vue';
+import { onMounted, ref } from 'vue';
+import { Modal } from "bootstrap";
+import { useStore } from 'vuex';
+
+// store 객체 얻기
+const store = useStore();
+
+// store 에서 사용자 입실 및 퇴실 여부, 데일리 과제 제출 여부 가져오기
+const userCheckInStatus = store.state.userDailyInfo.userCheckInStatus;
+const userCheckOutStatus = store.state.userDailyInfo.userCheckOutStatus;
+const userDailyNoteStatus = store.state.userDailyInfo.userDailyNoteStatus;
+
+let isCheckIn = ref(userCheckInStatus);
+let isCheckOut = ref(userCheckOutStatus);
+let isDailyNote = ref(userDailyNoteStatus);
+
+console.log("입실 여부: ", isCheckIn.value);
+console.log("퇴실 여부: ", isCheckOut.value);
+console.log("데일리 과제 제출 여부: ", isDailyNote.value);
+
+let dailyNoteDialog = null;
+let checkOutDialog = null;
+let checkInDialog = null;
+
+// 컴포넌트가 생성되고, DOM에 부착될 때 자동으로 실행되는 콜백
+onMounted(() => {
+    // modal 객체로 생성 
+    dailyNoteDialog = new Modal(document.querySelector("#dailyNoteSubmitDialog"));
+    checkOutDialog = new Modal(document.querySelector("#checkOutSubmitDialog"));
+    checkInDialog = new Modal(document.querySelector("#checkInSubmitDialog"));
+})
+
+// 입실하기 모달 활성화
+function showCheckInDialog() {
+    // 입실하기 버튼 클릭시, 입실하기 모달 활성화
+    checkInDialog.show();
+}
+
+function submitCheckInDialog() {
+    console.log("CheckInDialog 에서 정의한 이벤트 수신 완료");
+    // '네' 버튼 클릭시, 모달 비활성화
+    checkInDialog.hide();
+
+    // 입실 상태 변경
+    isCheckIn.value = !isCheckIn.value;
+    store.commit("userDailyInfo/setUserCheckInStatus", isCheckIn.value);
+
+    console.log("isCheckIn: " + isCheckIn.value);
+    console.log("store -userCheckInStatus: " + store.state.userDailyInfo.userCheckInStatus);
+    console.log("입실 성공");
+}
+
+
+// 퇴실하기 모달 활성화
+function showCheckOutDialog() {
+    // 퇴실하기 버튼 클릭시, 퇴실하기 모달 활성화
+    checkOutDialog.show();
+}
+
+function submitCheckOutDialog() {
+    console.log("CheckOutDialog 에서 정의한 이벤트 수신 완료");
+    // '네' 버튼 클릭시, 모달 비활성화 
+    checkOutDialog.hide();
+
+    //  퇴실 상태 변경
+    isCheckOut.value = !isCheckOut.value;
+    store.commit("userDailyInfo/setUserCheckOutStatus", isCheckOut.value);
+
+    console.log("isCheckOut: " + isCheckOut.value);
+    console.log("store -userCheckOutStatus: " + store.state.userDailyInfo.userCheckOutStatus);
+    console.log("퇴실 성공");
+}
+
+
+// 데일리 과제 모달 활성화
+function showDailyNoteDialog() {
+    dailyNoteDialog.show();
+}
+
+function handleDailyNoteSubmit(noteData) {
+    console.log("DailyNoteSubmitDialog 에서 정의한 이벤트 수신 완료");
+    console.log(JSON.parse(JSON.stringify(noteData.value)));
+
+    // 과제 모달 비활성화
+    dailyNoteDialog.hide();
+
+    // 과제 제출 여부 상태 변경
+    isDailyNote.value = !isDailyNote.value;
+  
+    store.commit("userDailyInfo/setUserDailyNoteStatus", isDailyNote.value);
+    console.log(store.state.userDailyInfo.userDailyNoteStatus);
+
+    console.log("데일리 과제 제출 완료!");
+}
+
 </script>
     
 <style scoped>
