@@ -11,77 +11,84 @@
 
             <div class="ms-3">
                 <div>
-                    <form>
+                    
                         <div class="container" style="text-align: left;">
                             <!-- 테이블 -->
-                            <table class="table">
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            공지사항 유형
-                                        </td>
-                                        <td>
-                                            <select>
-                                                <option>취업</option>
-                                                <option>행사</option>
-                                                <option>강의장</option>
-                                                <option>수업</option>
-                                                <option>출석</option>
-                                            </select>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>교육장</td>
-                                        <td>
-                                            <select>
-                                                <option>송파 교육센터</option>
-                                                <option>혜화 교육센터</option>
-                                            </select>
-                                        </td>
-                                        <td>교육과정</td>
-                                        <td>
-                                            <select>
-                                                <option>전체</option>
-                                                <option>MSA 1차</option>
-                                                <option>MSA 2차</option>
-                                                <option>클라우드</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>공지사항 제목</td>
-                                        <td>
-                                            <textarea name="ntitle" cols="53" rows="1" id="n" placeholder="공지사항 제목을 입력해주세요."></textarea>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>공지사항 내용</td>
-                                        <td>
-                                            <textarea name="ncontent" cols="53" rows="10" id="n" placeholder="공지사항 내용을 입력해주세요."></textarea>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>첨부파일</td>
-                                        <td><input type="file"></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
+                            <form @submit.prevent="handleSubmit">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                공지사항 유형
+                                            </td>
+                                            <td colspan="3">
+                                                <select v-model="notice.category">
+                                                    <option value="취업">취업</option>
+                                                    <option value="행사">행사</option>
+                                                    <option value="강의장">강의장</option>
+                                                    <option value="수업">수업</option>
+                                                    <option value="출석">출석</option>
+                                                </select>
+                                            </td>                                            
+                                        </tr>
+                                        <tr>
+                                            <td>교육장</td>
+                                            <td>
+                                                <select v-model="notice.educenter">
+                                                    <option value="송파 교육센터">송파 교육센터</option>
+                                                    <option value="혜화 교육센터">혜화 교육센터</option>
+                                                </select>
+                                            </td>
+                                            <td>교육과정</td>
+                                            <td>
+                                                <select v-model="notice.course">
+                                                    <option value="전체">전체</option>
+                                                    <option value="MSA 1차">MSA 1차</option>
+                                                    <option value="MSA 2차">MSA 2차</option>
+                                                    <option value="클라우드">클라우드</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>공지사항 제목</td>
+                                            <td colspan="3">
+                                                <textarea v-model="notice.title" name="ntitle" cols="53" rows="1" id="n" placeholder="공지사항 제목을 입력해주세요."></textarea>
+                                            </td>                                            
+                                        </tr>
+                                        <tr>
+                                            <td>공지사항 내용</td>
+                                            <td colspan="3">
+                                                <textarea v-model="notice.content" name="ncontent" cols="53" rows="10" id="n" placeholder="공지사항 내용을 입력해주세요."></textarea>
+                                            </td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <td>첨부파일</td>
+                                            <td colspan="3">
+                                                <input  type="file" ref="nattach">
 
-                                </tbody>
-                            </table>
-                            <!-- 버튼부분 -->
-                            <div>
-                                <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
-                                <BaseButtonSubmit @click="handleSubmit">완료</BaseButtonSubmit>
-                            </div>
+                                                <!-- <label for="battach" class="col-sm-2 col-form-label">첨부그림</label>
+                                                    <div v-if="board.nattachoname !== null">
+                                                        <img width="300" 
+                                                            :src="`${axios.defaults.baseURL}/notice/nattach/${notice}?accessToken=${$store.state.accessToken}`"/>
+                                                    </div>
+                                                    <div class="col-sm-10 mt-2">
+                                                        <input id="nattach" type="file" class="form-control-file" ref="nattach"/>
+                                                    </div> -->
+                                            </td>                                            
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+                                <!-- 버튼부분 -->
+                                <div>
+                                    <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
+                                    <input type="submit" value="등록" @click="handleSubmit">                                    
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    
                 </div>
             </div>            
         </div>
@@ -90,24 +97,64 @@
 
 <script setup>
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
-import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
+// import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
 import { useRouter } from 'vue-router';
+import {ref} from "vue";
+// import noticeAPI from "@/apis/noticeAPI";
 
+//라우터 객체 얻기
 const router = useRouter();
 
+//상태 정의
+let notice = ref({
+    category:"",
+    educenter:"",
+    course:"전체",
+    title:"",
+    content:"내용"
+    
+});
+
+const nattach = ref(null);
+
+//등록버튼을 눌렀을때 실행
+function handleSubmit() {
+    const formData = new FormData();
+
+    //입력값들 넣기
+    formData.append("category",notice.value.category);
+    formData.append("educenter",notice.value.educenter);
+    formData.append("course",notice.value.course);    
+    formData.append("title", notice.value.title);
+    formData.append("content", notice.value.content);
+
+    //파일 넣기
+    // const elAttach = nattach.value;
+    // if(elAttach.files.length !=0) {
+    //     formData.append("nattach", elAttach.files[0]);
+    // }
+
+    //공지사항 쓰기 요청
+    // try{
+    //     const response = await noticeAPI.noticeCreate(formData);
+    //     router.back();
+    // } catch(error) {
+    //     console.log(error);
+    // }
+
+    //공지사항 등록할때 데이터 잘 넘어가는지 확인
+    console.log(formData);
+    console.log(JSON.parse(JSON.stringify(notice.value)));
+
+    //공지사항 등록버튼 누른후 공지사항 목록으로 이동
+    router.push('/admin/notice/list');
+
+}
+
+//취소 버튼을 클릭했을 때 실행
 function handleCancle() {
     router.push('/admin/notice/list');
 }
-
-function handleSubmit() {
-    router.push('/admin/notice/list');
-}
-
-
-
-
-
-
 
 
 </script>
@@ -165,4 +212,5 @@ select {
 #n {
     resize: none;
 }
+
 </style>

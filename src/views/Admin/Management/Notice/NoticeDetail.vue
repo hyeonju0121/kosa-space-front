@@ -57,7 +57,7 @@
 
                         <tr>
                             <td colspan="4">
-                                <textarea rows=15 cols=100% style="width:200px;">강의장 깔끔하게 사용해주세요!
+                                <textarea rows=15 cols=100% style="resize:none">강의장 깔끔하게 사용해주세요!
                                 </textarea>
                             </td>
                         </tr>
