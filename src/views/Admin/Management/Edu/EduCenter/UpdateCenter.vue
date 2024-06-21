@@ -11,14 +11,14 @@
             </div>
 
             <div class="form_table no_line">
-                <form>
+                <form @submit.prevent="handleSubmit">
                     <div class="tr">
                         <div class="th">
                             <p class="form_label required">교육장 명</p>
                         </div>
                         <div class="td">
                             <div class="textarea_group_title sm">
-                                <textarea id="btitle" name="btitle" title="교육장 명 입력" placeholder="교육장 명을 입력해주세요."
+                                <textarea v-model="centerInfo.ecname" id="ecname" title="교육장 명 입력" placeholder="교육장 명을 입력해주세요."
                                     maxlength="50"></textarea>
                                 <p class="form_bytes"><span class="byte">0</span>/100</p>
                             </div>
@@ -29,7 +29,7 @@
                             <p class="form_label required">교육장 주소 </p>
                         </div>
                         <div class="td">
-                            <DaumPostCode2 />
+                            <DaumPostCode3 @send-daumpostcode="postcodeinfo"/>
                         </div>
                     </div>
 
@@ -50,20 +50,20 @@
                                         <div class="attach_wrap">
                                             <p class="guide_txt">파일 1개당 10MB까지 첨부 가능합니다. (JPG, JPEG, PNG, GIF만 첨부 가능)</p>
                                             <div>
-                                                <input id="battach" type="file" class="form-control-file mt-3"
+                                                <input id="ecattach" type="file" class="form-control-file mt-3"
                                                     ref="battach" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
 
                     <div class="btn_big_wrap">
-                        <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
+                        <RouterLink to="/admin/educenter/list">
+                            <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
+                        </RouterLink>
                         <BaseButtonSubmit @click="handleSubmit">완료</BaseButtonSubmit>
                     </div>
                 </form>
@@ -76,16 +76,29 @@
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
 import DaumPostCode2 from './DaumPostCode2.vue';
+import DaumPostCode3 from './DaumPostCode3.vue';
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 
 const router = useRouter();
 
-function handleCancle() {
+// 교육장 상태 객체 정의
+const centerInfo = ref({
+    ecname: "송파 교육장",
+    postcode: "05717",
+    address: "서울 송파구 중대로 135",
+    ecattach: null
+});
+
+function handleSubmit() {
+    console.log(JSON.parse(JSON.stringify(centerInfo.value)));
+    
     router.push('/admin/educenter/list');
 }
 
-function handleSubmit() {
-    router.push('/admin/educenter/list');
+function postcodeinfo(data1, data2) {
+    centerInfo.value.postcode = data1;
+    centerInfo.value.address = data2;
 }
 </script>
 
