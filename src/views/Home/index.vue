@@ -1,13 +1,6 @@
 <template>
-    <div class="main p-3">
-        <div class="item-section mt-2 mb-2" style="font-size: 12px">
-            Home
-        </div>
-    
-        <div>
+    <div class="main">
             <RouterView/>
-        </div>
-    
     </div>
     </template>
     

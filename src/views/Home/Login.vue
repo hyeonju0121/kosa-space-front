@@ -1,9 +1,6 @@
 <template>
     <!-- contents -->
     <div class="headingArea">
-        <div class="title">
-            <h1 id="itemTitle">로그인</h1>
-        </div>
         <!--  -->
         <div class="row d-flex justify-content-center align-items-center p-3 p-md-4 p-xl-5 vh-100">
             <div class="shadow col-12 col-md-6" style="height: 800px;">
@@ -94,10 +91,6 @@
     position: relative;
     padding: 22px 0 0;
     margin: 0 0 20px;
-}
-
-.headingArea .title {
-    border-bottom: 2px solid #2a3954;
 }
 
 #itemTitle {
