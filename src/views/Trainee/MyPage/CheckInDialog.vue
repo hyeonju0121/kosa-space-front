@@ -7,8 +7,8 @@
         
         <template v-slot:body>
             <p class="contents">현재 시간은 오전 8시 45분입니다. (서버시간 기준)</p>
-            <p class="contents">입실시 재입실이 불가합니다.</p>
             <p class="contents">입실처리하시겠습니까?</p>
+            <p class="contents">퇴실 시 반드시 퇴실처리를 하셔야 출석으로 인정됩니다.</p>
         </template>
 
         <template v-slot:footer>
