@@ -12,17 +12,19 @@
         </div>
 
         <div class="form_table no_line">
-            <form>
+            <form @submit.prevent="handleSubmit">
                 <div class="tr">
                     <div class="th" style="width: 20%;">
                         <p class="form_label">교육장 명</p>
                     </div>
                     <div class="td">
-                        <select id="room" style="margin-top: 10px;">
-                            <option value="option1">송파 교육장</option>
-                            <option value="option2">가산 교육장</option>
-                            <option value="option3">혜화 교육장</option>
+                        <select @click="checkSelectedEcname" v-model="roomInfo.ecname" id="room" style="margin-top: 10px;">
+                            <option value="none" selected>교육장 선택</option>
+                            <option value="송파 교육장">송파 교육장</option>
+                            <option value="가산 교육장">가산 교육장</option>
+                            <option value="혜화 교육장">혜화 교육장</option>
                         </select>
+                        <p v-show="!isSelected" style="color: rgb(247, 78, 27); margin-top: 2%;">교육장을 선택해주세요.</p>
                     </div>
                 </div>
                 <div class="tr">
@@ -30,8 +32,9 @@
                         <p class="form_label">강의실 명 </p>
                     </div>
                     <div class="textarea_group_title sm">
-                        <textarea id="tname" title="강의실 명 입력" placeholder="강의실 명을 입력해주세요." maxlength="50"></textarea>
-                        <p class="form_bytes"><span class="byte">0</span>/100</p>
+                        <textarea v-model="roomInfo.trname" id="tname" title="강의실 명 입력" placeholder="강의실 명을 입력해주세요."
+                            maxlength="10"></textarea>
+                        <p class="form_bytes"><span class="byte">0</span>/10</p>
                     </div>
                 </div>
                 <div class="tr">
@@ -39,34 +42,29 @@
                         <p class="form_label">수용 가능 인원</p>
                     </div>
                     <div class="textarea_group_title sm">
-                        <textarea id="tcapacity" title="수용 가능 인원 입력" placeholder="수용 가능 인원을 입력해주세요."
-                            maxlength="50"></textarea>
-                        <p class="form_bytes"><span class="byte">0</span>/100</p>
+                        <textarea v-model="roomInfo.trcapacity" id="tcapacity" title="수용 가능 인원 입력"
+                            placeholder="수용 가능 인원을 입력해주세요." maxlength="10"></textarea>
+                        <p class="form_bytes"><span class="byte">0</span>/10</p>
                     </div>
                 </div>
                 <div class="tr">
                     <div class="th" style="width:30%">
                         <p class="form_label">사용 가능 여부 </p>
                     </div>
-                    <div style="margin-top: 34px; display: flex;">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="tenable" id="tenable1">
-                            <label class="form-check-label" for="tenable1">
-                                가능
-                            </label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="tenable" id="tenable2" checked>
-                            <label class="form-check-label" for="tenable2">
-                                불가능
-                            </label>
-                        </div>
+                    <div style="width: 200px; display: flex;">
+                        <input type="radio" id="tenable1" value="가능" v-model="roomInfo.trenable" />
+                        <label for="tenable1" style="margin-top: 17%; margin-left: 5%; margin-right: 5%;"><p>가능</p></label>
+
+                        <input type="radio" id="tenable2" value="불가능" v-model="roomInfo.trenable"/>
+                        <label for="tenable2" style="margin-top: 17%; margin-left: 5%;"><p>불가능</p></label>   
                     </div>
                 </div>
 
                 <div class="btn_big_wrap">
-                    <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
-                    <BaseButtonSubmit @click="handleSubmit">완료</BaseButtonSubmit>
+                    <RouterLink to="/admin/room/list">
+                        <BaseButtonCancle>취소</BaseButtonCancle>
+                    </RouterLink>
+                    <BaseButtonSubmit type="submit">완료</BaseButtonSubmit>
                 </div>
             </form>
         </div>
@@ -76,17 +74,34 @@
 <script setup>
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+
+const roomInfo = ref({
+    ecname: "none",
+    trname: "",
+    trcapacity: "",
+    trenable: "",
+})
+
+let isSelected = ref(true);
+
+function checkSelectedEcname() {
+    if(roomInfo.value.ecname === 'none') {
+        isSelected.value = false;
+    } else {
+        isSelected.value = true;
+    }
+}
 
 const router = useRouter();
 
-function handleCancle() {
+function handleSubmit() {
+    console.log(JSON.parse(JSON.stringify(roomInfo)));
+    
     router.push('/admin/room/list');
 }
 
-function handleSubmit() {
-    router.push('/admin/room/list');
-}
 </script>
 
 <style scoped>
