@@ -1,24 +1,28 @@
 <template>
-    <div class="main p-3" style="margin-left: 25px;">
-        <div class="item-section mt-2 mb-2" style="font-size: 12px">
-            <span>교육관리 > 교육과정 관리 > 교육과정 목록</span>
-        </div>
 
-        <!-- contents -->
-        <div class="headingArea">
-            <div class="title">
-                <h1 id="itemTitle">교육과정 목록</h1>
+        <div style="display: flex;">
+            <!--
+            <span>교육장 선택</span>
+            <div style="margin-left: 1%;">
+                <select id="room">
+                    <option value="option1">전체</option>
+                    <option value="option1">송파 교육장</option>
+                    <option value="option2">가산 교육장</option>
+                    <option value="option3">혜화 교육장</option>
+                </select>
             </div>
-        </div>
+            -->
 
-        <div>
-            <select id="room">
-                <option value="option1">송파 교육장</option>
-                <option value="option2">가산 교육장</option>
-                <option value="option3">혜화 교육장</option>
-            </select>
-
-            <BaseButtonSubmit class="mt-3" @click="handleCreateBtn">교육과정 등록</BaseButtonSubmit>
+            <span style="margin-left: 1%;">진행 여부</span>
+            <div style="margin-left: 1%;">
+                <select id="status">
+                    <option value="option1">전체</option>
+                    <option value="option1">진행 예정</option>
+                    <option value="option2">진행중</option>
+                    <option value="option3">진행 완료</option>
+                </select>
+            </div>
+            <!--<BaseButtonSubmit class="mt-3" @click="handleCreateBtn">교육과정 등록</BaseButtonSubmit>-->
         </div>
 
         <div class="container mt-3">
@@ -31,6 +35,7 @@
                         <th scope="col">기간</th>
                         <th scope="col">수강인원</th>
                         <th scope="col">강사진</th>
+                        <th scope="col">진행여부</th>
                         <th scope="col">비고</th>
                     </tr>
                 </thead>
@@ -46,6 +51,7 @@
                         <td>2024.02.26 ~ 2024.07.26</td>
                         <td>34 명</td>
                         <td>신용권 교수</td>
+                        <td>진행중</td>
                         <td>
                             <button type="button" class="btn btn-outline-dark" @click="handleUpdateBtn">수정</button>
                             <button type="button" class="btn btn-outline-dark">삭제</button>
@@ -62,6 +68,7 @@
                         <td>2024.02.26 ~ 2024.07.26</td>
                         <td>34 명</td>
                         <td>신용권 교수</td>
+                        <td>진행중</td>
                         <td>
                             <button type="button" class="btn btn-outline-dark" @click="handleUpdateBtn">수정</button>
                             <button type="button" class="btn btn-outline-dark">삭제</button>
@@ -78,6 +85,7 @@
                         <td>2024.02.26 ~ 2024.07.26</td>
                         <td>34 명</td>
                         <td>신용권 교수</td>
+                        <td>진행중</td>
                         <td>
                             <button type="button" class="btn btn-outline-dark" @click="handleUpdateBtn">수정</button>
                             <button type="button" class="btn btn-outline-dark">삭제</button>
@@ -94,6 +102,7 @@
                         <td>2024.02.26 ~ 2024.07.26</td>
                         <td>34 명</td>
                         <td>신용권 교수</td>
+                        <td>진행중</td>
                         <td>
                             <button type="button" class="btn btn-outline-dark" @click="handleUpdateBtn">수정</button>
                             <button type="button" class="btn btn-outline-dark">삭제</button>
@@ -102,7 +111,7 @@
                 </tbody>
             </table>
         </div>
-    </div>
+ 
 </template>
 
 <script setup>

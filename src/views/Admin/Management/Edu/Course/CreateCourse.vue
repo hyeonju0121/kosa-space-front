@@ -40,15 +40,6 @@
                 </div>
                 <div class="tr">
                     <div class="th">
-                        <p class="form_label required">교육장 명</p>
-                    </div>
-                    <div class="td">
-                        <input @input="checkECname" v-model="courseInfo.ecname" id="ecname" type="text" title="교육장 명 입력" placeholder="교육장 명을 입력해주세요." maxlength="50">
-                        <p v-show="!isEcname" style="color: rgb(247, 78, 27);">한글만 입력해주세요.</p>
-                    </div>
-                </div>
-                <div class="tr">
-                    <div class="th">
                         <p class="form_label required">교육과정 명</p>
                     </div>
                     <div class="td">
@@ -90,15 +81,6 @@
                 </div>
                 <div class="tr">
                     <div class="th">
-                        <p class="form_label required">담당 운영진</p>
-                    </div>
-                    <div class="td">
-                        <input @input="checkCmanager" v-model="courseInfo.cmanager" id="cmanager" type="text" title="담당 운영진" placeholder="담당 운영진을 입력해주세요." maxlength="50">
-                        <p v-show="!isCmanager" style="color: rgb(247, 78, 27);">한글 2자 이상 4자 이하로만 입력해주세요. </p>
-                    </div>
-                </div>
-                <div class="tr">
-                    <div class="th">
                         <p class="form_label required">담당 강사진</p>
                     </div>
                     <div class="td">
@@ -136,22 +118,18 @@ onMounted(() => {
 
 const courseInfo = ref({
     cattach: null,
-    ecname: "",
     cname: "",
     ccode: "",
     cstartdate: "",
     cenddate: "",
     crequireddate: "",
     ctotalnum: "",
-    cmanager: "",
     cprofessor: ""
 })
 
 const router = useRouter();
 
-let isEcname = ref(true);
 let isCcode = ref(true);
-let isCmanager = ref(true);
 let isCprofessor = ref(true);
 
 function handleCancle() {
@@ -167,18 +145,6 @@ function handleSubmit() {
     router.push('/admin/course/list');
 }
 
-// 교육장 유효성 검증 (한글만 입력)
-function checkECname() {
-    var ecnamePattern = /^[가-힣]*$/;
-    var checkEcname = ecnamePattern.test(courseInfo.value.ecname);
-    
-    if(!checkEcname) {
-        isEcname.value = false;
-    } else {
-        isEcname.value = true;
-    }
-}
-
 // 교육과정 유효성 검증
 function checkCcode() {
     var ccodePattern = /^\d{4}[A-Z]\d$/;
@@ -188,18 +154,6 @@ function checkCcode() {
         isCcode.value = false;
     } else {
         isCcode.value = true;
-    }
-}
-
-// 운영진 이름 유효성 검증
-function checkCmanager() {
-    var namePattern = /^[ㄱ-ㅎ가-힣]{2,4}$/;
-    var checkManager = namePattern.test(courseInfo.value.cmanager);
-
-    if(!checkManager) {
-        isCmanager.value = false;
-    } else {
-        isCmanager.value = true;
     }
 }
 
