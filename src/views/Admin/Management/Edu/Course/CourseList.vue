@@ -1,17 +1,27 @@
 <template>
+    <div class="main p-3" style="margin-left: 25px; width: 1200px;">
+        <div class="item-section mt-2 mb-2" style="font-size: 12px">
+            <span>교육관리 > 교육과정 관리 > 교육과정 목록</span>
+        </div>
 
-        <div style="display: flex;">
-            <!--
+        <!-- contents -->
+        <div class="headingArea mb-5">
+            <div class="title">
+                <h1 id="itemTitle">교육과정 목록</h1>
+            </div>
+        </div>
+
+        <div style="display: flex; margin-left: 1%">
             <span>교육장 선택</span>
             <div style="margin-left: 1%;">
                 <select id="room">
                     <option value="option1">전체</option>
+                    <option value="option1">미정</option>
                     <option value="option1">송파 교육장</option>
                     <option value="option2">가산 교육장</option>
                     <option value="option3">혜화 교육장</option>
                 </select>
             </div>
-            -->
 
             <span style="margin-left: 1%;">진행 여부</span>
             <div style="margin-left: 1%;">
@@ -22,8 +32,8 @@
                     <option value="option3">진행 완료</option>
                 </select>
             </div>
-            <!--<BaseButtonSubmit class="mt-3" @click="handleCreateBtn">교육과정 등록</BaseButtonSubmit>-->
         </div>
+        <BaseButtonSubmit @click="handleCreateBtn" style="margin-top: 1%;">교육과정 등록</BaseButtonSubmit>
 
         <div class="container mt-3">
             <table class="styled-table">
@@ -111,7 +121,7 @@
                 </tbody>
             </table>
         </div>
- 
+    </div>
 </template>
 
 <script setup>

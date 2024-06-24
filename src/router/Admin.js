@@ -27,46 +27,17 @@ const routes = [
                 path: "educenter/update", // "/admin/educenter/update"
                 component: () => import('@/views/Admin/Management/Edu/EduCenter/UpdateCenter.vue')
             },
-            {
-                path: "course", // "/admin/course"
-                component: () => import('@/views/Admin/Management/Edu/Course'),
-            },
             {   // 교육관리 > 교육과정 --------------------------------------------------------------------------------------
-                path: "course", // "/admin/course"
-                component: () => import('@/views/Admin/Management/Edu/Course'),
-                redirect: '/admin/course/list',
-                children: [
-                    {
-                        // 교육과정 목록
-                        path: "list", // "/admin/course/list"
-                        component: () => import('@/views/Admin/Management/Edu/Course/CourseList.vue')
-                    },
-                    {
-                        // 교육과정 활성화 목록
-                        path: 'activelist', // "/admin/course/activeList"
-                        component: () => import('@/views/Admin/Management/Edu/Course/CourseActiveList.vue')
-                    },
-                    {
-                        // 교육과정 등록 
-                        path: "create", // "/admin/course/create"
-                        component: () => import('@/views/Admin/Management/Edu/Course/CreateCourse.vue')
-                    },
-                    {
-                        // 교육과정 활성화 등록
-                        path: "active/create", // "/admin/course/active/create"
-                        component: () => import('@/views/Admin/Management/Edu/Course/CreateActiveCourse.vue')
-                    },
-                    {
-                        // 교육과정 수정
-                        path: "update", // "/admin/course/update"
-                        component: () => import(/* webpackChunkName: "course" */ '@/views/Admin/Management/Edu/Course/UpdateCourse.vue')
-                    },
-                    {
-                        // 교육과정 활성화 수정
-                        path: "/active/update", // "/admin/course/active/update"
-                        component: () => import(/* webpackChunkName: "course" */ '@/views/Admin/Management/Edu/Course/UpdateActiveCourse.vue')
-                    }
-                ]
+                path: "course/list", // "/admin/course/list"
+                component: () => import('@/views/Admin/Management/Edu/Course/CourseList.vue')
+            },
+            {
+                path: "course/create", // "/admin/course/create"
+                component: () => import('@/views/Admin/Management/Edu/Course/CreateCourse.vue')
+            },
+            {
+                path: "course/update", // "/admin/course/update"
+                component: () => import(/* webpackChunkName: "course" */ '@/views/Admin/Management/Edu/Course/UpdateCourse.vue')
             },
             {
                 // 교육과정 > 강의실 --------------------------------------------------------------------------------------

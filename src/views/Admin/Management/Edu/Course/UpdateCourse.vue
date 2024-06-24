@@ -145,7 +145,6 @@ const courseInfo = ref({
     cprofessor: ""
 })
 
-let formResult = ref(true);
 let isEcname = ref(true);
 let isCcode = ref(true);
 let isCmanager = ref(true);
