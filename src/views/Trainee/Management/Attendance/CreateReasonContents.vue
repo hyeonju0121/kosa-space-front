@@ -12,17 +12,17 @@
         </div>
 
         <div class="form_table no_line">
-            <form>
+            <form @submit.prevent="handleSubmit">
                 <div class="tr">
                     <div class="th">
                         <p class="form_label required">출결 유형</p>
                     </div>
                     <div class="td">
-                        <select id="room" class="mt-2">
-                            <option value="option1">지각</option>
-                            <option value="option2">조퇴</option>
-                            <option value="option3">외출</option>
-                            <option value="option3">결석</option>
+                        <select v-model="reasonInfo.ancategory" id="ancategory" class="mt-2">
+                            <option value="지각">지각</option>
+                            <option value="조최">조퇴</option>
+                            <option value="외출">외출</option>
+                            <option value="결석">결석</option>
                         </select>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                     </div>
                     <div class="td">
                         <div class="textarea_group_title sm">
-                            <textarea id="btitle" name="btitle" title="사유 입력" placeholder="사유를 입력해주세요."
+                            <textarea v-model="reasonInfo.anreason" id="anreason" title="사유 입력" placeholder="사유를 입력해주세요."
                                 maxlength="100"></textarea>
                             <p class="form_bytes"><span class="byte">0</span>/100</p>
                         </div>
@@ -50,7 +50,7 @@
                                     <div class="attach_wrap">
                                         <p class="guide_txt">파일 1개당 10MB까지 첨부 가능합니다. (JPG, JPEG, PNG, GIF만 첨부 가능)</p>
                                         <div>
-                                            <input id="battach" type="file" class="form-control-file mt-3" ref="battach" />
+                                            <input id="anattach" type="file" class="form-control-file mt-3" ref="battach" />
                                         </div>
                                     </div>
                                 </div>
@@ -59,8 +59,10 @@
                     </div>
                 </div>
                 <div class="btn_big_wrap">
-                    <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
-                    <BaseButtonSubmit @click="handleSubmit">완료</BaseButtonSubmit>
+                    <RouterLink to="/trainee/attendance/detail">
+                        <BaseButtonCancle>취소</BaseButtonCancle>
+                    </RouterLink>
+                    <BaseButtonSubmit>완료</BaseButtonSubmit>
                 </div>
             </form>
         </div>
@@ -71,12 +73,15 @@
 import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+
+const reasonInfo = ref({
+    ancategory: "",
+    anattach: null,
+    anreason: ""
+})
 
 const router = useRouter();
-
-function handleCancle() {
-    router.push(`/trainee/attendance/detail`);
-}
 
 function handleSubmit() {
     router.push(`/trainee/attendance/detail`)

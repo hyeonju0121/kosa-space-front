@@ -29,7 +29,7 @@
                                                 class="btn btn-primary btn-lg" style="width: 90%;">
                                                 <span>입실하기</span>
                                             </button>
-                                            <span class="checkin-text" v-if="isCheckIn">09:10</span>
+                                            <span class="checkin-text" v-if="isCheckIn">{{ hoursCheckIn }}:{{ minutesCheckIn }}</span>
                                         </div>
                                     </div>
                                     <div class="attendance-box check-out"
@@ -165,6 +165,7 @@ import { onMounted, ref } from 'vue';
 import { Modal } from "bootstrap";
 import { useStore } from 'vuex';
 
+
 // store 객체 얻기
 const store = useStore();
 
@@ -199,10 +200,22 @@ function showCheckInDialog() {
     checkInDialog.show();
 }
 
-function submitCheckInDialog() {
+// 입실 시간 상태 데이터
+const hoursCheckIn = ref();
+const minutesCheckIn = ref();
+// 퇴실 시간 상태 데이터
+const hoursCheckOut = ref();
+const minutesCheckOut = ref();
+
+function submitCheckInDialog(todayCheckIn) {
     console.log("CheckInDialog 에서 정의한 이벤트 수신 완료");
     // '네' 버튼 클릭시, 모달 비활성화
     checkInDialog.hide();
+
+    // 사용자가 입실 버튼을 누른 시간
+    console.log("사용자 입실 버튼 누른 시간: " + todayCheckIn.value.formattedDate);
+    hoursCheckIn.value = todayCheckIn.value.hours;
+    minutesCheckIn.value = todayCheckIn.value.minutes;
 
     // 입실 상태 변경
     isCheckIn.value = !isCheckIn.value;
@@ -220,10 +233,15 @@ function showCheckOutDialog() {
     checkOutDialog.show();
 }
 
-function submitCheckOutDialog() {
+function submitCheckOutDialog(todayCheckOut) {
     console.log("CheckOutDialog 에서 정의한 이벤트 수신 완료");
     // '네' 버튼 클릭시, 모달 비활성화 
     checkOutDialog.hide();
+
+    // 사용자가 퇴실 버튼을 누른 시간
+    // console.log("사용자 퇴실 버튼 누른 시간: " + todayCheckOut.value.formattedDate);
+    // hoursCheckOut.value = todayCheckOut.value.hours;
+    // minutesCheckOut.value = todayCheckOut.value.minutes;
 
     //  퇴실 상태 변경
     isCheckOut.value = !isCheckOut.value;
