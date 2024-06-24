@@ -22,17 +22,17 @@
                             <b>공지사항</b>
                         </RouterLink>
                     </th>
-                    <th :style="thstyle2">
-                        <RouterLink to="/trainee/community/assignment/list"
-                            style="text-decoration: none; color:black; font-size:1.4rem" :style="rcolor2"
-                            @click="handleStyle2()"><b>과제
-                                자료실</b></RouterLink>
-                    </th>
                     <th :style="thstyle3">
                         <RouterLink to="/trainee/community/reference/list"
                             style="text-decoration: none; color:black; font-size:1.4rem" :style="rcolor3"
                             @click="handleStyle3()"><b>수업
                                 자료실</b></RouterLink>
+                    </th>
+                    <th :style="thstyle2">
+                        <RouterLink to="/trainee/community/assignment/list"
+                            style="text-decoration: none; color:black; font-size:1.4rem" :style="rcolor2"
+                            @click="handleStyle2()"><b>과제
+                                제출</b></RouterLink>
                     </th>
                 </thead>
             </table>
@@ -47,15 +47,15 @@
 import PersonalProfileHeader from '@/components/UIComponents/PersonalProfileHeader.vue';
 import { ref } from 'vue';
 
-let thstyle1 = ref("padding-bottom: 6px;");
+let thstyle1 = ref("padding-bottom: 6px; border-bottom: 4px solid #22C55E; padding-bottom: 10px;");
 let thstyle2 = ref("padding-bottom: 6px;");
 let thstyle3 = ref("padding-bottom: 6px;");
-let rcolor1 = ref("");
+let rcolor1 = ref("color:#22C55E;");
 let rcolor2 = ref("");
 let rcolor3 = ref("");
 
 function handleStyle1() {
-    thstyle1.value = "padding-bottom: 6px;"
+    thstyle1.value = "border-bottom: 4px solid #22C55E; padding-bottom: 10px;"
     thstyle2.value = "padding-bottom: 6px;"
     thstyle3.value = "padding-bottom: 6px;"
     rcolor1.value = "color:#22C55E;"
