@@ -2,7 +2,7 @@
     <Dialog>
         <!--템플릿 <slot> 자리에 들어갈 내용 정의-->
         <template v-slot:header>
-            <p class="title">KOSA SPACE 출결 확인</p>
+            <p class="title" style="margin-top: 5%;">KOSA SPACE 출결 확인</p>
         </template>
         
         <template v-slot:body>
@@ -13,9 +13,9 @@
 
         <template v-slot:footer>
             <div class="footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="margin-right: 5%;">아니오</button>
+                <BaseButtonCancle type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="margin-right: 5%;">아니오</BaseButtonCancle>
                 <!-- 자식 컴포넌트에서 모달 안에 제출 버튼을 클릭했을 때 처리하는 이벤트 정의-->
-                <button type="button" class="btn btn-primary" @click="handleChekinSubmit">네</button>
+                <BaseButtonUpdate type="button" class="btn btn-primary" @click="handleChekinSubmit">네</BaseButtonUpdate>
             </div>
         </template>
 
@@ -24,6 +24,8 @@
 
 <script setup>
 import Dialog from '@/components/UIComponents/Dialog.vue';
+import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
+import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
 import { ref } from 'vue';
 
 const emit = defineEmits(["submitCheckIn"]);
@@ -83,7 +85,7 @@ select {
 }
 
 .title {
-    font-weight: 700;
+    font-weight: 600;
 }
 
 .contents {

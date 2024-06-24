@@ -2,7 +2,7 @@
     <div class="modal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" style="background-color: #22C55E; color: white;">
                     <h5 class="modal-title">
                         <!-- slot ---------------------- -->
                         <slot name="header">제목</slot>

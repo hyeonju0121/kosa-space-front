@@ -23,6 +23,7 @@
     border-radius: 3px;
     width: 200px;
     flex: 0 0 200px;
+    color: black;
     background-color: white;
     border: 1px solid black;
 }

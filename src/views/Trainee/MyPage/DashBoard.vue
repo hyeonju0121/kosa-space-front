@@ -25,10 +25,11 @@
                                         style="background-color: rgba(236, 236, 236, 0.452); width: 180px; height: 100px;">
                                         <div class="attendance-info">
                                             <h5>입실</h5>
-                                            <button type="button" v-if="!isCheckIn" @click="showCheckInDialog" 
+                                            <button type="button" v-if="!isCheckIn" @click="handlerCheckInBtn" 
                                                 class="btn btn-primary btn-lg" style="width: 90%;">
                                                 <span>입실하기</span>
                                             </button>
+
                                             <span class="checkin-text" v-if="isCheckIn">{{ hoursCheckIn }}:{{ minutesCheckIn }}</span>
                                         </div>
                                     </div>
@@ -42,6 +43,33 @@
                                                 <span>퇴실하기</span>
                                             </button>
                                             <span class="checkin-text" v-if="isCheckOut">17:55</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; margin-top: 3%;">
+                                    <div class="attendance-box check-in"
+                                        style="background-color: rgba(236, 236, 236, 0.452); width: 180px; height: 100px;">
+                                        <div class="attendance-info">
+                                            <h5>지각/조퇴/결석 신청</h5>
+                                            <RouterLink to="/trainee/attendance/reason/create">
+                                                <button type="button" class="btn btn-primary btn-lg" style="width: 90%;">
+                                                    <span>사유 작성</span>
+                                                </button>
+                                            </RouterLink>
+                                        </div>
+                                    </div>
+                                    <div class="attendance-box check-in"
+                                        style="background-color: rgba(236, 236, 236, 0.452); width: 180px; height: 100px; margin-left: 10px;">
+                                        <div class="attendance-info">
+                                            <h5>외출 신청</h5>
+                                            <!--
+                                            <button type="button" class="btn btn-dark btn-lg" style="width: 90%;">
+                                                <span>외출하기</span>
+                                            </button>
+                                            -->
+                                                <button class="btn btn-outline-dark btn-lg" :class="btnShow" @click="reasonbtn" style="width: 90%;">
+                                                    <span>외출하기</span>
+                                                </button>
                                         </div>
                                     </div>
                                 </div>
@@ -150,6 +178,7 @@
         </div>
     </div>
     <!--부트스트랩에서 다이얼로그는 고유한 id를 필수로 갖고 있어야 함-->
+    <AttendanceErrorDialog id="attendanceErrorDialog"/>
     <DailyNoteSubmitDialog id="dailyNoteSubmitDialog" @clickHandler="handleDailyNoteSubmit"/>
     <CheckInDialog id="checkInSubmitDialog" @submitCheckIn="submitCheckInDialog"/>
     <CheckOutDialog id="checkOutSubmitDialog" @submitCheckOut="submitCheckOutDialog"/>
@@ -158,30 +187,44 @@
     
 <script setup>
 import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
-import DailyNoteSubmitDialog from './DailyNoteSubmitDialog.vue';
-import CheckOutDialog from './CheckOutDialog.vue';
-import CheckInDialog from './CheckInDialog.vue';
+import DailyNoteSubmitDialog from './Dialog/DailyNoteSubmitDialog.vue';
+import AttendanceErrorDialog from './Dialog/AttendanceErrorDialog.vue';
+import CheckOutDialog from './Dialog/CheckOutDialog.vue';
+import CheckInDialog from './Dialog/CheckInDialog.vue';
 import { onMounted, ref } from 'vue';
 import { Modal } from "bootstrap";
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 
 
 // store 객체 얻기
 const store = useStore();
+
+// router 객체 얻기
+const router = useRoute();
 
 // store 에서 사용자 입실 및 퇴실 여부, 데일리 과제 제출 여부 가져오기
 const userCheckInStatus = store.state.userDailyInfo.userCheckInStatus;
 const userCheckOutStatus = store.state.userDailyInfo.userCheckOutStatus;
 const userDailyNoteStatus = store.state.userDailyInfo.userDailyNoteStatus;
 
+// IP 주소 일치 여부
+let isIPstatus = ref(true);
+// 입실 여부
 let isCheckIn = ref(userCheckInStatus);
+// 퇴실 여부
 let isCheckOut = ref(userCheckOutStatus);
+// 데일리 과제 제출 여부 
 let isDailyNote = ref(userDailyNoteStatus);
+// 외출 버튼 활성화 여부 
+let btnShow = ref("disabled");
 
+console.log("IP 주소 일치 여부: ", isIPstatus.value);
 console.log("입실 여부: ", isCheckIn.value);
 console.log("퇴실 여부: ", isCheckOut.value);
 console.log("데일리 과제 제출 여부: ", isDailyNote.value);
 
+let attendanceErrorDialog = null;
 let dailyNoteDialog = null;
 let checkOutDialog = null;
 let checkInDialog = null;
@@ -189,16 +232,28 @@ let checkInDialog = null;
 // 컴포넌트가 생성되고, DOM에 부착될 때 자동으로 실행되는 콜백
 onMounted(() => {
     // modal 객체로 생성 
+    attendanceErrorDialog = new Modal(document.querySelector("#attendanceErrorDialog"));
     dailyNoteDialog = new Modal(document.querySelector("#dailyNoteSubmitDialog"));
     checkOutDialog = new Modal(document.querySelector("#checkOutSubmitDialog"));
     checkInDialog = new Modal(document.querySelector("#checkInSubmitDialog"));
 })
+
+// IP 주소가 일치하지 않는 경우 에러 모달 활성화
+function showErrorDialog() {
+    attendanceErrorDialog.show();
+}
 
 // 입실하기 모달 활성화
 function showCheckInDialog() {
     // 입실하기 버튼 클릭시, 입실하기 모달 활성화
     checkInDialog.show();
 }
+
+/*
+function reasonbtn() {
+    router.push('/trainee/attendance/reason/create');
+}
+*/
 
 // 입실 시간 상태 데이터
 const hoursCheckIn = ref();
@@ -220,6 +275,9 @@ function submitCheckInDialog(todayCheckIn) {
     // 입실 상태 변경
     isCheckIn.value = !isCheckIn.value;
     store.commit("userDailyInfo/setUserCheckInStatus", isCheckIn.value);
+
+    // 외출하기 버튼 활성화 
+    btnShow.value = "";
 
     console.log("isCheckIn: " + isCheckIn.value);
     console.log("store -userCheckInStatus: " + store.state.userDailyInfo.userCheckInStatus);
@@ -252,6 +310,16 @@ function submitCheckOutDialog(todayCheckOut) {
     console.log("퇴실 성공");
 }
 
+// 입실하기 버튼 클릭시, IP가 일치하는지 검사하는 함수 ------------------------
+// 교육장 IP 주소와 일치한 경우, 입실 모달 활성화
+function handlerCheckInBtn() {
+    // 교육장 IP 주소와 다른 경우, IP 접속 실패 에러 모달 활성화
+    if(!isIPstatus.value) { 
+        showErrorDialog();
+    } else if(isIPstatus.value && !isCheckIn.value){
+        showCheckInDialog();
+    }
+}
 
 // 데일리 과제 모달 활성화
 function showDailyNoteDialog() {
@@ -273,6 +341,7 @@ function handleDailyNoteSubmit(noteData) {
 
     console.log("데일리 과제 제출 완료!");
 }
+
 
 </script>
     
