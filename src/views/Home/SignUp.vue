@@ -197,10 +197,10 @@ const member = ref({
     mphone: "",
     mpassword: "",
     memail: "",
-    mrole: "",
-    menable: "",
-    mcreatedat: "",
-    mupdatedat: ""
+    //mrole: "",
+    //menable: "",
+    //mcreatedat: "",
+    //mupdatedat: ""
 });
 
 /*
@@ -353,11 +353,14 @@ function handleIdCheck() {
     // --> handleSubmit에 2중으로 하나 더 조건을 달자...
 }
 
+/*
+-> 추후에, 회원가입 api에서 createdat, updatedat 세팅 예정
 // 회원가입 날짜 세팅
 // 계정 생성 일시와 일자까지만 포맷
 const date = new Date();
 let dateFormatVal = date.getFullYear() + '년' + (date.getMonth() + 1) + '월' + date.getDate() + '일';
 member.value.mcreatedat = dateFormatVal;
+*/
 
 // 전체 입력값 확인하기
 // let totalCheck = ref(false);
@@ -390,6 +393,8 @@ function handleSubmit() {
     } else if (member.value.mid === midVal) {
         alert("중복된 아이디가 있습니다! 다시 한번 중복 체크해주세요!")
     } else {
+        /*
+        -> 권한 부분은 백엔드 서비스 내에서 권한 부여 예정 
         if (member.value.mid.substring(0, 4) === "kosa") {
             // router.push("/admin");
             member.value.mrole = "ROLE_ADMIN";
@@ -399,7 +404,8 @@ function handleSubmit() {
             member.value.mrole = "ROLE_USER";
             member.value.menable = 1;
         }
-        router.push("/signup/complete");
+        */
+        router.push("/signup/complete"); // 회원가입 완료 시에 완료 페이지로 이동 
     }
     console.log(JSON.stringify(member.value));
 }
