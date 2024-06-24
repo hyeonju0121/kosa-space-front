@@ -1,9 +1,6 @@
 <template>
     <!-- contents -->
     <div class="headingArea">
-        <div class="title">
-            <h1 id="itemTitle">회원가입</h1>
-        </div>
         <!-- seongmin -->
         <div class="row d-flex justify-content-center align-items-center p-3 p-md-4 p-xl-5 vh-100">
             <div class="shadow col-12 col-md-6" style="height: 800px;">
@@ -17,18 +14,18 @@
                                                                 alt="BootstrapBrain Logo" width="175" height="57"> -->
                                     </a>
                                 </div>
-                                <h1 class="text-center mb-1">
+                                <p class="text-center mb-1" style="font-size: 60px">
                                     <b class="">
                                         <!-- Congratulations -->
                                         Welcome to
                                     </b>
-                                </h1>
-                                <h1 class="text-center">
-                                    <b class="text-decoration-underline">
+                                </p>
+                                <p class="text-center" style="font-size: 50px">
+                                    <b class="text-decoration-underline" style="color: #22C55E">
                                         <!-- Signing Up ! -->
                                         KOSA SPACE
                                     </b>
-                                </h1>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -37,8 +34,8 @@
                     <div class="row gy-3 overflow-hidden">
                         <div class="col-12 mb-5">
                             <p class="text-center" style="font-size: 1.2em">
-                                <b class="text-info">'이름'</b>님 회원가입을 축하합니다.<br>
-                                Kosa Space의 새로운 아이디는 <b style="color: red">'아이디'</b>입니다.
+                                <b class="text-info">{{ name }}</b>님 회원가입을 축하합니다.<br>
+                                Kosa Space의 새로운 아이디는 <b style="color: red">'{{ id }}'</b>입니다.
                                 <br><br>
                                 소중한 개인정보는 암호화 처리 되어 보관되며<br>
                                 비밀번호는 주기적으로 변경하시기 바랍니다.
@@ -54,7 +51,7 @@
                         </div>
                     </div>
 
-
+                    <!-- 
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center mt-3">
@@ -68,7 +65,7 @@
                                     회원가입</RouterLink>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                 </div>
             </div>
@@ -83,6 +80,14 @@
 </template>
 
 <script setup>
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const id = store.state.member.mid;
+const name = store.state.member.mname;
+
+
 </script>
 
 <style scoped>
