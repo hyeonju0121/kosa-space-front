@@ -6,12 +6,13 @@
             <thead class="text-center align-middle"
                 style="height: 70px; font-size: 1.2rem; background-color: #22C55E; color:white;">
                 <th style="width: 10%">유형</th>
-                <th style="width: 30%">파일</th>
-                <th style="width: 12%">작성자</th>
+                <th style="width: 25%">파일</th>
+                <th style="width: 10%">작성자</th>
                 <th style="width: 12%">업로드 일시</th>
                 <th style="width: 12%">수정 일시</th>
                 <th style="width: 9%">용량</th>
-                <th style="width: 15%">다운로드</th>
+                <th style="width: 12%">다운로드</th>
+                <th style="width: 10%">-</th>
             </thead>
             <tbody class="text-center align-middle">
                 <tr style="border-bottom:1px solid #dcdcdc; height: 60px">
@@ -36,6 +37,10 @@
                         :src="`${axios.defaults.baseURL}/board/battach/${board.bno}?accessToken=${$store.state.accessToken}`"
                         width="300">
                         -->
+                    <td>
+                        <button class="btn btn-primary btn-sm me-2" @click="assignUpdate()">수정</button>
+                        <button class="btn btn-danger btn-sm" @click="assignDelete()">삭제</button>
+                    </td>
                 </tr>
                 <tr style="border-bottom:1px solid #dcdcdc; height: 50px">
                     <td>
@@ -93,10 +98,6 @@
         <template v-slot:body>
             <form>
                 <div class="mb-3">
-                    <input type="text" class="form-control p-3" name="" id="" v-model="referencedata.reftitle"
-                        placeholder="제출 제목" required>
-                </div>
-                <div class="mb-3">
                     <input id="attach" type="file" class="form-control p-3" ref="attach">
                 </div>
             </form>
@@ -105,7 +106,7 @@
         <template v-slot:footer>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
             <!-- 자식 컴포넌트에서 모달 안에 제출 버튼을 클릭했을 때 처리하는 이벤트 정의-->
-            <button type="button" class="btn btn-primary" @click="handleDailyNoteSubmit">제출</button>
+            <button type="button" class="btn btn-primary" @click="modalSubmit()">제출</button>
         </template>
     </Dialog>
 </template>
@@ -153,6 +154,22 @@ onMounted(() => {
     assignModal = new Modal(document.querySelector('#assignSubmitModal'));
 });
 
+// 내가 쓴 글 수정하기
+function assignUpdate() {
+    assignModal.show(); // 모달 활성화
+    // 기존의 refno을 찾고 값 수정
+}
+
+// 내가 쓴 글 삭제하기
+function assignDelete() {
+    // function 앞에 async 붙여주기. REST API와 연동. 대략적인 코드
+    /*try {
+        await referencedataAPI.referencedataDelete(refno); // promise를 리턴
+    } catch (error) {
+        console.log(error)
+    }*/
+}
+
 // 내가 쓴 글보기
 function myBoard() {
     // memberAPI를 불러와 작성자의 아이디가 현재의 내 아이디와 같은 글 목록 나열
@@ -163,7 +180,7 @@ function assignSubmit() {
     assignModal.show(); // 모달 활성화
 }
 
-function handleDailyNoteSubmit() {
+function modalSubmit() {
     console.log(referencedata.value.reftitle); // 사용자가 입력한 제출 제목 출력
     // 첨부파일 확인 --> 실습자료 참고
     console.log(attach.value);  // ref="attach"가 쓰인 태그를 가리킴
