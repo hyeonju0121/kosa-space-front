@@ -13,63 +13,84 @@
 
             <!-- select + table 부분 -->
             <div class="mt-3">
-                <!-- select부분 -->
-                <div class="mb-3">
-                    <span class="me-3">
-                        <select>
-                            <option>송파 교육장</option>
-                            <option>혜화 교육장</option>
-                        </select>
-                    </span>
+                <!-- 조회 부분 -->
+                <form submit.prevent="handlecheck">
+                    <div class="mb-3">
+                        <span class="me-3">
+                            <select v-model="trainee.ecname">
+                                <option value="교육장" selected disabled>교육장 선택</option>
+                                <option value="송파 교육장">송파 교육장</option>
+                                <option value="혜화 교육장">혜화 교육장</option>
+                            </select>
+                        </span>
 
-                    <span class="me-3">
-                        <select>
-                            <option>MSA 1차</option>
-                            <option>MSA 2차</option>
-                            <option>클라우드</option>
-                        </select>
-                    </span>
+                        <span class="me-3">
+                            <select v-model="trainee.cname">
+                                <option value="교육과정" selected disabled>교육과정 선택</option>
+                                <option value="MSA 1차">MSA 1차</option>
+                                <option value="MSA 2차">MSA 2차</option>
+                                <option value="클라우드">클라우드</option>
+                            </select>
+                        </span>
+                        <span>
+                            <span class="btn btn-dark btn-sm mb-1" @click="handlecheck">교육생 조회</span>
+                        </span>
+                    </div>
+                </form>
 
-                    <span>
-                        <span class="btn btn-dark btn-sm mb-1">교육생 조회</span>
-                    </span>
+                <!-- 교육과정 선택했을때 교육과정에 따라 나오는 문구 -->
+                <div>
+                    <div style="font-weight:bold" v-if="trainee.cname === 'MSA 1차'">|MSA 기반 Full Stack기반 전문가 양성과정 1차({{
+                        trainee.cstartdate }} ~ {{ trainee.cenddate }})</div>
+                    <div style="font-weight:bold" v-else-if="trainee.cname === 'MSA 2차'">|MSA 기반 Full Stack기반 전문가 양성과정 2차({{
+                        trainee.cstartdate }} ~ {{ trainee.cenddate }})</div>
+                    <div style="font-weight:bold" v-else-if="trainee.cname === '클라우드'">|클라우드 전문가 양성과정({{ trainee.cstartdate
+                    }} ~ {{ trainee.cenddate }})</div>
                 </div>
-                <span>
-                    (교육과정 클릭시 교육과정명 활성화 되는부분)
-                </span>
+
+                <!-- 교육생 등록 버튼 -->
                 <div class="mb-3" style="text-align:right">
-                    <router-link><button class="btn btn-dark btn-sm">교육생 등록</button></router-link>
+                    <router-link to="/admin/trainee/register"><button class="btn btn-dark btn-sm">교육생
+                            등록</button></router-link>
                 </div>
 
-                <div class="container">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>교육생 번호</th>
-                                <th>사진</th>
-                                <th>이름</th>
-                                <th>전화번호</th>
-                                <th>이메일</th>
-                                <th>상태</th>
-                                <th>관리</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td><img src="@/assets/kyungseob.jpg" width="110" height="150"></td>
-                                <td>이경섭</td>
-                                <td>010-xxxx-xxxx</td>
-                                <td>kosa@kosa.com</td>
-                                <td></td>
-                                <td>
-                                    <span class="me-2">
-                                        <button class="btn btn-info btn-sm">수정</button>
-                                    </span>
-                                    <button class="btn btn-danger btn-sm">삭제</button>
-                                </td>
-                            </tr>
-                            <tr>
+                <!-- 테이블 부분 -->
+                <form>
+                    <div v-if="trainee.ecname !== '교육장' && trainee.cname !=='교육과정'" class="container">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>교육생 번호</th>
+                                    <th>사진</th>
+                                    <th>이름</th>
+                                    <th>전화번호</th>
+                                    <th>이메일</th>
+                                    <th>상태</th>
+                                    <th>수정/삭제</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <!-- <tr v-for="trainee in page.trainees" :key="trainee.tno"> -->
+                                    <td>1 {{ trainee.tno }}</td>
+                                    <td><img src="@/assets/kyungseob.jpg" width="110" height="150" ref="traineeImg"></td>
+                                    <td>이경섭 <router-link
+                                            :to="`/admin/trainee/detail?tno=${trainee.tno}&pageNo=${pageNo}`">이경섭 {{
+                                                trainee.mname }}</router-link></td>
+                                    <td>010-xxxx-xxxx {{ trainee.mphone }}</td>
+                                    <td>kosa@kosa.com {{ trainee.memail }}</td>
+                                    <td>과정진행중 {{ trainee.tstate }}</td>
+                                    <td>
+                                        <span class="me-2">
+                                            <RouterLink :to="`./update?`"><button class="btn btn-info btn-sm">수정</button>
+                                            </RouterLink>
+                                        </span>
+                                        <button class="btn btn-danger btn-sm">삭제</button>
+                                    </td>
+                                </tr>
+
+                                <!-- v-for를 사용하여 지워질 부분 -->
+                                <!-- <tr>
                                 <td>2</td>
                                 <td><img src="@/assets/kyungseob.jpg" width="110" height="150"></td>
                                 <td>이경섭</td>
@@ -97,39 +118,57 @@
                                     <button class="btn btn-danger btn-sm">삭제</button>
                                 </td>
 
-                            </tr>
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-
-
-                <router-link to="@/components/UIComponents/TableDefaultContents.vue">공용 컴포넌트</router-link>
-            </div>
-
-
-
-
-            <div>
-                <BaseButtonCreate class="mt-3" @click="handleCreateBtn">교육생 등록</BaseButtonCreate>
-
-                <div class="btn_big_wrap">
-                    <BaseButtonUpdate @click="handleUpdateBtn">수정</BaseButtonUpdate>
-                    <BaseButtonCancle style="margin-left: 10px;">삭제</BaseButtonCancle>
-                    <router-link to="./detail"><button class="btn btn-info btn-sm">교육생 상세조회</button></router-link>
-                </div>
-            </div>
+                            </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+                <!-- select부분 아무것도 클릭 안했을때 나오는 화면 -->
+                <div v-if="trainee.ecname === '교육장' || trainee.cname==='교육과정'"><TableDefaultContents/></div>
+            </div>           
         </div>
     </div>
 </template>
 
 <script setup>
-import BaseButtonCreate from '@/components/UIComponents/BaseButtonCreate.vue';
-import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
+// import BaseButtonCreate from '@/components/UIComponents/BaseButtonCreate.vue';
+// import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+import TableDefaultContents from '@/components/UIComponents/TableDefaultContents.vue';
+
+//상태정의
+let trainee = ref({
+    ecname: "교육장",
+    cname: "교육과정",
+    mid: "",
+    mname: "",
+    mphone: "",
+    memail: "",
+    cno: "",
+    cstartdate: "",
+    cenddate: "",
+    tsex: "",
+    tage: "",
+    taddress: "",
+    tfield: "",
+    tacademic: "",
+    tschoolname: "",
+    tmajor: "",
+    tminor: "",
+    tgrade: "",
+    tstatus: "",
+    tprofileimg: "",
+    tprofileoname: "",
+    tprofiletype: ""
+
+});
+
+//교육생 조회 눌렀을때
+function handlecheck() {
+    console.log(JSON.parse(JSON.stringify(trainee.value)));
+}
 
 const router = useRouter();
 
@@ -189,4 +228,6 @@ select {
 table {
     text-align: center;
     vertical-align: middle;
-}</style>
+}
+
+</style>

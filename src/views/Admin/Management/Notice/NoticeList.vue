@@ -17,13 +17,14 @@
 
             <!--조회,등록,검색 부분 -->
             <div class="mb-3">
-                <!-- 조회,등록 -->
+                <!-- 조회,공지사항 등록버튼 -->
                 <span class="mb-5">
                     <!-- 조회 폼 -->
                     <form @submit.prevent="handlecheck">
                         <span class="me-1">
                             교육장
-                            <select v-model="notice.educenter">
+                            <select v-model="notice.ecname">
+                                <option value="교육장" selected disabled>교육장 선택</option>
                                 <option value="전체">전체</option>
                                 <option value="송파 교육장">송파 교육장</option>
                                 <option value="혜화 교육장">혜화 교육장</option>
@@ -32,7 +33,8 @@
 
                         <span class="me-1">
                             교육과정
-                            <select v-model="notice.course">
+                            <select v-model="notice.cname">
+                                <option value="교육과정" selected disabled>교육과정 선택</option>
                                 <option value="전체">전체</option>
                                 <option value="MSA 1차">MSA 1차</option>
                                 <option value="MSA 2차">MSA 2차</option>
@@ -42,7 +44,8 @@
 
                         <span class="me-1">
                             작성자
-                            <select v-model="notice.writer">
+                            <select v-model="notice.mid">
+                                <option value="작성자" selected disabled>작성자 선택</option>
                                 <option value="운영진">운영진</option>
                                 <option value="강사진">강사진</option>
                             </select>
@@ -50,7 +53,8 @@
 
                         <span>
                             유형
-                            <select v-model="notice.category">
+                            <select v-model="notice.ncategory">
+                                <option value="유형" selected disabled>유형 선택</option>
                                 <option value="출결">출결</option>
                                 <option value="수업">수업</option>
                                 <option value="강의장">강의장</option>
@@ -61,21 +65,25 @@
 
                         <span class="ms-3">
                             <button class="btn btn-dark btn-sm" @click="handlecheck">조회</button>
-                        </span>
+                        </span>                        
                     </form>
+
+                    
+                    <!-- 로그인 했을때만 공지사항 등록가능 -->
+                    <!-- <div v-if="$store.state.userId !== ''" class="mb-3">
+                        <span class="ms-5" style="text-align:right">
+                            <BaseButtonCreate class="mt-3" @click="handleCreateBtn">공지사항 등록</BaseButtonCreate>
+                        </span>                    
+                    </div> -->
+
+                    <!-- (공지사항 등록 버튼) 위에 작성해놔서 지워질 부분-->
+                    <div class="ms-5" style="text-align:right">
+                            <BaseButtonCreate class="mt-3" @click="handleCreateBtn">공지사항 등록</BaseButtonCreate>
+                    </div>
                 </span>
 
-                <!-- 로그인 했을때만 공지사항 등록가능 -->
-                <!-- <div v-if="$store.state.userId !== ''" class="mb-3">
-                    <span class="ms-5" style="text-align:right">
-                        <BaseButtonCreate class="mt-3" @click="handleCreateBtn">공지사항 등록</BaseButtonCreate>
-                    </span>                    
-                </div> -->
 
-                <!-- 공지사항 등록 버튼 위에 작성해놔서 지워질 부분-->
-                <span class="ms-5" style="text-align:right">
-                    <BaseButtonCreate class="mt-3" @click="handleCreateBtn">공지사항 등록</BaseButtonCreate>
-                </span>
+                
 
                 <!-- 공지사항 검색하는 부분 -->
                 <div class="mb-3" style="text-align:right">
@@ -104,7 +112,7 @@
                             <th>작성자</th>
                             <th>작성일</th>
                             <th>수정일</th>
-                            <th>수정, 삭제</th>
+                            <th>수정/삭제</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -122,7 +130,7 @@
                             <td>{{ notice.nupdatedat }}</td>
                             <td>
                                 <router-link to="./update" class="btn btn-info btn-sm me-2">수정</router-link>
-                                <router-link to="./list" class="btn btn-danger btn-sm">삭제</router-link>
+                                <router-link to="./list" class="btn btn-danger btn-sm" @click="handleRemove">삭제</router-link>
                             </td>
                         </tr>
                         <!-- v-for사용으로 지워질 부분 -->
@@ -179,22 +187,34 @@
 <script setup>
 
 import BaseButtonCreate from '@/components/UIComponents/BaseButtonCreate.vue';
-import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
-import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
-import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
+// import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
+// import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
+// import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ref, watch } from 'vue';
 // import noticeAPI from "@/apis/noticeAPI";
 
+//라우터 객체 얻기
 const router = useRouter();
+
 
 //상태 정의
 let notice = ref({
-    category: "",
-    educenter: "",
-    course: "",
-    title: "",
-    content: ""
+    nno: "",
+    ecno: "",
+    cno: "",
+    mid: "작성자",
+    ncategory: "유형",
+    ntitle: "",
+    ncontent: "",
+    nhitcount: "",
+    nattach: "",
+    nattachoname: "",
+    nattachtype: "",
+    ncreatedat: "",
+    nupdatedat: "",
+    ecname: "교육장",
+    cname: "교육과정"
 });
 
 
@@ -239,24 +259,27 @@ let notice = ref({
 // });
 
 
-
+//조회 콘솔로그
 function handlecheck() {
     console.log(JSON.parse(JSON.stringify(notice.value)));
 }
 
-
-
-function handleDetailBtn() {
-    router.push('/admin/notice/detail');
-}
-
+//공지사항 등록버튼
 function handleCreateBtn() {
     router.push('/admin/notice/create');
 }
 
-function handleUpdateBtn() {
-    router.push('/admin/notice/update');
-}
+//공지사항 삭제버튼
+// function handleRemove() {
+//     try {
+//         await noticeAPI.noticeDelete(nno);
+//         router.push("/admin/notice/list");
+//     } catch(error) {
+//         console.log(error);
+//     }
+// }
+
+
 
 
 

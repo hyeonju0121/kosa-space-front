@@ -15,9 +15,9 @@
 
             <div class="ms-3">
                 <div>
-                    <form>
+                    <form @submit.prevent="handleSubmit">
                         <div class="container" style="text-align: left;">
-                            <!-- 테이블 -->                            
+                            <!-- 테이블 -->
                             <table class="table">
                                 <tbody>
                                     <tr>
@@ -25,7 +25,8 @@
                                             공지사항 유형
                                         </td>
                                         <td>
-                                            <select v-model="notice.category">
+                                            <select v-model="notice.ncategory">
+                                                <option value="공지사항 유형" selected disabled>공지사항 유형 선택</option>
                                                 <option value="취업">취업</option>
                                                 <option value="행사">행사</option>
                                                 <option value="강의장">강의장</option>
@@ -39,14 +40,16 @@
                                     <tr>
                                         <td>교육장</td>
                                         <td>
-                                            <select v-model="notice.educenter">
+                                            <select v-model="notice.ecname">
+                                                <option value="교육장" selected disabled>교육장 선택</option>
                                                 <option value="송파 교육센터">송파 교육센터</option>
                                                 <option value="혜화 교육센터">혜화 교육센터</option>
                                             </select>
                                         </td>
                                         <td>교육과정</td>
                                         <td>
-                                            <select v-model="notice.course">
+                                            <select v-model="notice.cname">
+                                                <option value="교육과정" selected disabled>교육과정 선택</option>
                                                 <option value="전체">전체</option>
                                                 <option value="MSA 1차">MSA 1차</option>
                                                 <option value="MSA 2차">MSA 2차</option>
@@ -56,25 +59,22 @@
                                     </tr>
                                     <tr>
                                         <td>공지사항 제목</td>
-                                        <td>
-                                            <textarea v-model="notice.title" name="ntitle" cols="53" rows="1" id="n"
+                                        <td colspan="3">
+                                            <textarea v-model="notice.ntitle" name="ntitle" cols="53" rows="1" id="n"
                                                 placeholder="공지사항 제목을 입력해주세요."></textarea>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
+                                        </td>                                        
                                     </tr>
                                     <tr>
                                         <td>공지사항 내용</td>
-                                        <td>
-                                            <textarea v-model="notice.content" name="ncontent" cols="53" rows="10" id="n"
+                                        <td colspan="3">
+                                            <textarea v-model="notice.ncontent" name="ncontent" cols="53" rows="10" id="n"
                                                 placeholder="공지사항 내용을 입력해주세요."></textarea>
                                         </td>
-                                        <td></td>
-                                        <td></td>
+                                        
                                     </tr>
                                     <tr>
                                         <td>첨부파일</td>
-                                        <td colspan="3"><input type="file" ref="nattach"></td>                                       
+                                        <td colspan="3"><input type="file" ref="nattach"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -82,12 +82,12 @@
                             <div>
                                 <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
                                 <!-- <BaseButtonSubmit @click="handleSubmit">완료</BaseButtonSubmit> -->
-                                <input class="btn btn-info btn-sm" type="submit" value="수정" @click="handleSubmit">   
+                                <input class="btn btn-info btn-sm" type="submit" value="수정" @click="handleSubmit">
                             </div>
                         </div>
                     </form>
                 </div>
-            </div>           
+            </div>
         </div>
     </div>
 </template>
@@ -95,7 +95,7 @@
 <script setup>
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 // import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
-import { useRouter,useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { ref } from 'vue';
 // import noticeAPI from "@/apis/noticeAPI";
 
@@ -105,13 +105,25 @@ import { ref } from 'vue';
 // const pageNo = route.query.pageNo;
 
 //상태 정의
+//상태 정의
 let notice = ref({
-    category:"",
-    educenter:"",
-    course:"",
-    title:"",
-    content:""    
+    nno: "",
+    ecno: "",
+    cno: "",
+    mid: "",
+    ncategory: "공지사항 유형",
+    ntitle: "",
+    ncontent: "",
+    nhitcount: "",
+    nattach: "",
+    nattachoname: "",
+    nattachtype: "",
+    ncreatedat: "",
+    nupdatedat: "",
+    ecname: "교육장",
+    cname: "교육과정"
 });
+
 const nattach = ref(null);
 
 //해당 nno의 공지사항 얻는 함수 정의
@@ -223,5 +235,4 @@ select {
 #n {
     resize: none;
 }
-
 </style>
