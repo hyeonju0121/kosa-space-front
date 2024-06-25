@@ -6,9 +6,8 @@
         </div>
 
 
-        <!-- contents -->
-        <div class="container" style="text-align: left;">
-            <form>
+        <!-- contents -->             
+            <div class="container" style="text-align: left;">
                 <!-- 테이블 -->
                 <table class="table" style="text-align:center">
                     <tbody>
@@ -26,21 +25,21 @@
                                 <input v-model="notice.ncreatedat">
                             </td>
                             <td>작성자</td>
-                            <td><input v-model="notice.writer"></td>
+                            <td><input v-model="notice.nname"></td>
                         </tr>
                         <tr>
                             <td>공지사항 유형</td>
                             <td colspan="3" style="text-align: left;">
-                                <input v-model="notice.ncategory" value="강의장">
+                                <input v-model="notice.ncategory">
                             </td>
                         </tr>
                         <tr>
                             <td>교육장 명</td>
                             <td style="text-align:left">
-                                <input v-model="notice.ecname" value="송파 교육장">
+                                <input v-model="notice.ecname">
                             </td>
                             <td>교육과정</td>
-                            <td><input v-model="notice.cname" value="MSA 2차"></td>
+                            <td><input v-model="notice.cname"></td>
                         </tr>
                         <tr>
                             <td>첨부파일</td>
@@ -57,15 +56,14 @@
                         </tr>
                     </tbody>
                 </table>
-            </form>
-        </div>
+
+            </div>
 
 
-        <!-- 버튼부분 -->
-        <div style="text-align:center;">
-            <BaseButtonSubmit @click="handleListBtn" style="margin-top: 10px;">공지사항 목록</BaseButtonSubmit>
-        </div>
-
+            <!-- 버튼부분 -->
+            <div style="text-align:center;">
+                <BaseButtonSubmit @click="handleListBtn" style="margin-top: 10px;">공지사항 목록</BaseButtonSubmit>
+            </div>       
     </div>
 </template>
 
@@ -79,24 +77,24 @@ import { ref } from "vue";
 //라우터 객체 얻기
 const router = useRouter();
 
+
 //상태 정의
 let notice = ref({
     nno: "",
     ecno: "",
-    cno: "",
-    mid: "",
-    ncategory: "",
-    ntitle:"강의장 청결유지",
-    ncontent: "",
+    cno: "",    
+    nname:"홍길동",
+    ncategory: "강의장",
+    ntitle: "강의장 청결 유지",
+    ncontent: "강의장 깔끔하게 사용해주세요!",
     nhitcount: "",
     nattach: "",
     nattachoname: "",
     nattachtype: "",
     ncreatedat: "2024.06.19",
     nupdatedat: "",
-    ecname: "",
-    cname: "",
-    writer:"홍길동"
+    ecname: "송파 교육장",
+    cname: "MSA 2차"
 })
 
 // const nattach = ref(null);

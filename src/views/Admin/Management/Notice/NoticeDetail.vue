@@ -50,7 +50,7 @@
                                 </td>
                                 <td>교육과정</td>
                                 <td>
-                                    <input v-model="notice.cname" value="MSA 2차">
+                                    <input v-model="notice.cname">
                                 </td>
                             </tr>
                             <tr>
