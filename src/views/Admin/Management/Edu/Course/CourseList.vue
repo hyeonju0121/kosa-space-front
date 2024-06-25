@@ -5,121 +5,159 @@
         </div>
 
         <!-- contents -->
-        <div class="headingArea mb-5">
+        <div class="headingArea mb-3">
             <div class="title">
                 <h1 id="itemTitle">교육과정 목록</h1>
             </div>
         </div>
 
-        <div style="display: flex; margin-left: 1%">
-            <span>교육장 선택</span>
-            <div style="margin-left: 1%;">
-                <select id="room">
+        <div class="align" style="display: flex;">
+            <div class="InpBox">
+                <select id="room" title="교육장 선택">
+                    <option value="" selected="">교육장 선택</option>
                     <option value="option1">전체</option>
                     <option value="option1">미정</option>
-                    <option value="option1">송파 교육장</option>
-                    <option value="option2">가산 교육장</option>
-                    <option value="option3">혜화 교육장</option>
+                    <option value="option2">송파교육센터</option>
+                    <option value="option3">가산교육센터</option>
+                    <option value="option3">혜화교육센터</option>
                 </select>
             </div>
-
-            <span style="margin-left: 1%;">진행 여부</span>
-            <div style="margin-left: 1%;">
-                <select id="status">
+            <div class="InpBox" style="margin-left: 1%;">
+                <select id="status" title="진행 여부">
+                    <option value="" selected="">진행 여부</option>
                     <option value="option1">전체</option>
                     <option value="option1">진행 예정</option>
                     <option value="option2">진행중</option>
                     <option value="option3">진행 완료</option>
                 </select>
             </div>
-        </div>
-        <BaseButtonSubmit @click="handleCreateBtn" style="margin-top: 1%;">교육과정 등록</BaseButtonSubmit>
+            <div class="InpBox" style="margin-left: 1%;">
+                <select id="professor" title="강사진">
+                    <option value="" selected="">강사진</option>
+                    <option value="option1">전체</option>
+                    <option value="option1">신용권</option>
+                    <option value="option2">마성일</option>
+                    <option value="option3">조효석</option>
+                </select>
+            </div>
 
-        <div class="container mt-3">
-            <table class="styled-table">
-                <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col"></th>
-                        <th scope="col">교육과정명</th>
-                        <th scope="col">기간</th>
-                        <th scope="col">수강인원</th>
-                        <th scope="col">강사진</th>
-                        <th scope="col">진행여부</th>
-                        <th scope="col">비고</th>
-                    </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <div class="course-img">
-                                <img src="@/assets/course1.png" class="course-img-detail">
-                            </div>
-                        </td>
-                        <td>MSA 기반 Full Stack 개발 전문가 양성과정 2차</td>
-                        <td>2024.02.26 ~ 2024.07.26</td>
-                        <td>34 명</td>
-                        <td>신용권 교수</td>
-                        <td>진행중</td>
-                        <td>
-                            <button type="button" class="btn btn-outline-dark" @click="handleUpdateBtn">수정</button>
-                            <button type="button" class="btn btn-outline-dark">삭제</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>
-                            <div class="course-img">
-                                <img src="@/assets/course1.png" class="course-img-detail">
-                            </div>
-                        </td>
-                        <td>MSA 기반 Full Stack 개발 전문가 양성과정 2차</td>
-                        <td>2024.02.26 ~ 2024.07.26</td>
-                        <td>34 명</td>
-                        <td>신용권 교수</td>
-                        <td>진행중</td>
-                        <td>
-                            <button type="button" class="btn btn-outline-dark" @click="handleUpdateBtn">수정</button>
-                            <button type="button" class="btn btn-outline-dark">삭제</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>
-                            <div class="course-img">
-                                <img src="@/assets/course1.png" class="course-img-detail">
-                            </div>
-                        </td>
-                        <td>MSA 기반 Full Stack 개발 전문가 양성과정 2차</td>
-                        <td>2024.02.26 ~ 2024.07.26</td>
-                        <td>34 명</td>
-                        <td>신용권 교수</td>
-                        <td>진행중</td>
-                        <td>
-                            <button type="button" class="btn btn-outline-dark" @click="handleUpdateBtn">수정</button>
-                            <button type="button" class="btn btn-outline-dark">삭제</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>
-                            <div class="course-img">
-                                <img src="@/assets/course1.png" class="course-img-detail">
-                            </div>
-                        </td>
-                        <td>MSA 기반 Full Stack 개발 전문가 양성과정 2차</td>
-                        <td>2024.02.26 ~ 2024.07.26</td>
-                        <td>34 명</td>
-                        <td>신용권 교수</td>
-                        <td>진행중</td>
-                        <td>
-                            <button type="button" class="btn btn-outline-dark" @click="handleUpdateBtn">수정</button>
-                            <button type="button" class="btn btn-outline-dark">삭제</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <button type="button" class="BtnType SizeM" style="margin-left: 47%;" @click="handleCreateBtn">
+                교육과정 등록
+            </button>
+        </div>
+
+        <!--<BaseButtonSubmit @click="handleCreateBtn" style="margin-top: 1%;">교육과정 등록</BaseButtonSubmit>-->
+
+        <div>
+            <ul class="self_exam_list">
+                <li class="personality_test">
+                    <div class="course-img">
+                        <img src="@/assets/course1.png" class="course-img-detail">
+                    </div>
+                    <h5 class="tit">MSA 기반 Full Stack 개발 전문가 양성과정 1차
+                        <div style="display: flex;">
+                            <span class="new_mark1">송파교육센터</span>
+                            <span class="new_mark_complete" style="margin-left:2%;">진행완료</span>
+                            <span class="new_mark3" style="margin-left:2%;">마성일 교수</span>
+                        </div>
+                        <div style="margin-top: 2%;">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" @click="handleUpdateBtn">수정</button>
+                            <button type="button" class="btn btn-outline-dark btn-sm" style="margin-left: 2%;">삭제</button>
+                        </div>
+                    </h5>
+                    <div class="body">
+                        <span class="contents_mark" style="float:left;">교육일정</span>
+                        <p class="contents_txt">2024.01.25 ~ 2024.06.25</p>
+
+                        <span class="contents_mark" style="float:left;">요일시간</span>
+                        <p class="contents_txt">월, 화, 수, 목, 금 / 9:00 ~ 18:00</p>
+                     
+                        <span class="contents_mark" style="float:left;">수강인원</span>
+                        <p class="contents_txt">20명</p>
+
+                        <span class="contents_mark" style="float:left;">교육장</span>
+                        <p class="contents_txt">송파교육센터</p>          
+                    </div>
+                </li>
+
+                <li class="personality_test">
+                    <div class="course-img">
+                        <img src="@/assets/course1.png" class="course-img-detail">
+                    </div>
+                    <h5 class="tit">MSA 기반 Full Stack 개발 전문가 양성과정 2차
+                        <div style="display: flex;">
+                            <span class="new_mark1">송파교육센터</span>
+                            <span class="new_mark_proceeding" style="margin-left:2%;">진행중</span>
+                            <span class="new_mark3" style="margin-left:2%;">신용권 교수</span>
+                        </div>
+                        <div style="margin-top: 2%;">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" @click="handleUpdateBtn">수정</button>
+                            <button type="button" class="btn btn-outline-dark btn-sm" style="margin-left: 2%;">삭제</button>
+                        </div>
+                    </h5>
+                    <div class="body">
+                        <span class="contents_mark" style="float:left;">교육일정</span>
+                        <p class="contents_txt">2024.02.26 ~ 2024.07.26</p>
+
+                        <span class="contents_mark" style="float:left;">요일시간</span>
+                        <p class="contents_txt">월, 화, 수, 목, 금 / 9:00 ~ 18:00</p>
+                     
+                        <span class="contents_mark" style="float:left;">수강인원</span>
+                        <p class="contents_txt">20명</p>
+
+                        <span class="contents_mark" style="float:left;">교육장</span>
+                        <p class="contents_txt">송파교육센터</p>          
+                    </div>
+                </li>
+
+                <li class="personality_test">
+                    <div class="course-img">
+                        <img src="@/assets/course3.png" class="course-img-detail">
+                    </div>
+                    <h5 class="tit">클라우드 솔루션즈 아키텍트 양성과정 1차
+                        <div style="display: flex;">
+                            <span class="new_mark1">송파교육센터</span>
+                            <span class="new_mark_proceeding" style="margin-left:2%;">진행중</span>
+                            <span class="new_mark3" style="margin-left:2%;">조효석 교수</span>
+                        </div>
+                        <div style="margin-top: 2%;">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" @click="handleUpdateBtn">수정</button>
+                            <button type="button" class="btn btn-outline-dark btn-sm" style="margin-left: 2%;">삭제</button>
+                        </div>
+                    </h5>
+                    <div class="body">
+                        <span class="contents_mark" style="float:left;">교육일정</span>
+                        <p class="contents_txt">2024.02.26 ~ 2024.07.26</p>
+
+                        <span class="contents_mark" style="float:left;">요일시간</span>
+                        <p class="contents_txt">월, 화, 수, 목, 금 / 9:00 ~ 18:00</p>
+                     
+                        <span class="contents_mark" style="float:left;">수강인원</span>
+                        <p class="contents_txt">20명</p>
+
+                        <span class="contents_mark" style="float:left;">교육장</span>
+                        <p class="contents_txt">송파교육센터</p>          
+                    </div>
+                </li>
+                <li class="personality_test">
+                    <div class="course-img">
+                        <img src="@/assets/course3.png" class="course-img-detail">
+                    </div>
+                    <h5 class="tit">MSA 기반 Full Stack 개발 전문가 양성과정 3차
+                        <div style="display: flex;">
+                            <span class="new_mark1">송파교육센터</span>
+                            <span class="new_mark2" style="margin-left:2%;">진행예정</span>
+                            <span class="new_mark3" style="margin-left:2%;">신용권 교수</span>
+                        </div>
+                        <div style="margin-top: 2%;">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" @click="handleUpdateBtn">수정</button>
+                            <button class="btn btn-outline-dark btn-sm" style="margin-left: 2%;">삭제</button>
+                        </div>
+                    </h5>
+                    <div class="body">
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 </template>
@@ -189,10 +227,10 @@ select, th, td {
 
 /*교육과정 이미지 틀 (원형)*/
 .course-img {
-    width: 90px;
-    height: 90px;
-    border-radius: 25px;
-    margin-left: 10px;
+    position: absolute;
+    left: 0px;
+    width: 170px;
+    height: 170px;
     overflow: hidden;
 }
 
@@ -200,39 +238,6 @@ select, th, td {
 .course-img img {
     width: 100%;
     object-fit: cover;
-}
-
-/* table */
-.styled-table {
-    border-collapse: collapse;
-    margin: 25px 0;
-    font-size: 0.9em;
-    font-family: sans-serif;
-    min-width: 400px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-}
-
-.styled-table thead tr {
-    background-color: #22C55E;
-    color: #ffffff;
-    text-align: left;
-}
-
-.styled-table th,
-.styled-table td {
-    padding: 12px 15px;
-}
-
-.styled-table tbody tr {
-    border-bottom: 1px solid #dddddd;
-}
-
-.styled-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-}
-
-.styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
 }
 
 .createbtn {
@@ -253,4 +258,211 @@ select, th, td {
     border: 1px solid black;
     margin-left: 10px;
 }
+
+
+/* select option css */
+.InpBox {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.InpBox select {
+    padding: 0 28px 0 12px;
+    width: 100%;
+    height: 40px;
+    border: 1px solid #232323;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: #232323;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    vertical-align: top;
+    background-color: #dbdbdb0e;
+    cursor: pointer;
+}
+
+.BtnType {
+    display: block;
+    margin-bottom: 8px;
+    width: 150px;
+    position: relative;
+    border: 1px solid black;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: white;
+    text-align: center;
+    background-color: #22C55E;
+    cursor: pointer;
+}
+
+.SizeM {
+    padding: 6px 11px;
+    height: 40px;
+    font-size: 14px;
+    line-height: 24px;
+}
+
+/* ------ contents ---------------*/
+.self_exam_wrap .self_exam_list {
+    display: block;
+    margin-top: 10px;
+    border-bottom: 1px solid #eaedf4;
+}
+
+ul, li {
+    list-style: none;
+}
+
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+    unicode-bidi: isolate;
+}
+
+.new_mark1 {
+    display: block;
+    width: 90px;
+    height: 24px;
+    border-radius: 4px;
+    color: #4876ef;
+    font-size: 13px;
+    line-height: 24px;
+    text-align: center;
+    background-color: #d4e2f7;
+}
+
+.new_mark2 {
+    display: block;
+    width: 90px;
+    height: 24px;
+    border-radius: 4px;
+    color: #2a7c6d;
+    font-size: 13px;
+    line-height: 24px;
+    text-align: center;
+    background-color: #defaf6;
+}
+
+.new_mark3 {
+    display: block;
+    width: 90px;
+    height: 24px;
+    border-radius: 4px;
+    color: rgb(115, 68, 227);
+    font-size: 13px;
+    line-height: 24px;
+    text-align: center;
+    background-color: rgb(236, 236, 255);
+}
+
+.new_mark_complete {
+    display: block;
+    width: 90px;
+    height: 24px;
+    border-radius: 4px;
+    color: rgb(235, 25, 39);
+    font-size: 13px;
+    line-height: 24px;
+    text-align: center;
+    background-color: rgb(254, 239, 238);
+}
+
+.new_mark_proceeding {
+    display: block;
+    width: 90px;
+    height: 24px;
+    border-radius: 4px;
+    color: rgb(241, 104, 21);
+    font-size: 13px;
+    line-height: 24px;
+    text-align: center;
+    background-color: rgb(255, 242, 221);
+}
+
+.contents_mark {
+    display: block;
+    width: 90px;
+    height: 24px;
+    border-radius: 4px;
+    color: rgb(127, 127, 127);
+    font-size: 13px;
+    line-height: 24px;
+    text-align: center;
+    background-color: rgba(226, 229, 231, 0.69);
+}
+
+.txt_heading {
+    display: block;
+    margin-bottom: 8px;
+    max-width: 450px;
+    color: #373f57;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+}
+
+.txt {
+    display: block;
+    margin-bottom: 8px;
+    max-width: 450px;
+    color: #373f57;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.contents_txt {
+ 
+    margin-bottom: 8px;
+    color: #373f57;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.self_exam_list>li .body {
+    position: relative;
+    width: 100%;
+    padding-left: 6%;
+}
+
+.self_exam_list>li .body .status {
+    display: block;
+    margin-bottom: 40px;
+}
+
+.self_exam_list {
+    display: block;
+    border-bottom: 1px solid #eaedf4;
+}
+
+.self_exam_list>li {
+    display: inline-block;
+    position: relative;
+    padding: 37px 37px 37px 520px;
+    width: 100%;
+    border-top: 1px solid #d7dce5;
+    box-sizing: border-box;
+    font-size: 0;
+    text-align: left;
+    background-repeat: no-repeat;
+    background-position: 40px 32px;
+}
+
+.self_exam_list>li>.tit {
+    display: inline-block;
+    position: absolute;
+    top: 32px;
+    left: 190px;
+    max-width: 350px;
+    color: #373f57;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 40px;
+}
+
 </style>
