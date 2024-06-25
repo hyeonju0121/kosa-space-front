@@ -10,11 +10,8 @@
                 <h1 id="itemTitle">출결 현황 조회</h1>
             </div>
 
-            <!-- select + table 부분 -->
             <div class="mt-3">
-                <!-- select부분 -->
-                <form @submit.prevent="handleCheck">
-                    <div class="mb-3" style="display: flex;">
+                <div class="mb-3" style="display: flex;">
                         <div class="me-3">
                             <select v-model="attendance.ecname">
                                 <option selected disabled value="교육장">교육장 선택</option>
@@ -37,7 +34,6 @@
                             <div class="btn btn-dark btn-sm mb-1" @click="handleCheck">교육생 조회</div>
                         </div>
                     </div>
-                </form>
 
                 <!-- datepicker 부분 -->
                 <div class="mb-3">
@@ -46,7 +42,6 @@
                 </div>                
 
                 <!-- 출결 테이블 부분 -->
-                <form>
                     <div class="container">
                         <table class="table table-hover">
                             <thead>
@@ -95,12 +90,12 @@
                                     <td></td>
                                     <td></td>
                                     <td>결석</td>
-                                    <!-- 사유작성모달이 현재 만들어있지 않아서 라우터링크 경로를 달아두지 못했음.. -->
                                     <td>
-                                        <button class="btn btn-info btn-sm" @click="attendanceSubmit">사유보기</button>
+                                        <button class="btn btn-info btn-sm" @click="handlerReasonBtn">사유보기</button>
                                     </td>
-            
-                                    <td><router-link to="./trainee/detail" class="btn btn-dark btn-sm">출결현황 보기</router-link>
+                                    <td>
+                                        <router-link to="./trainee/detail" class="btn btn-dark btn-sm"
+                                            @click="handleAttendanceBtn">출결현황 보기</router-link>
                                     </td>
                                     <td>
                                         <div class="attendance-box" style="width: 120%; height: 80px;">
@@ -124,8 +119,7 @@
                                     <td>17:55</td>
                                     <td>지각</td>
 
-                                    <!-- 사유작성모달이 현재 만들어있지 않아서 라우터링크 경로를 달아두지 못했음.. -->
-                                    <td><button class="btn btn-info btn-sm" @click="attendanceSubmit">사유보기</button></td>
+                                    <td><button class="btn btn-info btn-sm" @click="handlerReasonBtn">사유보기</button></td>
                                     
                                     <td><router-link to="./trainee/detail" class="btn btn-dark btn-sm"
                                             @click="handleAttendanceBtn">출결현황 보기</router-link>
@@ -148,44 +142,11 @@
                             </tbody>
                         </table>
                     </div>
-                </form>
             </div>
         </div>
     </div>
 
-
-    <!-- 출결 사유 보기 모달 -->
-    <Dialog id="attendanceViewModal">
-        <!--템플릿 <slot> 자리에 들어갈 내용 정의-->
-        <template v-slot:header>
-            <div style="background-color: #22C55E; color: white">
-                출결 사유
-            </div>
-        </template>
-
-        <template v-slot:body>
-            <form>
-                <div class="mb-3">
-                    <select>
-                        <option value="지각">지각</option>
-                        <option value="조퇴">조퇴</option>
-                        <option value="외출">외출</option>
-                        <option value="결석">결석</option>
-                    </select>
-                </div>
-                <div>
-                    <textarea>사유작성</textarea>
-                </div>
-                <div>
-                    <input id="attach" type="file" class="form-control p-3" ref="attach">
-                </div>
-            </form>
-        </template>
-
-        <template v-slot:footer>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="handleCloseModal">닫기</button>
-        </template>
-    </Dialog>
+    <AttendanceReasonDialog id="attendanceReasonDialog"/>
 </template>
 
 <script setup>
@@ -194,32 +155,21 @@ import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
-// 부트스트랩 모달
-import { Modal } from 'bootstrap';
-import Dialog from '@/components/UIComponents/Dialog.vue';
+// modal
+import AttendanceReasonDialog from '@/views/Admin/Management/Learning/Attendance/AttendanceReasonDialog.vue';
+import { Modal } from "bootstrap";
 
 const date = ref();
-let attendanceModal =null;
 
-onMounted(() => {
-    console.log("AssignmentList 컴포넌트 마운트 완료");
-    // modal 객체로 생성
-    attendanceModal = new Modal(document.querySelector('#attendanceViewModal'));
-});
-
-function handleCloseModal() {
-    attendanceModal.hide();
-}
-
-function attendanceSubmit() {
-    // 사유 보기 버튼 클릭시, attendanceModal 활성화
-    attendanceModal.show();
-}
+let attendanceReasonDialog = null;
 
 onMounted(() => {
     const startDate = new Date();
     const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
     date.value = [startDate, endDate];
+
+    // modal 객체 생성
+    attendanceReasonDialog = new Modal(document.querySelector("#attendanceReasonDialog"));
 })
 
 let attendance = ref({
@@ -233,14 +183,10 @@ let attendance = ref({
     astatus: "정상 출결"
 })
 
-const router = useRouter();
 
-function handleAttendanceBtn() {
-    router.push('/admin/attendance/trainee/detail');
-}
-
-function handleCheck() {
-    console.log(JSON.parse(JSON.stringify(attendance.value)));
+// 사유 보기 버튼 클릭시, 교육생이 제출한 사유에 대한 모달 활성화
+function handlerReasonBtn() {
+    attendanceReasonDialog.show();
 }
 
 </script>
@@ -285,4 +231,5 @@ table {
 
     text-align: center;
     vertical-align: middle;
-}</style>
+}
+</style>
