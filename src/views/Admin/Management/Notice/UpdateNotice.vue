@@ -24,53 +24,80 @@
                                         <td>
                                             공지사항 유형
                                         </td>
-                                        <td>
-                                            <select v-model="notice.ncategory">
-                                                <option value="공지사항 유형" selected disabled>공지사항 유형 선택</option>
+                                        <td colspan="3">
+                                            <select required v-model="notice.ncategory" @change="checkNcategory">
                                                 <option value="취업">취업</option>
                                                 <option value="행사">행사</option>
                                                 <option value="강의장">강의장</option>
                                                 <option value="수업">수업</option>
                                                 <option value="출석">출석</option>
                                             </select>
+                                            <!-- 공지사항 유형 체크 안하고 등록 버튼을 눌렀을시 나오는 문구 -->
+                                            <div>
+                                                <p v-if="!noticeCategoryPatternCheck" class="text-center text-danger"
+                                                    style="float: left;">유형을 선택해 주세요</p>
+                                            </div>
                                         </td>
-                                        <td></td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>교육장</td>
                                         <td>
-                                            <select v-model="notice.ecname">
-                                                <option value="교육장" selected disabled>교육장 선택</option>
+                                            <select required v-model="notice.ecname" @change="checkEcname">
                                                 <option value="송파 교육센터">송파 교육센터</option>
                                                 <option value="혜화 교육센터">혜화 교육센터</option>
+                                                <option value="가산 교육센터">가산 교육센터</option>
                                             </select>
+                                            <!-- 교육장 체크 안하고 등록버튼 눌렀을때 나오는 문구 -->
+                                            <div>
+                                                <p v-if="!noticeEcnamePatternCheck" class="text-center text-danger"
+                                                    style="float: left;">교육장을 선택해 주세요</p>
+                                            </div>
                                         </td>
                                         <td>교육과정</td>
                                         <td>
-                                            <select v-model="notice.cname">
-                                                <option value="교육과정" selected disabled>교육과정 선택</option>
+                                            <select required v-model="notice.cname" @change="checkCname">
                                                 <option value="전체">전체</option>
                                                 <option value="MSA 1차">MSA 1차</option>
                                                 <option value="MSA 2차">MSA 2차</option>
                                                 <option value="클라우드">클라우드</option>
                                             </select>
+                                            <!-- 교육과정 체크 안하고 등록버튼 눌렀을때 나오는 문구 -->
+                                            <div>
+                                                <p v-if="!noticeCnamePatternCheck" class="text-center text-danger"
+                                                    style="float: left;">교육과정을 선택해 주세요</p>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>공지사항 제목</td>
                                         <td colspan="3">
-                                            <textarea v-model="notice.ntitle" name="ntitle" cols="53" rows="1" id="n"
-                                                placeholder="공지사항 제목을 입력해주세요."></textarea>
-                                        </td>                                        
+                                            <textarea maxlength="100" @input="checkTitleLength" required
+                                                v-model="notice.ntitle" cols="90" rows="1" style="resize: none;"
+                                                placeholder="공지사항 제목을 입력해주세요.(100자 이내)">
+                                            </textarea>
+                                            <p>{{ notice.ntitle.length }}/100</p>
+                                            <div>
+                                                <p v-if="submitted && !noticeTitlePatternCheck"
+                                                    class="text-center text-danger" style="float: left;">제목은 반드시
+                                                    입력해야
+                                                    합니다.(100자 이내)</p>
+                                            </div>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>공지사항 내용</td>
                                         <td colspan="3">
-                                            <textarea v-model="notice.ncontent" name="ncontent" cols="53" rows="10" id="n"
-                                                placeholder="공지사항 내용을 입력해주세요."></textarea>
+                                            <textarea maxlength="1000" @input="checkContentLength" v-model="notice.ncontent"
+                                                required name="ncontent" cols="90" rows="20" style="resize: none;"
+                                                placeholder="공지사항 내용을 입력해주세요.(1000자 이내)">
+                                            </textarea>
+                                            <p>{{ notice.ncontent.length }}/1000</p>
+                                            <div>
+                                                <p v-if="submitted && !noticeContentPatternCheck"
+                                                    class="text-center text-danger" style="float:left">내용은 반드시
+                                                    입력해야합니다.(1000자 이내)</p>
+                                            </div>
                                         </td>
-                                        
                                     </tr>
                                     <tr>
                                         <td>첨부파일</td>
@@ -80,9 +107,10 @@
                             </table>
                             <!-- 버튼부분 -->
                             <div>
-                                <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
-                                <!-- <BaseButtonSubmit @click="handleSubmit">완료</BaseButtonSubmit> -->
-                                <input class="btn btn-info btn-sm" type="submit" value="수정" @click="handleSubmit">
+                                <div style="text-align:center">
+                                    <input class="btn btn-info btn-sm me-3" value="수정" @click="handleSubmit">
+                                    <input class="btn btn-danger btn-sm" @click="handleCancle" value="취소">
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -93,8 +121,6 @@
 </template>
 
 <script setup>
-import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
-// import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
 import { useRouter, useRoute } from 'vue-router';
 import { ref } from 'vue';
 // import noticeAPI from "@/apis/noticeAPI";
@@ -105,13 +131,12 @@ import { ref } from 'vue';
 // const pageNo = route.query.pageNo;
 
 //상태 정의
-//상태 정의
 let notice = ref({
     nno: "",
     ecno: "",
     cno: "",
     mid: "",
-    ncategory: "공지사항 유형",
+    ncategory: "",
     ntitle: "",
     ncontent: "",
     nhitcount: "",
@@ -120,11 +145,63 @@ let notice = ref({
     nattachtype: "",
     ncreatedat: "",
     nupdatedat: "",
-    ecname: "교육장",
-    cname: "교육과정"
-});
+    ecname: "",
+    cname: ""
+})
 
 const nattach = ref(null);
+
+
+// 유효성 검사 상태를 추적하는 변수
+let submitted = ref(false);
+
+//공지사항 제목 유효성검사(제목은 1~100글자)
+let noticeTitlePatternCheck = ref("");
+const noticeTitlePattern = /^.{1,100}$/;
+
+function checkTitleLength(event) {
+    const value = event.target.value;
+    if (value.length > 100) {
+        notice.value.ntitle = value.slice(0, 100);
+    } else {
+        notice.value.ntitle = value;
+    }
+    noticeTitlePatternCheck.value = noticeTitlePattern.test(notice.value.ntitle);
+}
+
+//공지사항 내용 유효성 검사(글자수 1~1000)
+let noticeContentPatternCheck = ref("");
+const noticeContentPattern = /^.{1,1000}$/;
+
+function checkContentLength(event) {
+    const value = event.target.value;
+    if (value.length > 1000) {
+        notice.value.ncontent = value.slice(0, 1000);
+    } else {
+        notice.value.ncontent = value;
+    }
+    noticeContentPatternCheck.value = noticeContentPattern.test(notice.value.ncontent);
+}
+
+// 공지사항 유형 유효성 검사
+let noticeCategoryPatternCheck = ref(true);
+function checkNcategory() {
+    noticeCategoryPatternCheck.value = notice.value.ncategory !== "";
+}
+
+// 교육장 유효성 검사
+let noticeEcnamePatternCheck = ref(true);
+function checkEcname() {
+    noticeEcnamePatternCheck.value = notice.value.ecname !== "";
+}
+
+// 교육과정 유효성 검사
+let noticeCnamePatternCheck = ref(true);
+function checkCname() {
+    noticeCnamePatternCheck.value = notice.value.cname !== "";
+}
+
+
 
 //해당 nno의 공지사항 얻는 함수 정의
 // async function getNotice(argNno) {
@@ -142,10 +219,25 @@ const nattach = ref(null);
 //router 객체 얻기
 const router = useRouter();
 
-//수정 버튼 클릭했을 때 실행하는 함수 정의
-async function handleSubmit() {
+//수정 버튼 클릭시
+function handleSubmit() {
+     // 유효성 검사를 시작
+     submitted.value = true;
+
+    //수정버튼 눌렀을때 select태그 유효성검사 
+    checkNcategory();
+    checkEcname();
+    checkCname();
+
+    // 유효성 검사를 통과해야 등록 가능
+    if (!noticeTitlePatternCheck.value || !noticeContentPatternCheck.value || !noticeCategoryPatternCheck.value || !noticeEcnamePatternCheck.value || !noticeCnamePatternCheck.value) {
+        alert('모든 필드를 올바르게 입력해주세요.');
+        return;
+    }
+
     //multipart/form-data 객체 생성
     const formData = new FormData();
+
     //문자 파트 넣기
     formData.append("nno", notice.value.nno);
     formData.append("category", notice.value.category);
@@ -166,16 +258,20 @@ async function handleSubmit() {
     //     console.log(error);
     // }
 
+    //데이터 잘넘어가는지 확인
     console.log(formData);
     console.log(JSON.parse(JSON.stringify(notice.value)));
 
+    //수정후 목록으로 이동
     router.push('/admin/notice/list');
 
 }
 
-//취소 버튼을 클륵했을 때 실행하는 함수 정의
+//취소 버튼
 function handleCancle() {
+    //취소하면 목록으로 이동
     router.push('/admin/notice/list');
+    //page 숫자 기억하고 있다가 그전 페이지로 이동
     // router.push(`/Management/Notice/NoticeList?pageNo=${pageNo}`);
 }
 

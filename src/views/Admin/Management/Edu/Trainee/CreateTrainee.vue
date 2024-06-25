@@ -125,8 +125,8 @@
                         </tbody>
                     </table>
                     <!-- 버튼부분 -->
-                    <div>
-                        <input class="btn btn-info btn-sm" type="submit" value="등록" @click="handleSubmit">
+                    <div style="text-align: center;">
+                        <input class="btn btn-info btn-sm me-3" value="등록" @click="handleSubmit">
                         <input class="btn btn-danger btn-sm" value="취소" @click="handleCancle">
                     </div>
                 </div>

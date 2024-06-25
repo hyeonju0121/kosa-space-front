@@ -72,10 +72,10 @@
                             <tbody>
                                 <tr>
                                     <!-- <tr v-for="trainee in page.trainees" :key="trainee.tno"> -->
-                                    <td>1 {{ trainee.tno }}</td>
+                                    <td>{{ trainee.tno }}</td>
                                     <td><img src="@/assets/kyungseob.jpg" width="110" height="150" ref="traineeImg"></td>
-                                    <td>이경섭 <router-link
-                                            :to="`/admin/trainee/detail?tno=${trainee.tno}&pageNo=${pageNo}`">이경섭 {{
+                                    <td> 
+                                        <router-link :to="`/admin/trainee/detail?tno=${trainee.tno}&pageNo=${pageNo}`">{{
                                                 trainee.mname }}</router-link></td>
                                     <td>010-xxxx-xxxx {{ trainee.mphone }}</td>
                                     <td>kosa@kosa.com {{ trainee.memail }}</td>
@@ -143,12 +143,13 @@ let trainee = ref({
     ecname: "교육장",
     cname: "교육과정",
     mid: "",
-    mname: "",
+    mname: "이경섭",
     mphone: "",
     memail: "",
     cno: "",
     cstartdate: "",
     cenddate: "",
+    tno:"1",
     tsex: "",
     tage: "",
     taddress: "",

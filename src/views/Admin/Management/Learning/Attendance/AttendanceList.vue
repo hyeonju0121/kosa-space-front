@@ -16,29 +16,36 @@
             <!-- select + table 부분 -->
             <div class="mt-3">
                 <!-- select부분 -->
-                <div class="mb-3">
-                    <span class="me-3">
-                        <select>
-                            <option>송파 교육장</option>
-                            <option>혜화 교육장</option>
+                <form @submit.prevent ="handleCheck">
+                <div class="mb-3" style="display: flex;">
+                    <div class="me-3">
+                        <select v-model="attendance.ecname">
+                            <option selected disabled value="교육장">교육장 선택</option>
+                            <option value="송파 교육장">송파 교육장</option>
+                            <option value="혜화 교육장">혜화 교육장</option>
+                            <option value="가산 교육장">가산 교육장</option>
                         </select>
-                    </span>
+                    </div>
 
-                    <span class="me-3">
-                        <select>
-                            <option>MSA 1차</option>
-                            <option>MSA 2차</option>
-                            <option>클라우드</option>
+                    <div class="me-3">
+                        <select v-model="attendance.cname">
+                            <option selected disabled value="교육과정">교육과정 선택</option>
+                            <option value="MSA 1차">MSA 1차</option>
+                            <option value="MSA 2차">MSA 2차</option>
+                            <option value="클라우드">클라우드</option>
                         </select>
-                    </span>
+                    </div>
 
-                    <span>
-                        <span class="btn btn-dark btn-sm mb-1">교육생 조회</span>
-                    </span>
+                    <div>
+                        <div class="btn btn-dark btn-sm mb-1" @click="handleCheck">교육생 조회</div>
+                    </div>
                 </div>
-                <div class="container" >
-                    <table class="table table-hover">
+                </form>
 
+                <!-- 출결 테이블 부분 -->
+                <form>
+                <div class="container">
+                    <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th>번호</th>
@@ -49,66 +56,115 @@
                                 <th>상태</th>
                                 <th>비고</th>
                                 <th>상세보기</th>
+                                <th>출결 진행률</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>1</td>
-                                <td><img src="@/assets/kyungseob.jpg" width="110" height="150"></td>
-                                <td>이경섭</td>
-                                <td>08:45</td>
-                                <td>17:55</td>
-                                <td>정상 출결</td>
-                                <td></td>
-                                <td><router-link class="btn btn-dark btn-sm">출결현황 보기</router-link></td>
+                                <td>{{ attendance.ano }}</td>
+                                <td><img src="@/assets/kyungseob.jpg" width="110" height="150">{{ attendance.profile }}</td>
+                                <td>{{ attendance.name }}</td>
+                                <td>{{ attendance.starttime }}</td>
+                                <td>{{ attendance.endtime }}</td>
+                                <td>{{ attendance.astatus }}</td>
+                                <td></td>                                
+                                <td><router-link to="./trainee/detail" class="btn btn-dark btn-sm">출결현황 보기</router-link></td>
+                                <td>
+                                    <div class="attendance-box" style="width: 120%; height: 80px;">
+                                        <div style="width: 340px; margin-top: 5%; margin-left: 10px;">
+                                            <div class="d-flex flex-row justify-content-between">
+                                                <span style="font-size: 14px;">2024.06.19 기준</span>
+                                                <span style="font-size: 14px;">70% (84일 / 105일)</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" style="width:70%">70%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>2</td>
-                                <td><img src="@/assets/kyungseob.jpg" width="110" height="150"></td>
-                                <td>이경섭</td>
+                                <td><img src="@/assets/hyeonju.jpg" width="110" height="150"></td>
+                                <td>유현주</td>
                                 <td></td>
                                 <td></td>
                                 <td>결석</td>
-                                <td><router-link class="btn btn-info btn-sm">사유</router-link></td>
-                                <td><router-link class="btn btn-dark btn-sm">출결현황 보기</router-link></td>
+                                <!-- 사유작성모달이 현재 만들어있지 않아서 라우터링크 경로를 달아두지 못했음.. -->
+                                <td><router-link to="" class="btn btn-info btn-sm">사유 보기</router-link></td>
+                                <td><router-link to="./trainee/detail" class="btn btn-dark btn-sm">출결현황 보기</router-link></td>
+                                <td>
+                                    <div class="attendance-box" style="width: 120%; height: 80px;">
+                                        <div style="width: 340px; margin-top: 5%; margin-left: 10px;">
+                                            <div class="d-flex flex-row justify-content-between">
+                                                <span style="font-size: 14px;">2024.06.19 기준</span>
+                                                <span style="font-size: 14px;">70% (84일 / 105일)</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" style="width:70%">70%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>3</td>
-                                <td><img src="@/assets/kyungseob.jpg" width="110" height="150"></td>
-                                <td>이경섭</td>
+                                <td><img src="@/assets/seongmin.jpg" width="110" height="150"></td>
+                                <td>김성민</td>
                                 <td>9:20</td>
                                 <td>17:55</td>
                                 <td>지각</td>
-                                <td><router-link class="btn btn-info btn-sm">사유</router-link></td>
-                                <td><router-link class="btn btn-dark btn-sm">출결현황 보기</router-link></td>
+
+                                <!-- 사유작성모달이 현재 만들어있지 않아서 라우터링크 경로를 달아두지 못했음.. -->
+                                <td><router-link to="" class="btn btn-info btn-sm">사유 보기</router-link></td>
+                                <td><router-link to="./trainee/detail" class="btn btn-dark btn-sm" @click="handleAttendanceBtn">출결현황 보기</router-link>
+                                </td>
+                                <td>
+                                    <div class="attendance-box" style="width: 120%; height: 80px;">
+                                        <div style="width: 340px; margin-top: 5%; margin-left: 10px;">
+                                            <div class="d-flex flex-row justify-content-between">
+                                                <span style="font-size: 14px;">2024.06.19 기준</span>
+                                                <span style="font-size: 14px;">70% (84일 / 105일)</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" style="width:70%">70%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
-
                     </table>
-
                 </div>
-
-
-
-                <router-link to="@/components/UIComponents/TableDefaultContents.vue">공용 컴포넌트</router-link>
-            </div>
-
-
-            <div>
-                <BaseButtonUpdate class="mt-3" @click="handleAttendanceBtn">출결 현황 보기</BaseButtonUpdate>
+                </form>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+
+let attendance = ref({
+    ecname:"교육장",
+    cname:"교육과정",
+    ano:"1",
+    profile:"",
+    name:"이경섭",
+    starttime:"08:45",
+    endtime:"17:55",
+    astatus:"정상 출결"
+})
 
 const router = useRouter();
 
 function handleAttendanceBtn() {
     router.push('/admin/attendance/trainee/detail');
+}
+
+function handleCheck() {
+    console.log(JSON.parse(JSON.stringify(attendance.value)));
 }
 
 </script>
@@ -154,8 +210,4 @@ table {
     text-align: center;
     vertical-align: middle;
 }
-
-
-
-
 </style>

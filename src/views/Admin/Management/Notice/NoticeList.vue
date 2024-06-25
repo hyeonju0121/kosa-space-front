@@ -21,54 +21,57 @@
                 <span class="mb-5">
                     <!-- 조회 폼 -->
                     <form @submit.prevent="handlecheck">
-                        <span class="me-1">
-                            교육장
-                            <select v-model="notice.ecname">
-                                <option value="교육장" selected disabled>교육장 선택</option>
-                                <option value="전체">전체</option>
-                                <option value="송파 교육장">송파 교육장</option>
-                                <option value="혜화 교육장">혜화 교육장</option>
-                            </select>
-                        </span>
+                        <div style="display: flex;">
+                            <div class="me-1">
+                                교육장
+                                <select v-model="check.secname">
+                                    <option value="교육장" selected disabled>교육장 선택</option>
+                                    <option value="전체">전체</option>
+                                    <option value="송파 교육장">송파 교육장</option>
+                                    <option value="혜화 교육장">혜화 교육장</option>
+                                    <option value="가산 교육장">가산 교육장</option>
+                                </select>
+                            </div>
 
-                        <span class="me-1">
-                            교육과정
-                            <select v-model="notice.cname">
-                                <option value="교육과정" selected disabled>교육과정 선택</option>
-                                <option value="전체">전체</option>
-                                <option value="MSA 1차">MSA 1차</option>
-                                <option value="MSA 2차">MSA 2차</option>
-                                <option value="클라우드">클라우드</option>
-                            </select>
-                        </span>
+                            <div class="me-1">
+                                교육과정
+                                <select v-model="check.scname">
+                                    <option value="교육과정" selected disabled>교육과정 선택</option>
+                                    <option value="전체">전체</option>
+                                    <option value="MSA 1차">MSA 1차</option>
+                                    <option value="MSA 2차">MSA 2차</option>
+                                    <option value="클라우드">클라우드</option>
+                                </select>
+                            </div>
 
-                        <span class="me-1">
-                            작성자
-                            <select v-model="notice.mid">
-                                <option value="작성자" selected disabled>작성자 선택</option>
-                                <option value="운영진">운영진</option>
-                                <option value="강사진">강사진</option>
-                            </select>
-                        </span>
+                            <div class="me-1">
+                                작성자
+                                <select v-model="check.swriter">
+                                    <option value="작성자" selected disabled>작성자 선택</option>
+                                    <option value="운영진">운영진</option>
+                                    <option value="강사진">강사진</option>
+                                </select>
+                            </div>
 
-                        <span>
-                            유형
-                            <select v-model="notice.ncategory">
-                                <option value="유형" selected disabled>유형 선택</option>
-                                <option value="출결">출결</option>
-                                <option value="수업">수업</option>
-                                <option value="강의장">강의장</option>
-                                <option value="취업">취업</option>
-                                <option value="행사">행사</option>
-                            </select>
-                        </span>
+                            <div>
+                                유형
+                                <select v-model="check.scategory">
+                                    <option value="유형" selected disabled>유형 선택</option>
+                                    <option value="출결">출결</option>
+                                    <option value="수업">수업</option>
+                                    <option value="강의장">강의장</option>
+                                    <option value="취업">취업</option>
+                                    <option value="행사">행사</option>
+                                </select>
+                            </div>
 
-                        <span class="ms-3">
-                            <button class="btn btn-dark btn-sm" @click="handlecheck">조회</button>
-                        </span>                        
+                            <div class="ms-3">
+                                <button class="btn btn-dark btn-sm" @click="handlecheck">조회</button>
+                            </div>
+                        </div>
                     </form>
 
-                    
+
                     <!-- 로그인 했을때만 공지사항 등록가능 -->
                     <!-- <div v-if="$store.state.userId !== ''" class="mb-3">
                         <span class="ms-5" style="text-align:right">
@@ -77,13 +80,13 @@
                     </div> -->
 
                     <!-- (공지사항 등록 버튼) 위에 작성해놔서 지워질 부분-->
-                    <div class="ms-5" style="text-align:right">
-                            <BaseButtonCreate class="mt-3" @click="handleCreateBtn">공지사항 등록</BaseButtonCreate>
+                    <div class="mt-3" style="text-align:right">
+                        <input class="btn btn-dark btn-sm" value="등록" @click="handleCreateBtn">
                     </div>
                 </span>
 
 
-                
+
 
                 <!-- 공지사항 검색하는 부분 -->
                 <div class="mb-3" style="text-align:right">
@@ -99,8 +102,6 @@
 
             <!-- 공지사항 테이블이 나오는 부분-->
             <div class="container">
-
-
                 <table class="table table-hover" style="text-align:center">
                     <thead>
                         <tr>
@@ -118,65 +119,59 @@
                     <tbody>
                         <tr>
                             <!-- <tr v-for="notice in page.notices" :key="notice.nno"> -->
-                            <td>1 {{ notice.nno }}</td>
-                            <td>강의장 청결 유지 <RouterLink :to="`/admin/notice/detail?nno=${notice.nno}&pageNo=${pageNo}`">강의장 청결
-                                    유지{{ notice.ntitle }}</RouterLink>
+                            <td>{{ notice.nno }}</td>
+                            <td>
+                                <RouterLink :to="`/admin/notice/detail?nno=${notice.nno}&pageNo=${pageNo}`">{{ notice.ntitle
+                                }}</RouterLink>
                             </td>
-                            <td>송파 교육장 {{ notice.ecname }}</td>
-                            <td>MSA 2차 {{ notice.cname }}</td>
-                            <td>강의장 {{ notice.ncategory }}</td>
-                            <td>운영진 {{ notice.mid }}</td>
-                            <td>2024-06-18 {{ notice.ncreatedat }}</td>
+                            <td>{{ notice.ecname }}</td>
+                            <td>{{ notice.cname }}</td>
+                            <td>{{ notice.ncategory }}</td>
+                            <td>({{ notice.writer }}){{ notice.name }}</td>
+                            <td>{{ notice.ncreatedat }}</td>
                             <td>{{ notice.nupdatedat }}</td>
                             <td>
                                 <router-link to="./update" class="btn btn-info btn-sm me-2">수정</router-link>
-                                <router-link to="./list" class="btn btn-danger btn-sm" @click="handleRemove">삭제</router-link>
-                            </td>
-                        </tr>
-                        <!-- v-for사용으로 지워질 부분 -->
-                        <!-- <tr>
-                            <td>2</td>
-                            <td>강의장 청결 유지</td>
-                            <td>송파 교육장</td>
-                            <td>MSA 2차</td>
-                            <td>강의장</td>
-                            <td>운영진</td>
-                            <td>2024-06-18</td>
-                            <td></td>
-                            <td>
-                                <router-link to="./update" class="btn btn-info btn-sm me-2">수정</router-link>
-                                <router-link to="./list" class="btn btn-danger btn-sm">삭제</router-link>
+                                <router-link to="./list" class="btn btn-danger btn-sm"
+                                    @click="handleRemove">삭제</router-link>
                             </td>
                         </tr>
                         <tr>
-                            <td>3</td>
-                            <td>강의장 청결 유지</td>
-                            <td>송파 교육장</td>
-                            <td>MSA 2차</td>
-                            <td>강의장</td>
-                            <td>운영진</td>
-                            <td>2024-06-18</td>
+                            <!-- <tr v-for="notice in page.notices" :key="notice.nno"> -->
+                            <td>2</td>
+                            <td>
+                                <RouterLink to="/admin/notice/detail">출결 확인</RouterLink>
+                            </td>
+                            <td>혜화 교육장</td>
+                            <td>MSA 1차</td>
+                            <td>출결</td>
+                            <td>(운영진)홍길동</td>
+                            <td>2024-06-23</td>
                             <td></td>
                             <td>
                                 <router-link to="./update" class="btn btn-info btn-sm me-2">수정</router-link>
-                                <router-link to="./list" class="btn btn-danger btn-sm">삭제</router-link>
-
+                                <router-link to="./list" class="btn btn-danger btn-sm"
+                                    @click="handleRemove">삭제</router-link>
                             </td>
-                        </tr> -->
-                        <!-- <tr>
-                            <td colspan="5">
-                                <button class="btn btn-outline-primary btn-sm me-1" @click="changePageNo(1)">처음</button>
-                                <button v-if="page.pager.groupNo>1" class="btn btn-outline-info btn-sm me-1" @click="changePageNo(page.pager.startPageNo-1)">이전</button>
-                                <button v-for="pageNo in page.pager.pageArray" :key="pageNo" 
-                                        :class="(page.pager.pageNo === pageNo)?'btn-danger':'btn-outline-success'"
-                                        class="btn btn-sm me-1"
-                                        @click="changePageNo(pageNo)">
-                                    {{ pageNo }}
-                                </button>
-                                <button v-if="page.pager.groupNo<page.pager.totalGroupNo" class="btn btn-outline-info btn-sm me-1" @click="changePageNo(page.pager.endPageNo+1)">다음</button>
-                                <button class="btn btn-outline-primary btn-sm me-1" @click="changePageNo(page.pager.totalPageNo)">맨끝</button>
+                        </tr>
+                        <tr>
+                            <!-- <tr v-for="notice in page.notices" :key="notice.nno"> -->
+                            <td>3</td>
+                            <td>
+                                <RouterLink to="/admin/notice/detail">수업 휴무</RouterLink>
                             </td>
-                        </tr> -->
+                            <td>가산 교육장</td>
+                            <td>클라우드</td>
+                            <td>수업</td>
+                            <td>(강사진)전현무</td>
+                            <td>2024-06-24</td>
+                            <td></td>
+                            <td>
+                                <router-link to="./update" class="btn btn-info btn-sm me-2">수정</router-link>
+                                <router-link to="./list" class="btn btn-danger btn-sm"
+                                    @click="handleRemove">삭제</router-link>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -186,10 +181,7 @@
 
 <script setup>
 
-import BaseButtonCreate from '@/components/UIComponents/BaseButtonCreate.vue';
-// import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
-// import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
-// import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
+
 import { useRoute, useRouter } from 'vue-router';
 import { ref, watch } from 'vue';
 // import noticeAPI from "@/apis/noticeAPI";
@@ -197,26 +189,38 @@ import { ref, watch } from 'vue';
 //라우터 객체 얻기
 const router = useRouter();
 
-
 //상태 정의
 let notice = ref({
-    nno: "",
+    name: "박나래",
+    nno: "1",
     ecno: "",
     cno: "",
-    mid: "작성자",
-    ncategory: "유형",
-    ntitle: "",
+    writer: "운영진",
+    ncategory: "강의장",
+    ntitle: "강의장 청결 유지",
     ncontent: "",
     nhitcount: "",
     nattach: "",
     nattachoname: "",
     nattachtype: "",
-    ncreatedat: "",
+    ncreatedat: "2024-06-22",
     nupdatedat: "",
-    ecname: "교육장",
-    cname: "교육과정"
+    ecname: "송파교육장",
+    cname: "MSA 2차",
+    secname: "교육장",
+    scname: "교육과정",
+    swriter: "작성자",
+    scategory: "유형",
+
 });
 
+//select 조회에 사용되는 check
+let check = ref({
+    secname: "교육장",
+    scname: "교육과정",
+    swriter: "작성자",
+    scategory: "유형"
+})
 
 // const page = ref({
 //     notices: [],
@@ -261,7 +265,7 @@ let notice = ref({
 
 //조회 콘솔로그
 function handlecheck() {
-    console.log(JSON.parse(JSON.stringify(notice.value)));
+    console.log(JSON.parse(JSON.stringify(check.value)));
 }
 
 //공지사항 등록버튼
