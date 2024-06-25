@@ -8,7 +8,6 @@
 
         <!-- contents -->
         <div class="container" style="text-align: left;">
-
             <form>
                 <!-- 테이블 -->
                 <table class="table" style="text-align:center">
@@ -19,16 +18,15 @@
                             </td>
                             <td colspan="3" style="text-align:left">
                                 <input v-model="notice.ntitle">
-                                                              
                             </td>
                         </tr>
                         <tr>
                             <td>작성날짜</td>
                             <td style="text-align:left">
-                                <input v-model="notice.ncreatedat" value="2024.06.19">
+                                <input v-model="notice.ncreatedat">
                             </td>
                             <td>작성자</td>
-                            <td><input v-model="notice.mid" value="운영진"></td>
+                            <td><input v-model="notice.writer"></td>
                         </tr>
                         <tr>
                             <td>공지사항 유형</td>
@@ -52,7 +50,8 @@
                         </tr>
                         <tr>
                             <td colspan="4">
-                                <textarea v-model="notice.ncontent" name="notice_content" rows=15 cols=140 style="resize: none;"  readonly>
+                                <textarea v-model="notice.ncontent" name="notice_content" rows=15 cols=140
+                                    style="resize: none;" readonly>
                                 </textarea>
                             </td>
                         </tr>
@@ -65,7 +64,7 @@
         <!-- 버튼부분 -->
         <div style="text-align:center;">
             <BaseButtonSubmit @click="handleListBtn" style="margin-top: 10px;">공지사항 목록</BaseButtonSubmit>
-        </div>       
+        </div>
 
     </div>
 </template>
@@ -80,24 +79,24 @@ import { ref } from "vue";
 //라우터 객체 얻기
 const router = useRouter();
 
-
 //상태 정의
 let notice = ref({
-    nno:"",
-    ecno:"",
-    cno:"",
-    mid:"",
-    ncategory:"",
-    ntitle:"",
-    ncontent:"",
-    nhitcount:"",
-    nattach:"",
-    nattachoname:"",
-    nattachtype:"",
-    ncreatedat:"",
-    nupdatedat:"",
-    ecname:"",
-    cname:""   
+    nno: "",
+    ecno: "",
+    cno: "",
+    mid: "",
+    ncategory: "",
+    ntitle:"강의장 청결유지",
+    ncontent: "",
+    nhitcount: "",
+    nattach: "",
+    nattachoname: "",
+    nattachtype: "",
+    ncreatedat: "2024.06.19",
+    nupdatedat: "",
+    ecname: "",
+    cname: "",
+    writer:"홍길동"
 })
 
 // const nattach = ref(null);
@@ -137,10 +136,10 @@ let notice = ref({
 //로그인 여부에따라 공지사항 조회 화면
 //로그인이 되어 있을 경우
 // if(store.state.userId !== '') {    
-    //bno에 해당하는 게시물 가져오기
+//bno에 해당하는 게시물 가져오기
 //     getBoard(bno);
 // } else {
-    //로그인이 되어 있지 않을 경우 로그인 페이지로 이동
+//로그인이 되어 있지 않을 경우 로그인 페이지로 이동
 //     router.push("/");
 // }
 
