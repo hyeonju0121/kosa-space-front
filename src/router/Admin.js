@@ -75,6 +75,10 @@ const routes = [
                 component: () => import(/* webpackChunkName: "attendance" */ '@/views/Admin/Management/Learning/Attendance/AttendanceList.vue')
             },
             {
+                path: "attendance/approve", // "/admin/attendance/approve"
+                component: () => import(/* webpackChunkName: "attendance" */ '@/views/Admin/Management/Learning/Attendance/AttendanceApproveList.vue')
+            },
+            {
                 path: "attendance/trainee/detail", // "/admin/attendance/trainee/detail"
                 component: () => import(/* webpackChunkName: "attendance" */ '@/views/Admin/Management/Learning/Attendance/PersonalAttendanceDetail.vue')
             },
