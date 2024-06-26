@@ -162,6 +162,9 @@
                                     <input type="text" class="form-control p-3 ms-2" name="emailBack" id="emailBack"
                                         v-model.trim="memailBack" @input="emailPatternCheck()" style="width: 150px;" />
                                 </div>
+                                <div v-if="!emailChangeCheck" class="d-flex align-items-center mb-1">
+                                    <button class="btn btn-danger" @click="emailChangeBtn()">취소</button>
+                                </div>
                                 <span v-if="memailCheck === false" class="text-danger"
                                     style="font-size: 0.9em; height: 4px;">
                                     ※ 이메일 형식이 올바르지 않습니다. (ex. kosaspace@naver.com)
