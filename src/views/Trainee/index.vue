@@ -10,9 +10,9 @@
 import TraineeSlidebar from '@/components/Slidebar/TraineeSlidebar.vue';
 </script>
 
-<style scoped>
+<style>
 .wrapper {
   display: flex;
-  background-color: #f0f4fd;
+  background-color: #ffffff;
 }
 </style>

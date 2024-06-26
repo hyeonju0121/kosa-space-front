@@ -88,6 +88,11 @@
             </a>
             <ul class="sub-menu">
               <li>
+                <RouterLink to="/admin/attendance/approve">
+                  교육생 출결 승인 처리
+                </RouterLink>
+              </li>
+              <li>
                 <RouterLink to="/admin/attendance/list">
                   출결 현황 조회
                 </RouterLink>
