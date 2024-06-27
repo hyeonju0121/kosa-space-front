@@ -11,45 +11,68 @@
             </div>
         </div>
 
-        <div class="align" style="display: flex;">
-            <div class="InpBox">
-                <select id="room" title="교육장 선택">
-                    <option value="" selected="">교육장 선택</option>
-                    <option value="option1">전체</option>
-                    <option value="option2">송파교육센터</option>
-                    <option value="option3">가산교육센터</option>
-                    <option value="option3">혜화교육센터</option>
-                </select>
+        <form @submit.prevent="handleSubmitFilter1">
+            <div class="align" style="display: flex;">
+                <div class="InpBox">
+                    <select id="educenter" title="교육장 선택" v-model="filter.ecname">
+                        <option selected disabled value="">교육장 선택</option>
+                        <option value="전체">전체</option>
+                        <option value="송파교육센터">송파교육센터</option>
+                        <option value="가산교육센터">가산교육센터</option>
+                        <option value="혜화교육센터">혜화교육센터</option>
+                    </select>
+                </div>
+                <div class="InpBox" style="margin-left: 1%; width: 370px;">
+                    <select id="course" title="교육과정 선택" v-model="filter.cname">
+                        <option selected disabled value="">교육과정 선택</option>
+                        <option value="2024M2">MSA 기반 Full Stack 개발 전문가 양성과정 2차</option>
+                        <option value="2024C1">클라우드 솔루션즈 아키텍트 양성과정 1차</option>
+                    </select>
+                </div>
+                <button type="button" class="BtnType SizeM" @click="handleSubmitFilter1" style="margin-left: 1%;">
+                    승인 조회
+                </button>
             </div>
-            <div class="InpBox" style="margin-left: 1%; width: 370px;">
-                <select id="status" title="교육과정 선택">
-                    <option value="" selected="">교육과정 선택</option>
-                    <option value="option1">MSA 기반 Full Stack 개발 전문가 양성과정 2차</option>
-                    <option value="option1">클라우드 솔루션즈 아키텍트 양성과정 1차</option>
-                </select>
-            </div>
-            <button type="button" class="BtnType SizeM" style="margin-left: 1%;">
-                승인 조회
-            </button>
-        </div>
+        </form>
 
-        <div class="attandance_approve_card" style="display: flex;">
+        <div class="attandance_approve_card" style="display: flex;" v-if="!submitStatus">
             <div class="card1">
                 <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
                     <span class="card-title" style="color: rgb(115, 68, 227);">오늘 제출된 출결 사유</span>
-                    <h5 class="reason-num" style="color: rgb(115, 68, 227);">8건</h5>
+                    <h5 class="reason-num" style="color: rgb(115, 68, 227);">{{ reasonDashboard.allnum }}건</h5>
                 </div>
             </div>
             <div class="card2" style="margin-left: 1%;">
                 <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
                     <span class="card-title" style="color: rgb(36, 142, 147);">승인</span>
-                    <h5 class="reason-num" style="color: rgb(36, 142, 147);">5건</h5>
+                    <h5 class="reason-num" style="color: rgb(36, 142, 147);">{{ reasonDashboard.approvenum }}건</h5>
                 </div>
             </div>
             <div class="card3" style="margin-left: 1%;">
                 <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
                     <span class="card-title" style="color: rgb(233, 25, 39);">미승인</span>
-                    <h5 class="reason-num" style="color: rgb(233, 25, 39);">3건</h5>
+                    <h5 class="reason-num" style="color: rgb(233, 25, 39);">{{ reasonDashboard.notapprovednum }}건</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="attandance_approve_card" style="display: flex;" v-if="submitStatus">
+            <div class="card1">
+                <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
+                    <span class="card-title" style="color: rgb(115, 68, 227);">오늘 제출된 출결 사유</span>
+                    <h5 class="reason-num" style="color: rgb(115, 68, 227);">{{ reasonDashboardsongpa.allnum }}건</h5>
+                </div>
+            </div>
+            <div class="card2" style="margin-left: 1%;">
+                <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
+                    <span class="card-title" style="color: rgb(36, 142, 147);">승인</span>
+                    <h5 class="reason-num" style="color: rgb(36, 142, 147);">{{ reasonDashboardsongpa.approvenum }}건</h5>
+                </div>
+            </div>
+            <div class="card3" style="margin-left: 1%;">
+                <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
+                    <span class="card-title" style="color: rgb(233, 25, 39);">미승인</span>
+                    <h5 class="reason-num" style="color: rgb(233, 25, 39);">{{ reasonDashboardsongpa.notapprovednum }}건</h5>
                 </div>
             </div>
         </div>
@@ -61,14 +84,15 @@
             <div class="search_interview">
                     <div class="InpBox search_order">
                         <!-- 승인여부 -->
-                        <select id="search_status" name="search_status" title="응답 유형">
+                        <select id="search_status" title="승인 여부" v-model="filter.approve">
+                            <option selected disabled value="">승인 여부</option>
                             <option value="0">전체</option>
                             <option value="1">승인</option>
                             <option value="2">미승인</option>
                         </select>
                     </div>
                     <div class="TypoBox search_area" style="margin-left: 2%;">
-                        <input type="text" class="Typo search" id="search_keyword" name="search_keyword" value="" placeholder="교육생 입력">
+                        <input type="text" class="Typo search" id="search_keyword" v-model="filter.mname" value="" placeholder="교육생 입력">
                         <button type="button" id="keyword_search">
                             <PhMagnifyingGlass color="#838181"  style="width: 24px; height: 24px;"/>
                         </button>
@@ -77,7 +101,7 @@
         </div>
 
         <!-- 조회 안했을 때 ---------------------------------------------------------->    
-        <div class="interview_list">
+        <div class="interview_list" v-if="!submitStatus">
             <!-- 면접 요청 리스트 없을 경우 -->
             <div class="empty_data">
                 <img src="//www.saraminimage.co.kr/sri/person/resume/img_empty_announce.png">
@@ -87,7 +111,7 @@
         </div>
         
         <!-- 조회 했을 때------------------------------------------------------------->
-        <div>
+        <div v-if="submitStatus">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -111,16 +135,12 @@
                         <td>17:55</td>
                         <td>정상 출결</td>
                         <td>
-                            <router-link to="./trainee/detail" class="btn btn-dark btn-sm">
-                                해당없음
-                            </router-link>
+                            <button class="btn btn-dark btn-sm" disabled>해당없음</button>
                         </td>
                         <td>
-                            <router-link to="./trainee/detail" class="btn btn-dark btn-sm">
-                                미승인
-                            </router-link>
+                            <button class="btn btn-danger btn-sm" @click="handlerApproveBtn">미승인</button>
                         </td>
-                        <td><button class="btn btn-dark btn-sm">알림 전송</button></td>
+                        <td><button class="btn btn-warning btn-sm">알림 전송</button></td>
                     </tr>
                     <tr>
                         <td>2</td>
@@ -130,16 +150,12 @@
                         <td>-</td>
                         <td>결석</td>
                         <td>
-                            <router-link to="./trainee/detail" class="btn btn-dark btn-sm">
-                                사유 보기
-                            </router-link>
+                            <button class="btn btn-dark btn-sm" @click="handlerReasonBtn">사유 보기</button>
                         </td>
                         <td>
-                            <router-link to="./trainee/detail" class="btn btn-dark btn-sm">
-                                승인
-                            </router-link>
+                            <button class="btn btn-primary btn-sm" disabled>승인</button>
                         </td>
-                        <td><button class="btn btn-dark btn-sm">알림 전송</button></td>
+                        <td><button class="btn btn-warning btn-sm">알림 전송</button></td>
                     </tr>
                     <tr>
                         <td>3</td>
@@ -149,16 +165,12 @@
                         <td>-</td>
                         <td>조퇴</td>
                         <td>
-                            <router-link to="./trainee/detail" class="btn btn-dark btn-sm">
-                                사유 보기
-                            </router-link>
+                            <button class="btn btn-dark btn-sm" @click="handlerReasonBtn">사유 보기</button>
                         </td>
                         <td>
-                            <router-link to="./trainee/detail" class="btn btn-dark btn-sm">
-                                미승인
-                            </router-link>
+                            <button class="btn btn-danger btn-sm" @click="handlerApproveBtn">미승인</button>
                         </td>
-                        <td><button class="btn btn-dark btn-sm">알림 전송</button></td>
+                        <td><button class="btn btn-warning btn-sm">알림 전송</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -166,11 +178,66 @@
 
         
     </div>
-
     <AttendanceReasonDialog id="attendanceReasonDialog"/>
+    <ApproveDialog id="approveDialog"/>
 </template>
 
 <script setup>
+// modal
+import AttendanceReasonDialog from './Dialog/AttendanceReasonDialog.vue';
+import ApproveDialog from './Dialog/ApproveDialog.vue';
+import { Modal } from "bootstrap";
+
+import { ref, onMounted } from 'vue';
+
+
+// 필터 상태 객체 정의
+const filter = ref({
+    ecname: "",
+    cname: "",
+    approve: "",
+    mname: "",
+ });
+
+ // 출결 사유 현황 상태 객체 정의
+ const reasonDashboard = ref({
+    allnum: 58,
+    approvenum: 20,
+    notapprovednum: 38,
+ });
+
+ const reasonDashboardsongpa = ref({
+    allnum: 8,
+    approvenum: 5,
+    notapprovednum: 3
+ });
+
+let submitStatus = ref(false);
+
+// 교육장, 교육과정 필터 선택하고, 승인 조회 버튼 클릭 시 
+function handleSubmitFilter1() {
+    submitStatus.value = !submitStatus.value;
+    console.log(filter.value); 
+}
+
+let attendanceReasonDialog = null;
+let approveDialog = null;
+
+onMounted(() => {
+    // modal 객체 생성
+    attendanceReasonDialog = new Modal(document.querySelector("#attendanceReasonDialog"));
+    approveDialog = new Modal(document.querySelector("#approveDialog"));
+})
+
+// 사유 보기 버튼 클릭시, 교육생이 제출한 사유에 대한 모달 활성화
+function handlerReasonBtn() {
+    attendanceReasonDialog.show();
+}
+
+// 미승인 버튼 클릭시, 출결 승인 처리 모달 활성화
+function handlerApproveBtn() {
+    approveDialog.show();
+}
 
 </script>
 

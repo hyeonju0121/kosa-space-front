@@ -11,27 +11,29 @@
             </div>
         </div>
 
-        <div class="align" style="display: flex;">
-            <div class="InpBox">
-                <select id="ecname" v-model="attendance.ecname">
-                    <option selected disabled value="교육장">교육장 선택</option>
-                    <option value="전체">전체</option>
-                    <option value="송파교육센터">송파교육센터</option>
-                    <option value="가산교육센터">가산교육센터</option>
-                    <option value="혜화교육센터">혜화교육센터</option>
-                </select>
+        <form @submit.prevent="handleSubmitFilter1">
+            <div class="align" style="display: flex;">
+                <div class="InpBox">
+                    <select id="educenter" title="교육장 선택" v-model="filter.ecname">
+                        <option selected disabled value="">교육장 선택</option>
+                        <option value="전체">전체</option>
+                        <option value="송파교육센터">송파교육센터</option>
+                        <option value="가산교육센터">가산교육센터</option>
+                        <option value="혜화교육센터">혜화교육센터</option>
+                    </select>
+                </div>
+                <div class="InpBox" style="margin-left: 1%; width: 370px;">
+                    <select id="course" title="교육과정 선택" v-model="filter.cname">
+                        <option selected disabled value="">교육과정 선택</option>
+                        <option value="2024M2">MSA 기반 Full Stack 개발 전문가 양성과정 2차</option>
+                        <option value="2024C1">클라우드 솔루션즈 아키텍트 양성과정 1차</option>
+                    </select>
+                </div>
+                <button type="button" class="BtnType SizeM" @click="handleSubmitFilter1" style="margin-left: 1%;">
+                    교육생 조회
+                </button>
             </div>
-            <div class="InpBox" style="margin-left: 1%; width: 370px;">
-                <select id="course" v-model="attendance.cname">
-                    <option selected disabled value="교육과정">교육과정 선택</option>
-                    <option value="1">MSA 기반 Full Stack 개발 전문가 양성과정 2차</option>
-                    <option value="2">클라우드 솔루션즈 아키텍트 양성과정 1차</option>
-                </select>
-            </div>
-            <button type="button" class="BtnType SizeM" @click="handleCheck" style="margin-left: 1%;">
-                교육생 조회
-            </button>
-        </div>
+        </form>
 
         <!-- datepicker ----------->
         <div class="mt-3">
@@ -44,130 +46,181 @@
 
             <!-- 필터 -->
             <div class="search_interview">
-                    <div class="InpBox search_order">
-                        <!-- 승인여부 -->
-                        <select id="search_status" name="search_status" title="응답 유형">
-                            <option value="0">입실여부</option>
-                            <option value="0">전체</option>
-                            <option value="1">입실</option>
-                            <option value="2">미입실</option>
-                        </select>
-                    </div>
-                    <div class="InpBox search_order" style="margin-left: 2%;">
-                        <!-- 승인여부 -->
-                        <select id="search_status" name="search_status" title="응답 유형">
-                            <option value="0">퇴실여부</option>
-                            <option value="0">전체</option>
-                            <option value="1">퇴실</option>
-                            <option value="2">미퇴실</option>
-                        </select>
-                    </div>
-                    <div class="TypoBox search_area" style="margin-left: 2%;">
-                        <input type="text" class="Typo search" id="search_keyword" name="search_keyword" value="" placeholder="교육생 입력">
-                        <button type="button" id="keyword_search">
-                            <PhMagnifyingGlass color="#838181"  style="width: 24px; height: 24px;"/>
-                        </button>
-                    </div>
+                <div class="InpBox search_order">
+                    <!-- 입실여부 -->
+                    <select id="search_status" name="search_status" title="응답 유형">
+                        <option value="0">입실여부</option>
+                        <option value="0">전체</option>
+                        <option value="1">입실</option>
+                        <option value="2">미입실</option>
+                    </select>
+                </div>
+                <div class="InpBox search_order" style="margin-left: 2%;">
+                    <!-- 퇴실여부 -->
+                    <select id="search_status" name="search_status" title="응답 유형">
+                        <option value="0">퇴실여부</option>
+                        <option value="0">전체</option>
+                        <option value="1">퇴실</option>
+                        <option value="2">미퇴실</option>
+                    </select>
+                </div>
+                <div class="TypoBox search_area" style="margin-left: 2%;">
+                    <input type="text" class="Typo search" id="search_keyword" name="search_keyword" value="" placeholder="교육생 입력">
+                    <button type="button" id="keyword_search">
+                        <PhMagnifyingGlass color="#838181"  style="width: 24px; height: 24px;"/>
+                    </button>
+                </div>
             </div>
         </div>
 
-
-            <div class="mt-3">
-                <!-- 출결 테이블 부분 -->
-                    <div class="container">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>번호</th>
-                                    <th>이름</th>
-                                    <th>교육생 번호</th>
-                                    <th>입실시간</th>
-                                    <th>퇴실시간</th>
-                                    <th>출결 진행률</th>
-                                    <th>출석</th>
-                                    <th>지각</th>
-                                    <th>결석</th>
-                                    <th>비고</th>
-                                    <th>출결 알림</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{{ attendance.ano }}</td>
-                                    <td>{{ attendance.name }}</td>
-                                    <td>2024M2001</td>
-                                    <td>{{ attendance.starttime }}</td>
-                                    <td>{{ attendance.endtime }}</td>
-                                    <td>
-                                        <div class="attendance-box" style="width: 120%; height: 80px;">
-                                            <div style="width: 340px; margin-top: 5%; margin-left: 10px;">
-                                                <div class="d-flex flex-row justify-content-between">
-                                                    <span style="font-size: 14px;">2024.06.19 기준</span>
-                                                    <span style="font-size: 14px;">70% (84일 / 105일)</span>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-success" style="width:70%">70%</div>
-                                                </div>
-                                            </div>
+        <div class="mt-3">
+            <!-- 출결 테이블 부분 -->
+            <div class="container">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>이름</th>
+                            <th>교육생 번호</th>
+                            <th>입실시간</th>
+                            <th>퇴실시간</th>
+                            <th>출결 진행률</th>
+                            <th>출석</th>
+                            <th>지각</th>
+                            <th>결석</th>
+                            <th>비고</th>
+                            <th>출결 알림</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ attendance.ano }}</td>
+                            <td>{{ attendance.name }}</td>
+                            <td>{{ attendance.mid }}</td>
+                            <td>{{ attendance.starttime }}</td>
+                            <td>{{ attendance.endtime }}</td>
+                            <td>
+                                <div class="attendance-box" style="width: 120%; height: 80px;">
+                                    <div style="width: 340px; margin-top: 5%; margin-left: 10px;">
+                                        <div class="d-flex flex-row justify-content-between">
+                                            <span style="font-size: 14px;">{{ attendance.attendancestatus[0] }} 기준</span>
+                                            <span style="font-size: 14px;">{{ attendance.attendancestatus[1] }}% ({{ attendance.attendancestatus[2] }}일 / {{ attendance.attendancestatus[3] }}일)</span>
                                         </div>
-                                    </td>
-                                    <td>81</td>
-                                    <td>1</td>
-                                    <td>0</td>
-                                    <td><router-link to="./trainee/detail" class="btn btn-dark btn-sm">출결현황 보기</router-link>
-                                    </td>
-                                    <td><button class="btn btn-dark btn-sm">알림 전송</button></td>
-                                    
-                                </tr>
-                               
-                            </tbody>
-                        </table>
-                    </div>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" style="width:70%">{{ attendance.attendancestatus[1] }}%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ attendance.attendancetotalnum[0] }}</td>
+                            <td>{{ attendance.attendancetotalnum[1] }}</td>
+                            <td>{{ attendance.attendancetotalnum[2] }}</td>
+                            <td>
+                                <router-link to="./trainee/detail" class="btn btn-dark btn-sm">
+                                    출결현황 보기
+                                </router-link>
+                            </td>
+                            <td><button class="btn btn-dark btn-sm">알림 전송</button></td>      
+                        </tr>
+                        <!------------------------------------------------------------------------------>
+                        <tr>
+                            <td>2</td>
+                            <td>김성민</td>
+                            <td>2024M2002</td>
+                            <td>08:58</td>
+                            <td>18:10</td>
+                            <td>
+                                <div class="attendance-box" style="width: 120%; height: 80px;">
+                                    <div style="width: 340px; margin-top: 5%; margin-left: 10px;">
+                                        <div class="d-flex flex-row justify-content-between">
+                                            <span style="font-size: 14px;">{{ attendance.attendancestatus[0] }} 기준</span>
+                                            <span style="font-size: 14px;">{{ attendance.attendancestatus[1] }}% ({{ attendance.attendancestatus[2] }}일 / {{ attendance.attendancestatus[3] }}일)</span>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" style="width:70%">{{ attendance.attendancestatus[1] }}%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ attendance.attendancetotalnum[0] }}</td>
+                            <td>{{ attendance.attendancetotalnum[1] }}</td>
+                            <td>{{ attendance.attendancetotalnum[2] }}</td>
+                            <td>
+                                <router-link to="./trainee/detail" class="btn btn-dark btn-sm">
+                                    출결현황 보기
+                                </router-link>
+                            </td>
+                            <td><button class="btn btn-dark btn-sm">알림 전송</button></td>      
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>이경섭</td>
+                            <td>2024M2003</td>
+                            <td>{{ attendance.starttime }}</td>
+                            <td>{{ attendance.endtime }}</td>
+                            <td>
+                                <div class="attendance-box" style="width: 120%; height: 80px;">
+                                    <div style="width: 340px; margin-top: 5%; margin-left: 10px;">
+                                        <div class="d-flex flex-row justify-content-between">
+                                            <span style="font-size: 14px;">{{ attendance.attendancestatus[0] }} 기준</span>
+                                            <span style="font-size: 14px;">{{ attendance.attendancestatus[1] }}% ({{ attendance.attendancestatus[2] }}일 / {{ attendance.attendancestatus[3] }}일)</span>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" style="width:70%">{{ attendance.attendancestatus[1] }}%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ attendance.attendancetotalnum[0] }}</td>
+                            <td>{{ attendance.attendancetotalnum[1] }}</td>
+                            <td>{{ attendance.attendancetotalnum[2] }}</td>
+                            <td>
+                                <router-link to="./trainee/detail" class="btn btn-dark btn-sm">
+                                    출결현황 보기
+                                </router-link>
+                            </td>
+                            <td><button class="btn btn-dark btn-sm">알림 전송</button></td>      
+                        </tr>      
+                    </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-
-    <AttendanceReasonDialog id="attendanceReasonDialog"/>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
-//datepicker  
 import { ref, onMounted } from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
-// modal
-import AttendanceReasonDialog from '@/views/Admin/Management/Learning/Attendance/AttendanceReasonDialog.vue';
-import { Modal } from "bootstrap";
 
 const date = ref();
-
-let attendanceReasonDialog = null;
 
 onMounted(() => {
     const startDate = new Date();
     const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
     date.value = [startDate, endDate];
-
-    // modal 객체 생성
-    attendanceReasonDialog = new Modal(document.querySelector("#attendanceReasonDialog"));
 })
 
-let attendance = ref({
-    ecname: "교육장",
-    cname: "교육과정",
+// 필터 상태 객체 정의
+const filter = ref({
+    ecname: "",
+    cname: "",
+    approve: "",
+    mname: "",
+ });
+
+ // 교육생 출결 상태 객체 정의
+const attendance = ref({
     ano: "1",
-    profile: "",
-    name: "이경섭",
+    name: "유현주",
+    mid: "M2001",
     starttime: "08:45",
     endtime: "17:55",
-    astatus: "정상 출결"
+    // 출결 진행률
+    attendancestatus: ["2024-06-27", 70, 84, 105],
+    // 출석, 지각, 결석 
+    attendancetotalnum: [84, 1, 0]
 })
-
-
-// 사유 보기 버튼 클릭시, 교육생이 제출한 사유에 대한 모달 활성화
-function handlerReasonBtn() {
-    attendanceReasonDialog.show();
-}
 
 </script>
 
