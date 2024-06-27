@@ -16,30 +16,30 @@
                                 제목
                             </td>
                             <td colspan="3" style="text-align:left">
-                                <input v-model="notice.ntitle">
+                                <input readonly v-model="notice.ntitle">
                             </td>
                         </tr>
                         <tr>
                             <td>작성날짜</td>
                             <td style="text-align:left">
-                                <input v-model="notice.ncreatedat">
+                                <input readonly v-model="notice.ncreatedat">
                             </td>
                             <td>작성자</td>
-                            <td><input v-model="notice.nname"></td>
+                            <td><input readonly v-model="notice.nname"></td>
                         </tr>
                         <tr>
                             <td>공지사항 유형</td>
                             <td colspan="3" style="text-align: left;">
-                                <input v-model="notice.ncategory">
+                                <input readonly v-model="notice.ncategory">
                             </td>
                         </tr>
                         <tr>
                             <td>교육장 명</td>
                             <td style="text-align:left">
-                                <input v-model="notice.ecname">
+                                <input readonly v-model="notice.ecname">
                             </td>
                             <td>교육과정</td>
-                            <td><input v-model="notice.cname"></td>
+                            <td><input readonly v-model="notice.cname"></td>
                         </tr>
                         <tr>
                             <td>첨부파일</td>

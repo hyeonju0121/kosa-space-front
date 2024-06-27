@@ -17,19 +17,19 @@
                 <form submit.prevent="handlecheck">
                     <div class="mb-3">
                         <span class="me-3">
-                            <select v-model="trainee.ecname">
+                            <select v-model="trainee.ecname">                                
                                 <option value="교육장" selected disabled>교육장 선택</option>
+                                <option value="전체">전체</option>
                                 <option value="송파 교육장">송파 교육장</option>
                                 <option value="혜화 교육장">혜화 교육장</option>
+                                <option value="가산 교육장">가산 교육장</option>
                             </select>
                         </span>
 
                         <span class="me-3">
                             <select v-model="trainee.cname">
                                 <option value="교육과정" selected disabled>교육과정 선택</option>
-                                <option value="MSA 1차">MSA 1차</option>
-                                <option value="MSA 2차">MSA 2차</option>
-                                <option value="클라우드">클라우드</option>
+                                <option v-for="course in availableCourses" :key="course" :value="course">{{ course }}</option>
                             </select>
                         </span>
                         <span>
@@ -40,23 +40,35 @@
 
                 <!-- 교육과정 선택했을때 교육과정에 따라 나오는 문구 -->
                 <div>
-                    <div style="font-weight:bold" v-if="trainee.cname === 'MSA 1차'">|MSA 기반 Full Stack기반 전문가 양성과정 1차({{
-                        trainee.cstartdate }} ~ {{ trainee.cenddate }})</div>
-                    <div style="font-weight:bold" v-else-if="trainee.cname === 'MSA 2차'">|MSA 기반 Full Stack기반 전문가 양성과정 2차({{
-                        trainee.cstartdate }} ~ {{ trainee.cenddate }})</div>
-                    <div style="font-weight:bold" v-else-if="trainee.cname === '클라우드'">|클라우드 전문가 양성과정({{ trainee.cstartdate
-                    }} ~ {{ trainee.cenddate }})</div>
+                    <div style="font-weight:bold" v-if="trainee.cname === 'MSA 1차'">
+                        |MSA 기반 Full Stack기반 전문가 양성과정 1차({{trainee.cstartdate }} ~ {{ trainee.cenddate }})
+                    </div>
+                    <div style="font-weight:bold" v-else-if="trainee.cname === 'MSA 2차'">
+                        |MSA 기반 Full Stack기반 전문가 양성과정 2차({{trainee.cstartdate }} ~ {{ trainee.cenddate }})
+                    </div>
+                    <div style="font-weight:bold" v-else-if="trainee.cname === '클라우드'">
+                        |클라우드 전문가 양성과정({{ trainee.cstartdate }} ~ {{ trainee.cenddate }})
+                    </div>
+                    <div style="font-weight:bold" v-else-if="trainee.cname === '보안컨설턴트'">
+                        |보안컨설턴트 전문가 양성과정({{ trainee.cstartdate }} ~ {{ trainee.cenddate }})
+                    </div>
+                    <div style="font-weight:bold" v-else-if="trainee.cname === '도커'">
+                        |도커 전문가 양성과정({{ trainee.cstartdate }} ~ {{ trainee.cenddate }})
+                    </div>                    
+                    <div style="font-weight:bold" v-else-if="trainee.cname === 'AI'">
+                        |AI 전문가 양성과정({{ trainee.cstartdate }} ~ {{ trainee.cenddate }})
+                    </div>
+                    <div style="font-weight:bold" v-else-if="trainee.cname === '데이터분석'">
+                        |데이터분석 전문가 양성과정({{ trainee.cstartdate }} ~ {{ trainee.cenddate }})</div>
                 </div>
 
                 <!-- 교육생 등록 버튼 -->
                 <div class="mb-3" style="text-align:right">
-                    <router-link to="/admin/trainee/register"><button class="btn btn-dark btn-sm">교육생
-                            등록</button></router-link>
+                    <button v-if="!(trainee.cname==='전체' || trainee.ecname==='전체' || trainee.cname==='교육과정' || trainee.ecname==='교육장')" class="btn btn-dark btn-sm" @click="handleCreateBtn">교육생 등록</button>
                 </div>
-
                 <!-- 테이블 부분 -->
                 <form>
-                    <div v-if="trainee.ecname !== '교육장' && trainee.cname !=='교육과정'" class="container">
+                    <div class="container">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
@@ -122,21 +134,33 @@
                             </tbody>
                         </table>
                     </div>
-                </form>
-                <!-- select부분 아무것도 클릭 안했을때 나오는 화면 -->
-                <div v-if="trainee.ecname === '교육장' || trainee.cname==='교육과정'"><TableDefaultContents/></div>
+                </form>                
             </div>           
         </div>
     </div>
 </template>
 
 <script setup>
-// import BaseButtonCreate from '@/components/UIComponents/BaseButtonCreate.vue';
-// import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
-import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
-import TableDefaultContents from '@/components/UIComponents/TableDefaultContents.vue';
+import { ref,computed } from 'vue';
+
+
+
+// 교육장 및 교육과정 데이터
+const educationCenters = ref([
+    { name: '전체', courses: ['전체'] },
+    { name: '송파 교육장', courses: ['전체','MSA 1차', 'MSA 2차', '클라우드'] },
+    { name: '혜화 교육장', courses: ['전체','보안컨설턴트','도커'] },
+    { name: '가산 교육장', courses: ['전체','AI','데이터분석'] }
+]);
+
+
+// 선택된 교육장에 따라 교육과정 옵션을 동적으로 변경
+const availableCourses = computed(() => {
+    const selectedCenter = educationCenters.value.find(center => center.name === trainee.value.ecname);
+    return selectedCenter ? selectedCenter.courses : [];
+});
+
 
 //상태정의
 let trainee = ref({
@@ -174,7 +198,14 @@ function handlecheck() {
 const router = useRouter();
 
 function handleCreateBtn() {
-    router.push('/admin/trainee/register');
+    router.push({
+        path: '/admin/trainee/register',
+        query: {
+            ecname: trainee.value.ecname,
+            cname: trainee.value.cname
+        }
+    })
+
 }
 
 function handleUpdateBtn() {

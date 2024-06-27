@@ -6,7 +6,8 @@
 
         <div class="headingArea">
             <div class="title">
-                <h1 id="itemTitle">교육생 등록</h1>
+                <h1 id="itemTitle">교육생 등록 </h1>
+                <div v-if="!(ecname === '전체' && cname === '전체')" id="itemTitle">| {{ ecname }} - {{ cname }}</div>
             </div>
 
             <!-- 교육생 등록 폼 -->
@@ -33,16 +34,22 @@
                             <tr>
                                 <td>교육생 이름</td>
                                 <td colspan="3">
-                                    <input type="text" v-model="trainee.mname">
+                                    <input type="text" name="mname" id="mname" v-model.trim="member.mname" placeholder="이름"
+                                        style="width: 150px;" @input="namePatternCheck()">
+                                    <!-- 이름 유효성 검사를 통한 DOM 생성 여부 -->
+                                    <p v-if="mnameCheck === false" class="text-center text-danger"
+                                        style="font-size: 0.9em; height: 4px;">
+                                        2글자 이상 한글만 입력 가능합니다. (길이 2 ~ 6 공백 X)
+                                    </p>
                                 </td>
                             </tr>
                             <tr>
                                 <td>학력</td>
                                 <td colspan="3">
-                                    <select class="form-control p-3" id="tacademic" name="tacademic" style="width: 150px;"
-                                        v-model="trainee.tacademic" required>
+                                    <select id="tacademic" name="tacademic" style="width: 150px;"
+                                        v-model="trainee.tacademic">
                                         <option value="고등학교">고등학교</option>
-                                        <option value="대학교">대학교</option>
+                                        <option value="대학교">대학교</option>                                        
                                     </select>
 
                                     <!-- 고등학교를 선택했을 시 -->
@@ -89,37 +96,52 @@
                             </tr>
                             <tr>
                                 <td>나이</td>
-                                <td><input type="text" v-model="trainee.tage"></td>
+                                <td><input required type="text" v-model="trainee.tage" style="width: 80px;"></td>
                                 <td>성별</td>
                                 <td>
-                                    <select v-model="trainee.tsex">
+                                    <select required v-model="trainee.tsex" @change="checkSex">
                                         <option value="성별" selected disabled>성별 선택</option>
                                         <option value="남자">남자</option>
                                         <option value="여자">여자</option>
                                     </select>
+                                    <!-- 성별 유효성 검사를 통한 DOM 생성 여부 -->
+                                    <p v-if="tsexCheck === false" class="text-center text-danger"
+                                        style="font-size: 0.9em; height: 4px;">
+                                        성별을 선택해주세요.
+                                    </p>
                                 </td>
                             </tr>
                             <tr>
                                 <td>주소</td>
                                 <td colspan="3">
                                     <div class="td">
-                                        <DaumPostCode3 @send-daumpostcode="postcodeinfo"/>
-                                    </div>                                    
+                                        <DaumPostCode3 @send-daumpostcode="postcodeinfo" />
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td>핸드폰 번호</td>
-                                <td colspan="3"><input v-model="trainee.mphone"></td>
-                            </tr>
-                            <tr>
-                                <td>교육상태</td>
-                                <td colspan="3">
-                                    <select v-model="trainee.tstatus" style="width: 150px;">
-                                        <option value="교육상태" selected disabled>교육상태 선택</option>
-                                        <option value="과정진행중">과정진행중</option>
-                                        <option value="퇴소">퇴소</option>
-                                        <option value="정상수료">정상수료</option>
-                                    </select>
+                                <td colspan="3">                                    
+                                    <!-- 휴대폰 앞번호 -->
+                                    <input type="text" name="mphonenumver1" id="mphonenumber1" value="010"
+                                        style="width: 80px;" readonly>
+                                    <span class="ms2-2 me-2">-</span>
+                                    <!-- 휴대폰 중간 번호 -->
+                                    <input maxlength="4" type="text" name="mphonenumber2" id="mphonenumber2"
+                                        style="width: 100px;" v-model.trim="mphonenummiddle"
+                                        @input="phonePatternmiddleCheck()">
+                                    <span class="ms-2 me-2">-</span>
+                                    <!-- 휴대폰 뒷 번호 -->
+                                    <input maxlength="4" type="text" name="mphonenumber3" id="mphonenumber3" value=""
+                                        style="width: 100px;" v-model.trim="mphonenumend" @input="phonePatternendCheck()">
+                                    <p v-if="mphoneMiddleCheck === false" class="text-center text-danger"
+                                        style="font-size: 0.9em; height: 4px;">
+                                        휴대폰 중간번호 4자리를 입력해주세요.
+                                    </p>
+                                    <p v-if="mphoneEndCheck === false" class="text-center text-danger"
+                                        style="font-size: 0.9em; height: 4px;">
+                                        휴대폰 끝번호 4자리를 입력해주세요.
+                                    </p>
                                 </td>
                             </tr>
                         </tbody>
@@ -136,19 +158,83 @@
 </template>
 
 <script setup>
-// import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
-// import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
-import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { ref, onMounted } from 'vue';
 import DaumPostCode3 from './DaumPostCode3.vue';
+
+let mphonenummiddle = ref("");
+let mphonenumend = ref("");
+
+let mphoneMiddleCheck = ref(null); //휴대폰 중간 번호 유효성 v-if부분
+let mphoneEndCheck = ref(null); //휴대폰 끝 번호 유효성 v-if부분
+let mphoneTotalCheck = ref(null); // 휴대폰 전체 유효성
+let mnameCheck = ref(null); //이름 유효성 v-if부분
+let tsexCheck = ref(null); //성별 v-if부분
+// submit error 상태 변수 추가-등록버튼 눌렀을시 다른 유효성 검사가 통과 되지않으면 등록이 안되도록 함
+let submitError = ref(false);
+
+// 성별 유효성 검사
+function checkSex() {
+    tsexCheck.value = trainee.value.tsex !== '성별';
+}
+
+// 이름 유효성 검사
+const mnamePattern = /^[가-힣]{2,6}$/;
+function namePatternCheck() {
+    if (mnamePattern.test(member.value.mname)) {
+        mnameCheck.value = true;
+    } else {
+        mnameCheck.value = false;
+    }
+}
+
+// 휴대폰 중간번호 유효성 검사
+function phonePatternmiddleCheck() {
+    const mphoneMiddlePattern = /^[0-9]{4}$/;
+    if (mphoneMiddlePattern.test(mphonenummiddle.value)) {
+        mphoneMiddleCheck.value = true;
+    } else {
+        mphoneMiddleCheck.value = false;
+    }
+    phonePatternCheck();
+}
+// 휴대폰 끝번호 유효성 검사
+function phonePatternendCheck() {
+    const mphoneEndPattern = /^[0-9]{4}$/;
+    if (mphoneEndPattern.test(mphonenumend.value)) {
+        mphoneEndCheck.value = true;
+    } else {
+        mphoneEndCheck.value = false;
+    }
+    phonePatternCheck();
+}
+
+// 휴대폰 번호 전체 유효성 검사
+const mphonePattern = /^(010)-\d{4}-\d{4}$/;
+function phonePatternCheck() {
+    member.value.mphone = "010-" + mphonenummiddle.value + "-" + mphonenumend.value;
+    console.log("member.value.mphone : " + member.value.mphone);
+    console.log("mphonenummiddle : " + mphonenummiddle.value);
+    console.log("mphonenumend : " + mphonenumend.value);
+    // mphoneTotalCheck.value = mphonePattern.test(member.value.mphone);
+    if (mphonePattern.test(member.value.mphone)) {
+        mphoneTotalCheck.value = true;
+    } else {
+        mphoneTotalCheck.value = false;
+    }
+}
+
 
 //라우터 객체 얻기
 const router = useRouter();
+const route = useRoute();
 
 //취소버튼을 눌렀을때
 function handleCancle() {
     router.push('/admin/trainee/list');
 }
+
+
 
 //상태정의
 let trainee = ref({
@@ -162,8 +248,8 @@ let trainee = ref({
     cstartdate: "",
     cenddate: "",
     tsex: "성별",
-    taddress:"",
-    tage: "",    
+    taddress: "",
+    tage: "",
     tfield: "",
     tacademic: "",
     tschoolname: "",
@@ -175,6 +261,27 @@ let trainee = ref({
     tprofileoname: "",
     tprofiletype: ""
 
+});
+
+const member = ref({
+    mid: "",
+    mname: "",
+    mphone: "",
+    mpassword: "",
+    memail: "",
+    // mrole: "",
+    // menable: "",
+    // mcreatedat: "",
+    // mupdatedat: ""
+});
+
+//교육생 목록에서 쿼리스트링으로 보낸 교육장과 교육과정을 받기위한 부분
+const ecname = ref('');
+const cname = ref('');
+
+onMounted(() => {
+    ecname.value = route.query.ecname || '';
+    cname.value = route.query.cname || '';
 });
 
 //등록 버튼을 눌렀을때
@@ -194,8 +301,8 @@ function handleSubmit() {
     // formData.append("taddress", trainee.value.taddress);
     // formData.append("mphone", trainee.value.mphone);
     // formData.append("tstatus", trainee.value.tstatus);
-   
-    
+
+
 
     //파일넣기
     // const elAttach = tattach.value;
@@ -217,8 +324,19 @@ function handleSubmit() {
     // console.log(formData);
     console.log(JSON.parse(JSON.stringify(trainee.value)));
 
-    //교육생 등록 버튼 누른후 교육생 목록으로 이동
-    router.push('/admin/trainee/list');
+    //유효성 검사 결과가 전부 참일때 등록 가능
+    if (mnameCheck.value && mphoneTotalCheck.value && tsexCheck.value) {
+        submitError.value = false;
+        router.push('/admin/trainee/list');
+    } else {
+        submitError.value = true;
+        namePatternCheck();
+        phonePatternmiddleCheck();
+        phonePatternendCheck();
+        checkSex();        
+
+        alert("이름, 성별, 전화번호 유효성에 맞게 작성하여 주세요!");
+    }
 }
 
 
@@ -267,5 +385,4 @@ select {
     padding: 0;
     margin-top: 60px;
 }
-
 </style>
