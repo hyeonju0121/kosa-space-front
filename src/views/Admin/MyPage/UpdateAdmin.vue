@@ -14,11 +14,6 @@
             <!--  -->
             <div class="p-3 p-md-4 p-xl-5 vh-100">
                 <div class="">
-                    <div class="row d-flex mb-3">
-                        <div class="col text-end align-bottom">
-                            <p style="font-size: 0.8em"><b style="color:red">*</b>필수입력사항</p>
-                        </div>
-                    </div>
                     <!-- 회원정보수정 테이블 -->
                     <table class="table">
                         <tbody class="align-middle">
@@ -44,10 +39,10 @@
                                 <th class="text-center">비밀번호
                                 </th>
                                 <td class="p-3">
-                                    <div v-if="pwChangeCheck">
+                                    <div v-if="pwChangeCheck === true">
                                         <button class="btn btn-dark" @click="pwChange()">비밀번호 변경</button>
                                     </div>
-                                    <div v-if="!pwChangeCheck">
+                                    <div v-if="pwChangeCheck === false">
                                         <div class="form-floating d-flex mb-1">
                                             <input type="password" class="form-control" name="mpassword1"
                                                 id="mpassword1" v-model.trim="member.mpassword"
@@ -63,7 +58,7 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr v-if="!pwChangeCheck" style="height:90px; border-bottom:1px solid #dcdcdc;">
+                            <tr v-if="pwChangeCheck === false" style="height:90px; border-bottom:1px solid #dcdcdc;">
                                 <th class="text-center">비밀번호 확인
                                 </th>
                                 <td class="p-3">
@@ -72,8 +67,8 @@
                                             v-model.trim="mpasswordDoubleCheck" @input="passwordDoubleCheck()"
                                             placeholder="비밀번호 확인" style="width: 300px;">
                                         <label for="password" class="form-label">Password Check</label>
+                                        <button class="btn btn-danger" @click="pwChange()">변경 취소</button>
                                     </div>
-                                    <button class="btn btn-danger" @click="pwChange()">변경 취소</button>
                                     <span v-if="mpasswordCheck2 === false" class="text-danger"
                                         style="font-size: 0.9em; height: 4px;">
                                         비밀번호를 다시 한번 확인해주세요.
@@ -84,19 +79,20 @@
                             <tr style="height:90px; border-bottom:1px solid #dcdcdc;">
                                 <th class="text-center">이메일</th>
                                 <td class="p-3">
-                                    <div v-if="emailChangeCheck" class="d-flex align-items-center mb-1">
+                                    <div v-if="emailChangeCheck === true" class="d-flex align-items-center mb-1">
                                         <input type="text" class="form-control p-3 me-2" name="memail" id="memail"
                                             value="" v-model.trim="store.state.member.memail" style="width: 250px;"
                                             readonly>
                                         <button class="btn btn-dark" @click="emailChangeBtn()">변경</button>
                                     </div>
-                                    <div v-if="!emailChangeCheck" class="d-flex align-items-center mb-1">
+                                    <div v-if="emailChangeCheck === false" class="d-flex align-items-center mb-1">
                                         <input type="text" class="form-control p-3 me-2" name="emailFront"
                                             id="emailFront" v-model.trim="memailFront" style="width: 150px;" />
                                         <span> @ </span>
                                         <input type="text" class="form-control p-3 ms-2" name="emailBack" id="emailBack"
                                             v-model.trim="memailBack" @input="emailPatternCheck()"
                                             style="width: 150px;" />
+                                        <button class="btn btn-danger" @click="emailChangeBtn()">취소</button>
                                     </div>
                                     <span v-if="memailCheck === false" class="text-danger"
                                         style="font-size: 0.9em; height: 4px;">
@@ -147,11 +143,11 @@
                     <div class="row">
                         <div class="btn_big_wrap align-content-center">
                             <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
-                            <BaseButtonSubmit @click="handleCheck">완료</BaseButtonSubmit>
+                            <BaseButtonSubmit @click="handleCheck" class="btn" :class="btnShow">수정</BaseButtonSubmit>
                         </div>
                         <div class="d-flex justify-content-end">
                             <button type="button" class="btn btn-outline-dark me-4" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">회원탈퇴</button>
+                                data-bs-target="#inActiveModal">회원탈퇴</button>
                         </div>
                     </div>
                 </div>
@@ -161,7 +157,7 @@
 
     <!-- 회원탈퇴에 대한 모달 -->
     <!-- Vertically centered modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="inActiveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -173,7 +169,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                    <button type="button" class="btn btn-danger">탈퇴</button>
+                    <button type="button" class="btn btn-danger" @click="inActivation()">탈퇴</button>
                 </div>
             </div>
         </div>
@@ -185,7 +181,14 @@ import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { Modal } from 'bootstrap';
+
+let inActiveModal = null;
+
+onMounted(() => {
+    inActiveModal = new Modal(document.querySelector('#inActiveModal'));
+});
 
 const router = useRouter();
 const store = useStore();
@@ -211,14 +214,36 @@ let mphonenumend = ref(store.state.member.mphone.substring(9, 13));    // 휴대
 
 // v-if를 사용하여 DOM 생성 여부를 위한 변수 선언
 let pwChangeCheck = ref(true);      // 비밀번호 변경 여부 버튼 (v-if)
-let mpasswordCheck = ref(null);     // 비밀번호 유효성 (v-if)
-let mpasswordCheck2 = ref(null);    // 비밀번호 2차 확인 (v-if)
+// let mpasswordCheck = ref(null);     // 비밀번호 유효성 (v-if)
+// let mpasswordCheck2 = ref(null);    // 비밀번호 2차 확인 (v-if)
 let emailChangeCheck = ref(true);  // 이메일 변경 여부 버튼 (v-if)
-let memailCheck = ref(null);        // 이메일 유효성 (v-if)
+// let memailCheck = ref(null);        // 이메일 유효성 (v-if)
 let phoneChangeCheck = ref(true);   // 휴대폰 변경 여부 버튼 (v-if)
-let mphoneMiddleCheck = ref(null);  // 휴대폰 중간 번호 유효성 (v-if)
-let mphoneEndCheck = ref(null);     // 휴대폰 끝 번호 유효성 (v-if)
-let mphoneTotalCheck = ref(null);   // 휴대폰 전체 유효성
+// let mphoneMiddleCheck = ref(null);  // 휴대폰 중간 번호 유효성 (v-if)
+// let mphoneEndCheck = ref(null);     // 휴대폰 끝 번호 유효성 (v-if)
+
+// 임시 테스트
+let mpasswordCheck = ref(true);     // 비밀번호 유효성 (v-if)
+let mpasswordCheck2 = ref(true);    // 비밀번호 2차 확인 (v-if)
+let memailCheck = ref(true);        // 이메일 유효성 (v-if)
+let mphoneMiddleCheck = ref(true);  // 휴대폰 중간 번호 유효성 (v-if)
+let mphoneEndCheck = ref(true);     // 휴대폰 끝 번호 유효성 (v-if)
+
+// 휴대폰 전체 유효성
+let mphoneTotalCheck = ref(true);
+
+// '비밀번호', '이메일', '휴대폰' 변경 여부에 따라 수정버튼 활성화 변수
+let btnShow = ref("");
+
+function onState() {
+    // 전체 유효성 검사를 통과하면 회원가입 버튼 활성화
+    if (mpasswordCheck.value && mpasswordCheck2.value && memailCheck.value
+        && mphoneTotalCheck.value) {
+        btnShow.value = ""
+    } else {
+        btnShow.value = "disabled"
+    }
+}
 
 // 비밀번호 유효성 검사
 const mpasswordPattern = /^[a-zA-Z0-9]{5,12}$/;
@@ -228,7 +253,9 @@ function passwordPatternCheck() {
     } else {
         mpasswordCheck.value = false;
     }
+    onState();
 }
+
 // 비밀번호 두 입력값 일치 확인
 function passwordDoubleCheck() {
     if (member.value.mpassword === mpasswordDoubleCheck.value) {
@@ -236,7 +263,9 @@ function passwordDoubleCheck() {
     } else {
         mpasswordCheck2.value = false;
     }
+    onState();
 }
+
 // 이메일 유효성 검사
 const memailPattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; // 정규식 틀림
 function emailPatternCheck() {
@@ -247,6 +276,7 @@ function emailPatternCheck() {
     } else {
         memailCheck.value = false;
     }
+    onState();
 }
 
 // 휴대폰 중간번호 유효성 검사
@@ -283,21 +313,46 @@ function phonePatternCheck() {
     } else {
         mphoneTotalCheck.value = false;
     }
+    onState();
 }
 
 // 비밀번호 변경 버튼
 function pwChange() {
     pwChangeCheck.value = !pwChangeCheck.value;
+    if (pwChangeCheck.value === true) {
+        mpasswordCheck.value = true;
+        mpasswordCheck2.value = true;
+    } else {
+        mpasswordCheck.value = null;
+        mpasswordCheck2.value = null;
+    }
+    onState();
 }
 
 // 이메일 변경 버튼
 function emailChangeBtn() {
     emailChangeCheck.value = !emailChangeCheck.value;
+    if (emailChangeCheck.value === true) {
+        memailCheck.value = true;
+    } else {
+        memailCheck.value = null;
+    }
+    onState();
 }
 
 // 휴대폰 변경 버튼
 function phoneChange() {
     phoneChangeCheck.value = !phoneChangeCheck.value
+    if (phoneChangeCheck.value === true) {
+        mphoneMiddleCheck.value = true;
+        mphoneEndCheck.value = true;
+        mphoneTotalCheck.value = true;
+    } else {
+        mphoneMiddleCheck.value = null;
+        mphoneEndCheck.value = null;
+        mphoneTotalCheck.value = null;
+    }
+    onState();
 }
 
 // 수정 취소 버튼
@@ -305,29 +360,19 @@ function handleCancle() {
     router.push(`/admin/dashboard`);
 }
 
-// 회원정보수정 날짜 세팅
-// 계정 생성 일시와 일자까지만 포맷
-const date = new Date();
-let dateFormatVal = date.getFullYear() + '년' + (date.getMonth() + 1) + '월' + date.getDate() + '일';
-member.value.mupdatedat = dateFormatVal;
-
 // 수정 버튼
 function handleCheck() {
     // 비밀번호 변경 버튼 여부에 따라 member 객체 값 저장
-    if(pwChangeCheck.value === true) {
+    if (pwChangeCheck.value === true) {  // 만약 비밀번호 변경을 원하지 않는다면, 기존에 사용했던 비밀번호를 사용
         member.value.mpassword = store.state.member.mpassword;
     }
     // 이메일 변경 버튼 여부에 따라 member 객체 값 저장
-    if(emailChangeCheck.value === true) {
+    if (emailChangeCheck.value === true) {
         member.value.memail = store.state.member.memail;
-    } else {
-        member.value.memail = memailFront.value + "@" + memailBack.value;
     }
     // 휴대폰 변경 버튼 여부에 따라 member 객체 값 저장
-    if(phoneChangeCheck.value === true) {
+    if (phoneChangeCheck.value === true) {
         member.value.mphone = store.state.member.mphone;
-    } else {
-        member.value.mphone = "010-" + mphonenummiddle.value + "-" + mphonenumend.value;
     }
 
     member.value.mid = store.state.member.mid;
@@ -338,6 +383,15 @@ function handleCheck() {
 
     console.log(JSON.stringify(member.value));
     // router.push(`/admin/dashboard`);
+}
+
+// 회원탈퇴 버튼
+function inActivation() {
+    member.value.menable = false;
+    console.log(JSON.stringify(store.state.member));
+    alert("계정이 비활성화 되었습니다.");
+    inActiveModal.hide();
+    router.push("/");
 }
 
 </script>
