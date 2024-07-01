@@ -54,10 +54,10 @@
                             <th class="text-center">비밀번호
                             </th>
                             <td class="p-3">
-                                <div v-if="pwChangeCheck">
+                                <div v-if="pwChangeCheck === true">
                                     <button class="btn btn-dark" @click="pwChange()">비밀번호 변경</button>
                                 </div>
-                                <div v-if="!pwChangeCheck">
+                                <div v-if="pwChangeCheck === false">
                                     <div class="form-floating d-flex mb-1">
                                         <input type="password" class="form-control" name="mpassword1" id="mpassword1"
                                             v-model.trim="member.mpassword" @input="passwordPatternCheck()"
@@ -72,7 +72,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr v-if="!pwChangeCheck" style="height:90px; border-bottom:1px solid #dcdcdc;">
+                        <tr v-if="pwChangeCheck === false" style="height:90px; border-bottom:1px solid #dcdcdc;">
                             <th class="text-center">비밀번호 확인
                             </th>
                             <td class="p-3">
@@ -108,39 +108,37 @@
                                 <!-- 고등학교를 선택했을 시 -->
                                 <div v-if="trainee.tacademic === '고등학교'">
                                     <div class="form-floating mt-2" style="width: 300px">
-                                        <input type="text" class="form-control" name="tschoolname" id="" value=""
-                                            placeholder="" v-model.trim="trainee.tshcoolname" style="width: 300px;"
-                                            readonly>
-                                        <label for="tschoolname" class="form-label">학교명</label>
+                                        <input type="text" class="form-control" name="tschoolname1" placeholder=""
+                                            v-model.trim="trainee.tshcoolname" style="width: 300px;" readonly>
+                                        <label for="tschoolname1" class="form-label">학교명</label>
                                     </div>
                                 </div>
                                 <!-- 대학교를 선택했을 시 -->
                                 <div v-if="trainee.tacademic === '대학교'">
                                     <div class="form-floating mt-2" style="width: 300px">
-                                        <input type="text" class="form-control" name="tschoolname" id="" value=""
-                                            placeholder="" v-model.trim="trainee.tshcoolname" style="width: 300px;"
-                                            readonly>
-                                        <label for="tschoolname" class="form-label">학교명</label>
+                                        <input type="text" class="form-control" name="tschoolname2" placeholder=""
+                                            v-model.trim="trainee.tshcoolname" style="width: 300px;" readonly>
+                                        <label for="tschoolname2" class="form-label">학교명</label>
                                     </div>
                                     <div class="form-floating mt-2" style="width: 300px">
-                                        <input type="text" class="form-control" name="tmajor" id="" value=""
-                                            placeholder="" v-model.trim="trainee.tmajor" style="width: 300px;" readonly>
+                                        <input type="text" class="form-control" name="tmajor" placeholder=""
+                                            v-model.trim="trainee.tmajor" style="width: 300px;" readonly>
                                         <label for="tmajor" class="form-label">주전공</label>
                                     </div>
                                     <div class="form-floating mt-2" style="width: 300px">
-                                        <input type="text" class="form-control" name="tminor" id="" value=""
-                                            placeholder="" v-model.trim="trainee.tminor" style="width: 300px;" readonly>
+                                        <input type="text" class="form-control" name="tminor" placeholder=""
+                                            v-model.trim="trainee.tminor" style="width: 300px;" readonly>
                                         <label for="tminor" class="form-label">부전공</label>
                                     </div>
                                     <!-- 학점에 대한 유효성 검사 #.### ? -->
                                     <div class="form-floating mt-2" style="width: 300px">
-                                        <input type="text" class="form-control" name="tgrade" id="" value=""
-                                            placeholder="" v-model.trim="trainee.tgrade" style="width: 300px;" readonly>
+                                        <input type="text" class="form-control" name="tgrade" placeholder=""
+                                            v-model.trim="trainee.tgrade" style="width: 300px;" readonly>
                                         <label for="tgrade" class="form-label">평균학점</label>
                                     </div>
                                     <div class="form-floating mt-2" style="width: 300px">
-                                        <input type="text" class="form-control" name="tfield" id="" value="전공/비전공"
-                                            placeholder="" v-model.trim="trainee.tfield" style="width: 300px;" readonly>
+                                        <input type="text" class="form-control" name="tfield" placeholder=""
+                                            v-model.trim="trainee.tfield" style="width: 300px;" readonly>
                                         <label for="tfield" class="form-label">전공여부</label>
                                     </div>
                                 </div>
@@ -150,19 +148,17 @@
                         <tr style="height:90px; border-bottom:1px solid #dcdcdc;">
                             <th class="text-center">이메일</th>
                             <td class="p-3">
-                                <div v-if="emailChangeCheck" class="d-flex align-items-center mb-1">
+                                <div v-if="emailChangeCheck === true" class="d-flex align-items-center mb-1">
                                     <input type="text" class="form-control p-3 me-2" name="memail" id="memail" value=""
                                         v-model.trim="store.state.member.memail" style="width: 250px;" readonly>
                                     <button class="btn btn-dark" @click="emailChangeBtn()">변경</button>
                                 </div>
-                                <div v-if="!emailChangeCheck" class="d-flex align-items-center mb-1">
+                                <div v-if="emailChangeCheck === false" class="d-flex align-items-center mb-1">
                                     <input type="text" class="form-control p-3 me-2" name="emailFront" id="emailFront"
                                         v-model.trim="memailFront" style="width: 150px;" />
                                     <span> @ </span>
                                     <input type="text" class="form-control p-3 ms-2" name="emailBack" id="emailBack"
                                         v-model.trim="memailBack" @input="emailPatternCheck()" style="width: 150px;" />
-                                </div>
-                                <div v-if="!emailChangeCheck" class="d-flex align-items-center mb-1">
                                     <button class="btn btn-danger" @click="emailChangeBtn()">취소</button>
                                 </div>
                                 <span v-if="memailCheck === false" class="text-danger"
@@ -176,10 +172,10 @@
                             <th class="text-center">휴대폰번호
                             </th>
                             <td class="p-3">
-                                <div v-if="phoneChangeCheck">
+                                <div v-if="phoneChangeCheck === true">
                                     <button class="btn btn-dark" @click="phoneChange()">휴대폰 번호 변경</button>
                                 </div>
-                                <div v-if="!phoneChangeCheck">
+                                <div v-if="phoneChangeCheck === false">
                                     <div class="d-flex align-items-center mb-1">
                                         <!-- 휴대폰 앞 번호 -->
                                         <input type="text" class="form-control p-3" name="mphonenumber1"
@@ -214,11 +210,11 @@
                 <div class="row mb-5">
                     <div class="btn_big_wrap">
                         <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
-                        <BaseButtonSubmit @click="handleCheck">완료</BaseButtonSubmit>
+                        <BaseButtonSubmit @click="handleCheck" class="btn" :class="btnShow">수정</BaseButtonSubmit>
                     </div>
                     <div class="d-flex justify-content-end">
                         <button type="button" class="btn btn-outline-dark me-4" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">회원탈퇴</button>
+                            data-bs-target="#inActiveModal">회원탈퇴</button>
                     </div>
                 </div>
             </div>
@@ -227,7 +223,7 @@
 
     <!-- 회원탈퇴에 대한 모달 -->
     <!-- Vertically centered modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="inActiveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -239,7 +235,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                    <button type="button" class="btn btn-danger">탈퇴</button>
+                    <button type="button" class="btn btn-danger" @click="inActivation()">탈퇴</button>
                 </div>
             </div>
         </div>
@@ -250,8 +246,9 @@
 import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
+import { Modal } from 'bootstrap';
 
 const router = useRouter();
 const store = useStore();
@@ -286,6 +283,12 @@ const trainee = ref({
     tprofiletype: ""
 });
 
+let inActiveModal = null;
+
+onMounted(() => {
+    inActiveModal = new Modal(document.querySelector('#inActiveModal'));
+});
+
 
 // input 태그에서 값을 확인할 변수 선언
 let mpasswordDoubleCheck = ref(""); // 비밀번호 2차 입력 받을 변수
@@ -296,30 +299,32 @@ let mphonenumend = ref(store.state.member.mphone.substring(9, 13));    // 휴대
 
 // v-if를 사용하여 DOM 생성 여부를 위한 변수 선언
 let pwChangeCheck = ref(true);      // 비밀번호 변경 여부 버튼 (v-if)
-let mpasswordCheck = ref(null);     // 비밀번호 유효성 (v-if)
-let mpasswordCheck2 = ref(null);    // 비밀번호 2차 확인 (v-if)
 let emailChangeCheck = ref(true);  // 이메일 변경 여부 버튼 (v-if)
-let memailCheck = ref(null);        // 이메일 유효성 (v-if)
 let phoneChangeCheck = ref(true);   // 휴대폰 변경 여부 버튼 (v-if)
-let mphoneMiddleCheck = ref(null);  // 휴대폰 중간 번호 유효성 (v-if)
-let mphoneEndCheck = ref(null);     // 휴대폰 끝 번호 유효성 (v-if)
-let mphoneTotalCheck = ref(null);   // 휴대폰 전체 유효성
 
+// 임시 테스트
+let mpasswordCheck = ref(true);     // 비밀번호 유효성 (v-if)
+let mpasswordCheck2 = ref(true);    // 비밀번호 2차 확인 (v-if)
+let memailCheck = ref(true);        // 이메일 유효성 (v-if)
+let mphoneMiddleCheck = ref(true);  // 휴대폰 중간 번호 유효성 (v-if)
+let mphoneEndCheck = ref(true);     // 휴대폰 끝 번호 유효성 (v-if)
 
-// 비밀번호 변경 버튼
-function pwChange() {
-    pwChangeCheck.value = !pwChangeCheck.value;
+// 휴대폰 전체 유효성
+let mphoneTotalCheck = ref(true);
+
+// '비밀번호', '이메일', '휴대폰' 변경 여부에 따라 수정버튼 활성화 변수
+let btnShow = ref("");
+
+function onState() {
+    // 전체 유효성 검사를 통과하면 회원가입 버튼 활성화
+    if (mpasswordCheck.value && mpasswordCheck2.value && memailCheck.value
+        && mphoneTotalCheck.value) {
+        btnShow.value = ""
+    } else {
+        btnShow.value = "disabled"
+    }
 }
 
-// 이메일 변경 버튼
-function emailChangeBtn() {
-    emailChangeCheck.value = !emailChangeCheck.value;
-}
-
-// 휴대폰 변경 버튼
-function phoneChange() {
-    phoneChangeCheck.value = !phoneChangeCheck.value
-}
 // 비밀번호 유효성 검사
 const mpasswordPattern = /^[a-zA-Z0-9]{5,12}$/;
 function passwordPatternCheck() {
@@ -328,6 +333,7 @@ function passwordPatternCheck() {
     } else {
         mpasswordCheck.value = false;
     }
+    onState();
 }
 // 비밀번호 두 입력값 일치 확인
 function passwordDoubleCheck() {
@@ -336,6 +342,7 @@ function passwordDoubleCheck() {
     } else {
         mpasswordCheck2.value = false;
     }
+    onState();
 }
 
 // 이메일 유효성 검사
@@ -348,6 +355,7 @@ function emailPatternCheck() {
     } else {
         memailCheck.value = false;
     }
+    onState();
 }
 
 // 휴대폰 중간번호 유효성 검사
@@ -384,16 +392,47 @@ function phonePatternCheck() {
     } else {
         mphoneTotalCheck.value = false;
     }
+    onState();
 }
 
-/*
-// (임시) back-end에서 작업할 것.
-// 회원정보수정 날짜 세팅 --> 임시이기 때문에 여기에다 해놓음. 원래 버튼 클릭 이벤트 발생시 저장해야함.
-// 계정 생성 일시와 일자까지만 포맷
-const date = new Date();
-let dateFormatVal = date.getFullYear() + '년' + (date.getMonth() + 1) + '월' + date.getDate() + '일';
-member.value.mupdatedat = dateFormatVal;
-*/
+// 비밀번호 변경 버튼
+function pwChange() {
+    pwChangeCheck.value = !pwChangeCheck.value;
+    if (pwChangeCheck.value === true) {
+        mpasswordCheck.value = true;
+        mpasswordCheck2.value = true;
+    } else {
+        mpasswordCheck.value = null;
+        mpasswordCheck2.value = null;
+    }
+    onState();
+}
+
+// 이메일 변경 버튼
+function emailChangeBtn() {
+    emailChangeCheck.value = !emailChangeCheck.value;
+    if (emailChangeCheck.value === true) {
+        memailCheck.value = true;
+    } else {
+        memailCheck.value = null;
+    }
+    onState();
+}
+
+// 휴대폰 변경 버튼
+function phoneChange() {
+    phoneChangeCheck.value = !phoneChangeCheck.value
+    if (phoneChangeCheck.value === true) {
+        mphoneMiddleCheck.value = true;
+        mphoneEndCheck.value = true;
+        mphoneTotalCheck.value = true;
+    } else {
+        mphoneMiddleCheck.value = null;
+        mphoneEndCheck.value = null;
+        mphoneTotalCheck.value = null;
+    }
+    onState();
+}
 
 // 수정 취소 버튼
 function handleCancle() {
@@ -428,8 +467,18 @@ function handleCheck() {
     console.log(JSON.parse(JSON.stringify(member.value)));
     console.log(JSON.parse(JSON.stringify(trainee.value)));
 
-    router.push(`/trainee/dashboard`);
+    // router.push(`/trainee/dashboard`);
 }
+
+// 회원탈퇴 버튼
+function inActivation() {
+    member.value.menable = false;
+    console.log(JSON.stringify(store.state.member));
+    alert("계정이 비활성화 되었습니다.");
+    inActiveModal.hide();
+    router.push("/");
+}
+
 </script>
 
 <style scoped>

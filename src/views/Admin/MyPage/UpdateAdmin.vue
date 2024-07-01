@@ -105,10 +105,10 @@
                                 <th class="text-center">휴대폰번호
                                 </th>
                                 <td class="p-3">
-                                    <div v-if="phoneChangeCheck">
+                                    <div v-if="phoneChangeCheck === true">
                                         <button class="btn btn-dark" @click="phoneChange()">휴대폰 번호 변경</button>
                                     </div>
-                                    <div v-if="!phoneChangeCheck">
+                                    <div v-if="phoneChangeCheck === false">
                                         <div class="d-flex align-items-center mb-1">
                                             <!-- 휴대폰 앞 번호 -->
                                             <input type="text" class="form-control p-3" name="mphonenumber1"
