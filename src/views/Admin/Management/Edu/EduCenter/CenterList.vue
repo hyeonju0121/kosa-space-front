@@ -16,7 +16,29 @@
 
         <div class="educenter-wrap">
             <div class="card" style="width: 25rem; margin-right: 13px;">
-                <img src="@/assets/educenter/educenter_1.png" class="educenter-img">
+                <div id="carouselExampleControls1" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active" data-bs-interval="1000000">
+                            <img src="@/assets/educenter/educenter_1.png" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item" data-bs-interval="1000000">
+                            <img src="@/assets/educenter/educenter_2.png" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item" data-bs-interval="1000000">
+                            <img src="@/assets/educenter/educenter_3.png" class="d-block w-100" alt="...">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls1"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls1"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
                 <div class="card-body">
                     <h5 class="educenter-name">송파 교육장</h5>
                     <p class="educenter-text">
@@ -34,7 +56,29 @@
             </div>
 
             <div class="card" style="width: 25rem; margin-right: 13px;">
-                <img src="@/assets/educenter/educenter_2.png" class="educenter-img">
+                <div id="carouselExampleControls2" class="carousel slide" data-bs-ride="carousel2">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active" data-bs-interval="1000000">
+                            <img src="@/assets/educenter/educenter_1.png" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item" data-bs-interval="1000000">
+                            <img src="@/assets/educenter/educenter_2.png" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item" data-bs-interval="1000000">
+                            <img src="@/assets/educenter/educenter_3.png" class="d-block w-100" alt="...">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls2"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls2"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
                 <div class="card-body">
                     <h5 class="educenter-name">가산 교육장</h5>
                     <p class="educenter-text">
@@ -52,7 +96,29 @@
             </div>
 
             <div class="card" style="width: 25rem; margin-right: 13px;">
-                <img src="@/assets/educenter/educenter_3.png" class="educenter-img">
+                <div id="carouselExampleControls3" class="carousel slide" data-bs-ride="carousel3">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active" data-bs-interval="1000000">
+                            <img src="@/assets/educenter/educenter_1.png" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item" data-bs-interval="1000000">
+                            <img src="@/assets/educenter/educenter_2.png" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item" data-bs-interval="1000000">
+                            <img src="@/assets/educenter/educenter_3.png" class="d-block w-100" alt="...">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls3"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls3"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
                 <div class="card-body">
                     <h5 class="educenter-name">혜화 교육장</h5>
                     <p class="educenter-text">
@@ -76,6 +142,10 @@ import BaseButtonCreate from '@/components/UIComponents/BaseButtonCreate.vue';
 import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import { useRouter } from 'vue-router';
+
+
+
+
 
 const router = useRouter();
 
@@ -177,5 +247,4 @@ select {
     border: 1px solid black;
     margin-left: 10px;
 }
-
 </style>

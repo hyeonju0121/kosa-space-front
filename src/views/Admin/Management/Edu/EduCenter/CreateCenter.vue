@@ -46,17 +46,10 @@
                                         <PhImage :size="32" color="#636462" weight="duotone" />
                                     </div>
                                 </div>
-                                <div class="center_edit">
-                                    <p class="tit">교육장의 이미지를 등록해주세요.</p>
-                                    <div class="attach_wrap">
-                                        <p class="guide_txt">파일 1개당 10MB까지 첨부 가능합니다. (JPG, JPEG, PNG, GIF만 첨부 가능)</p>
-                                        <div>
-                                            <input id="ecattach" type="file" class="form-control-file mt-3" ref="ecattach" />
-                                        </div>
-                                    </div>
-                                </div>
+                                <input type="file" @change="addImage" multiple />
                             </div>
                         </div>
+                        <img v-for="(item, index) in src" :key="index" :src="item" width="80px" height="80px" />
                     </div>
                 </div>
 
@@ -84,9 +77,9 @@ const router = useRouter();
 
 // 교육장 상태 객체 정의
 const centerInfo = ref({
-    ecname: "",
-    postcode: "",
-    address: "",
+    ecname: "송파 교육센터",
+    ecpostcode: "13480",
+    ecaddress: "경기 ~~~",
     ecattach: null
 });
 
@@ -103,6 +96,20 @@ function handleSubmit() {
 function postcodeinfo(data1, data2) {
     centerInfo.value.postcode = data1;
     centerInfo.value.address = data2;
+}
+//멀티파일 사진 미리보기
+
+
+const src = ref([]);
+
+function addImage(e) {
+    const file = (e.target).files;
+    const fileLength = file.length;
+    let newList = [];
+    for (let i = 0; i < fileLength; i++) {
+        newList.push(URL.createObjectURL(file[i]));
+    }
+    src.value = newList;
 }
 
 </script>
