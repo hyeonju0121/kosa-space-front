@@ -13,6 +13,9 @@ import PhosphorIcons from "@phosphor-icons/vue"
 // jquery import
 import jQuery from 'jquery'
 
+// axiosConfig --> 추후 뺄지 확인
+import axiosConfig from './apis/axiosConfig';
+
 // Daum postcode import
 import VueDaumPostcode from "vue-daum-postcode"
 

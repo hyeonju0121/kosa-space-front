@@ -127,7 +127,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import memberAPI from '@/apis/memberAPI';
+import authAPI from '@/apis/authAPI';
 
 const member = ref({
     mphone: "",
@@ -209,13 +209,17 @@ function onState() {
 async function handleFindId() {
     // introduceId.value = true;
     // introduceId.value = false;
+
     console.log("JSON.stringify(member.value) = " + JSON.stringify(member.value));
-
-
-    const data = JSON.parse(JSON.stringify(member.value));
+    const data = JSON.parse(JSON.stringify(member.value.mphone));
     console.log(data);
-    const response = await memberAPI.findId(data);
-
+    const response = await authAPI.findId(member.value.mphone, member.value.memail);
+    if (response.data !== "none") {
+        introduceId.value = true;
+        idMessage.value = response.data;
+    } else {
+        introduceId.value = false;
+    }
     console.log(response.data);
 }
 
