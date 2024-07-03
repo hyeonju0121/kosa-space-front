@@ -110,7 +110,7 @@
                 </div>
                 <div class="btn_big_wrap">
                     <RouterLink to="/admin/course/list">
-                        <BaseButtonCancle>취소</BaseButtonCancle>
+                        <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
                     </RouterLink>
                     <BaseButtonSubmit type="submit">완료</BaseButtonSubmit>
                 </div>
@@ -126,7 +126,8 @@ import { useRouter } from 'vue-router';
 
 import { ref, onMounted, watch } from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
+import '@vuepic/vue-datepicker/dist/main.css';
+import courseAPI from "@/apis/courseAPI";
 
 const date = ref();
 
@@ -136,8 +137,7 @@ onMounted(() => {
   date.value = [startDate, endDate];
 })
 
-const courseInfo = ref({
-    cattach: null,
+const courseInfo = ref({   
     ecname: "",
     cname: "",
     ccode: "",
@@ -149,6 +149,8 @@ const courseInfo = ref({
     cprofessor: ""
 })
 
+
+
 const router = useRouter();
 
 let isEcname = ref(true);
@@ -156,17 +158,47 @@ let isCcode = ref(true);
 let isCmanager = ref(true);
 let isCprofessor = ref(true);
 
+const cattach = ref(null);
+
 function handleCancle() {
     router.push('/admin/course/list');
 }
-
-function handleSubmit() {
+//등록 버튼 누를때 실행
+async function handleSubmit() {
     courseInfo.value.cstartdate = date.value[0];
     courseInfo.value.cenddate = date.value[1];
 
     console.log(JSON.parse(JSON.stringify(courseInfo)));
+
+    //form data 객체 생성
+    const formData = new FormData();
+
+    //문자 파트 넣기
+    formData.append("ecname", courseInfo.value.ecname);
+    formData.append("cname", courseInfo.value.cname);
+    formData.append("ccode", courseInfo.value.ccode);
+    formData.append("cstartdate", courseInfo.value.cstartdate);
+    formData.append("cenddate", courseInfo.value.cenddate);
+    formData.append("crequireddate", courseInfo.value.crequireddate);
+    formData.append("ctotalnum", courseInfo.value.ctotalnum);
+    formData.append("cmanager", courseInfo.value.cmanager);
+    formData.append("cprofessor", courseInfo.value.cprofessor);
+
+    //파일 파트 넣기
+    let elCattach = cattach.value;
+
+    if(elCattach.files.length != 0) {
+        formData.append("cattachdata", elCattach.files[0]);
+    }
+
+    //교육과정 등록 요청
+    try{
+        await courseAPI.create(formData);
+        router.push('/admin/course/list');
+    } catch(error) {
+        console.log(error);
+    }    
     
-    router.push('/admin/course/list');
 }
 
 // 교육장 유효성 검증 (한글만 입력)
