@@ -1,24 +1,23 @@
 <template>
     <div>
-        <input type="text" placeholder="우편번호" v-model="postcode" style="width:100px">
+        <input type="text" placeholder="우편번호" v-model.trim="postcode" style="width:100px">
         <input type="button" @click="openDaumPostcode" value="우편번호 찾기" style="margin-left: 5px;"><br>
-        <input type="text" v-model="address" placeholder="주소" style="width:400px; margin-top: 3%;"><br>
-        <input type="text" v-model="detailaddress" placeholder="상세주소" style="width:500px; margin-top: 3%;">
-        
+        <input type="text" v-model.trim="address" placeholder="주소" style="width:400px; margin-top: 3%;"><br>
+
         <div ref="wrap" style="display:none;border:1px solid;width:500px;height:200px;margin:5px 0;position:relative">
             <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap"
-                style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" @click="foldDaumPostcode" alt="접기 버튼">
+                style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" @click="foldDaumPostcode"
+                alt="접기 버튼">
         </div>
     </div>
 </template>
-  
+
 <script>
 export default {
     data() {
         return {
             postcode: "",
             address: "",
-            detailaddress: "",
         };
     },
     methods: {
@@ -46,7 +45,7 @@ export default {
                     this.postcode = data.zonecode;
                     this.address = addr;
 
-                    this.$emit("send-daumpostcode", this.address, this.postcode); 
+                    this.$emit("send-daumpostcode", this.address, this.postcode);
 
                     // iframe을 넣은 element를 안보이게 한다.
                     // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
@@ -69,8 +68,8 @@ export default {
             elementWrap.style.display = 'none'
         },
     },
- }
+}
 
 </script>
-  
+
 <style></style>
