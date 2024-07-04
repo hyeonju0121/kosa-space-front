@@ -7,7 +7,7 @@ import qs from "qs";
 
 // 회원가입
 function signup(member) { // form-data 형식으로 데이터를 전송
-    console.log("memberAPI signup 메소드 실행");
+    console.log("authAPI signup 메소드 실행");
     console.log(member);
     return axios.post("/signup", member);
 }
@@ -17,17 +17,9 @@ function login(member) {
     return axios.post("/login", member);
 }
 
-// // 아이디 찾기
-// // function findId(mphone, memail) {
-// function findId(member) {
-//     // return axios.get("/find/id", {params: {mphone, memail}});
-//     console.log("memberAPI findId 메소드 실행");
-//     console.log(member);
-//     return axios.get("/find/id", member);
-// }
+// 아이디 찾기
 function findId(mphone, memail) {
-    // return axios.get("/find/id", {params: {mphone, memail}});
-    console.log("memberAPI findId 메소드 실행");
+    console.log("authAPI findId 메소드 실행");
     return axios.get("/find/id", {
         params: {
             "mphone": mphone,
@@ -36,6 +28,22 @@ function findId(mphone, memail) {
 }
 
 // 비밀번호 찾기
+// function findPassword(member) {
+//     console.log("authAPI findPassword 메소드 실행");
+//     return axios.get("/find/password", member);
+// }
+
+// 비밀번호 찾기
+function findPassword(mname, mid, memail) {
+    console.log("authAPI findPassword 메소드 실행");
+    return axios.get("/find/password", {
+        params: {
+            "mname": mname,
+            "mid": mid,
+            "memail": memail
+        }
+    });
+}
 
 // (운영진) 회원정보수정
 
@@ -43,6 +51,7 @@ function findId(mphone, memail) {
 export default {
     signup,
     login,
-    findId
+    findId,
+    findPassword
 
 }

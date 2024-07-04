@@ -8,24 +8,31 @@ const store = createStore({
   // 루트 상태 정의
   state: {
     userId: "",
-    accessToken: ""
+    accessToken: "",
+    mrole:""
   },
   // 루트 상태 값을 읽는 메소드(게터) 정의
   getters: {
-    getUserId(state, getters, rootState, rootGetters) {
-      return state.userId;
+    getMid(state, getters, rootState, rootGetters) {
+      return state.mid;
     },
     getAccessToken(state, getters, rootState, rootGetters) {
       return state.accessToken;
+    },
+    getMrole(state, getters, rootState, rootGetters) {
+      return state.mrole;
     }
   },
   // 루트 상태 값을 변화시키는 메소드(세터) 정의 --> 동기 방식
   mutations: {
-    setUserId(state, payload) {
-      state.userId = payload;
+    setMid(state, payload) {
+      state.mid = payload;
     },
     setAccessToken(state, payload) {
       state.accessToken = payload;
+    },
+    setMrole(state, payload) {
+      state.mrole = payload;
     }
   },
   // 비동기 작업을 실행하고 결과에 따라 상태 값을 변화시키는 메소드를 정의
@@ -39,7 +46,7 @@ const store = createStore({
         // 서버 통신 코드
         if(true) {
           // 로그인 성공의 경우
-          resolve ({result:"success", userId: payload.userId});
+          resolve ({result:"success", mid: payload.mid, mrole: payload.mrole});
         } else {
           // 로그인 실패의 경우
           resolve ({result:"fail", reason:"password is wrong"});
@@ -47,7 +54,8 @@ const store = createStore({
       })
       .then((data) => {
         console.log("login 성공");
-        context.commit("setUserId", data.userId);
+        context.commit("setMid", data.mid);
+        context.commit("setMrole", data.mrole);
       })
       .catch((error) => {
         console.log("login 실패");
@@ -56,10 +64,12 @@ const store = createStore({
     // 브라우저가 재실행될 때 인증 정보를 전역상태로 복구
     // 브라우저를 껐다가 다시 킬 때 or 브라우저에서 새로고침을 클릭할 때
     loadAuth(context, payload) {
-      context.commit("setUserId", localStorage.getItem("userId") || "");
-      // accessToken 전연 상태 설정
+      context.commit("setMid", localStorage.getItem("mid") || "");
+      // accessToken 전역 상태 설정
       const accessToken = localStorage.getItem("accessToken") || "";
       context.commit("setAccessToken", accessToken);
+      // 권한 전역 상태 설정?
+      context.commit("setMrole", localStorage.getItem("mrole") || "");
 
       // Axios 요청 공통 헤더에 인증 정보 추가
       if(accessToken != "") {
@@ -69,32 +79,38 @@ const store = createStore({
     // 로그인 성공했을 때 인증 정보를 전역 상태 및 로컬 스토리지에 파일로 저장
     saveAuth(context, payload) {
       // 전역 상태값을 변경
-      context.commit("setUserId", payload.userId);
+      context.commit("setMid", payload.mid);
       context.commit("setAccessToken", payload.accessToken);
+      context.commit("setMrole", payload.mrole);
+
       // 로컬 파일에 저장
-      localStorage.setItem("userId", payload.userId);
+      localStorage.setItem("mid", payload.mid);
       localStorage.setItem("accessToken", payload.accessToken);
+      localStorage.setItem("mrole", payload.mrole);
       // Axios 요청 공통 헤더에 인증 정보 추가
       axiosConfig.addAuthHeader(payload.accessToken);
+      //
+      console.log("인증 정보를 전역 상태 및 로컬 스토리지에 파일로 저장");
     },
     // 로그아웃할 때 인증 정보를 모두 삭제한다.
     deleteAuth(context, payload) {
       // 전역 상태 값 변경
-      context.commit("setUserId", "");
+      context.commit("setMid", "");
       context.commit("setAccessToken", "");
+      context.commit("setMrole", "");
       // 로컬 파일에서 삭제
-      localStorage.removeItem("userId");
+      localStorage.removeItem("mid");
       localStorage.removeItem("accessToken");
+      localStorage.removeItem("mrole");
       // Axios 요청 공통 해더에 인증 정보 삭제
       axiosConfig.removeAuthHeader();
+      //
+      console.log("인증 정보 삭제");
     }
   },
   // 루트 하위 상태 모듈 추가
   modules: {
-    // 루트 하위 상태 모듈 추가
-    member,
-    userDailyInfo,
-    traineeinfo
+    member
   }
 });
 
