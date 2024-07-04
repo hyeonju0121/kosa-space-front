@@ -62,6 +62,7 @@
             <section class="careerplus alljob_category">
                 <ul class="list_contents">
                     <li class="item">
+                        <RouterLink to="/admin/room/detail">
                         <div class="card_contents">
                             <div class="thumbnail">
                                 <img src="https://cdn.class101.net/images/dc1a77c6-6e8d-4554-b10e-ff98997c7a0c/640xauto.webp"
@@ -80,6 +81,7 @@
                                 <span class="date_author">2024.02.26~2024.07.26까지 강의실 사용불가</span>
                             </div>
                         </div>
+                        </RouterLink>
                     </li>
 
                     <li class="item">
@@ -255,6 +257,10 @@ function handleUpdateBtn() {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+
+a {
+  text-decoration: none;
+}
 
 body,
 h1,

@@ -45,6 +45,10 @@ const routes = [
                 component: () => import(/* webpackChunkName: "room" */ '@/views/Admin/Management/Edu/TrainingRoom/RoomList.vue')
             },
             {
+                path: "room/detail", // "/admin/room/detail"
+                component: () => import(/* webpackChunkName: "room" */ '@/views/Admin/Management/Edu/TrainingRoom/DetailRoom.vue')
+            },
+            {
                 path: "room/create", // "/admin/room/create"
                 component: () => import(/* webpackChunkName: "room" */ '@/views/Admin/Management/Edu/TrainingRoom/CreateRoom.vue')
             },
