@@ -50,6 +50,14 @@
                 </div>
                 <div class="tr">
                     <div class="th">
+                        <p class="form_label required">강의실</p>
+                    </div>
+                    <div class="td">
+                        <input v-model="courseInfo.trno" id="trno" type="text" title="강의실" placeholder="강의실을 입력해주세요." maxlength="50">
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="th">
                         <p class="form_label required">교육과정 명</p>
                     </div>
                     <div class="td">
@@ -80,6 +88,22 @@
                     </div>
                     <div class="td">
                         <input v-model="courseInfo.crequireddate" id="crequireddate" type="text" title="훈련일수 입력" placeholder="훈련일수를 입력해주세요." maxlength="50">
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="th">
+                        <p class="form_label required">훈련일</p>
+                    </div>
+                    <div class="td">
+                        <input v-model="courseInfo.ctrainingdate" id="ctrainingdate" type="text" title="훈련일 입력" placeholder="훈련일을 입력해주세요." maxlength="50">
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="th">
+                        <p class="form_label required">훈련시간</p>
+                    </div>
+                    <div class="td">
+                        <input v-model="courseInfo.ctrainingtime" id="ctrainingtime" type="text" title="훈련시간 입력" placeholder="훈련시간을 입력해주세요." maxlength="50">
                     </div>
                 </div>
                 <div class="tr">
@@ -141,14 +165,16 @@ const courseInfo = ref({
     ecname: "",
     cname: "",
     ccode: "",
+    trno: "",
     cstartdate: "",
     cenddate: "",
     crequireddate: "",
     ctotalnum: "",
     cmanager: "",
-    cprofessor: ""
+    cprofessor: "",
+    ctrainingdate: "",
+    ctrainingtime: "",
 })
-
 
 
 const router = useRouter();
@@ -180,7 +206,10 @@ async function handleSubmit() {
     formData.append("cstartdate", courseInfo.value.cstartdate);
     formData.append("cenddate", courseInfo.value.cenddate);
     formData.append("crequireddate", courseInfo.value.crequireddate);
+    formData.append("ctrainingdate", courseInfo.value.ctrainingdate);
+    formData.append("ctrainingtime", courseInfo.value.ctrainingtime);
     formData.append("ctotalnum", courseInfo.value.ctotalnum);
+    formData.append("trno", courseInfo.value.trno);
     formData.append("cmanager", courseInfo.value.cmanager);
     formData.append("cprofessor", courseInfo.value.cprofessor);
 
