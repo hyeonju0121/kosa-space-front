@@ -31,6 +31,7 @@
                     </div>
                     <div class="td">
                         <DaumPostCode3 @send-daumpostcode="postcodeinfo"/>
+                        <input type="text" v-model="centerInfo.ecdetailaddress" placeholder="상세주소" style="width:500px; margin-top: 3%;">
                     </div>
                 </div>
 
@@ -46,7 +47,7 @@
                                         <PhImage :size="32" color="#636462" weight="duotone" />
                                     </div>
                                 </div>
-                                <input type="file" @change="addImage" multiple />
+                                <input type="file" @change="addImage" multiple ref="ecattach"/>
                             </div>
                         </div>
                         <img v-for="(item, index) in src" :key="index" :src="item" width="80px" height="80px" />
@@ -54,10 +55,9 @@
                 </div>
 
                 <div class="btn_big_wrap">
-                    <RouterLink to="/admin/educenter/list">
-                        <BaseButtonCancle>취소</BaseButtonCancle>
-                    </RouterLink>
-                    <!--<BaseButtonSubmit @click="handleSubmit">완료</BaseButtonSubmit>-->
+                    
+                    <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>                    
+                    
                     <BaseButtonSubmit type="submit">완료</BaseButtonSubmit>
                 </div>
             </form>
@@ -68,38 +68,66 @@
 <script setup>
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
-import DaumPostCode2 from './DaumPostCode2.vue';
 import DaumPostCode3 from './DaumPostCode3.vue';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
+import educenterAPI from "@/apis/educenterAPI"
 
 const router = useRouter();
 
 // 교육장 상태 객체 정의
 const centerInfo = ref({
-    ecname: "송파 교육센터",
-    ecpostcode: "13480",
-    ecaddress: "경기 ~~~",
-    ecattach: null
+    ecname: "",
+    ecpostcode: "",
+    ecaddress: "",
+    ecdetailaddress: ""    
 });
 
 const ecattach = ref(null);
 
-function handleSubmit() {
+//완료 버튼 눌렀을때 실행
+async function handleSubmit() {
     console.log(JSON.parse(JSON.stringify(centerInfo.value)));
     
-    router.push('/admin/educenter/list');
+    //multipart form-data 객체 생성
+    const formData = new FormData();
 
-    // 서버 통신 코드 추가
+    //문자 파트 넣기
+    formData.append("ecname", centerInfo.value.ecname);
+    formData.append("ecpostcode", centerInfo.value.ecpostcode);
+    formData.append("ecaddress", centerInfo.value.ecaddress);
+    formData.append("ecdetailaddress", centerInfo.value.ecdetailaddress);
+
+    //파일 파트 넣기
+    let elEcattach = ecattach.value;
+
+    if(elEcattach.files.length != 0) {
+        for (let i=0; i<elEcattach.files.length; i++){            
+            formData.append("ecattachdata", elEcattach.files[i]);
+        }
+    }
+
+    //교육장 등록 요청
+    try {
+        
+        const response = await educenterAPI.create(formData);
+        router.push('/admin/educenter/list');
+    } catch(error) {
+        
+        console.log(error);
+    }   
+}
+
+
+function handleCancle() {
+    router.push('/admin/educenter/list');
 }
 
 function postcodeinfo(data1, data2) {
-    centerInfo.value.postcode = data1;
-    centerInfo.value.address = data2;
+    centerInfo.value.ecpostcode = data1;
+    centerInfo.value.ecaddress = data2;
 }
 //멀티파일 사진 미리보기
-
-
 const src = ref([]);
 
 function addImage(e) {
