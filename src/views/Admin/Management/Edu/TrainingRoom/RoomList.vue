@@ -140,18 +140,12 @@
                             </div>
                         </div>
                     </li>
-
-
-
                 </ul>
             </section>
-
-
-
-
         </div>
 
-        <div class="container mt-3" v-if="submitStatus">
+        <!--
+        <div class="container mt-3">
             <table class="styled-table">
                 <thead>
                     <tr>
@@ -216,14 +210,11 @@
                 </tbody>
             </table>
         </div>
+    -->
     </div>
 </template>
 
 <script setup>
-import BaseButtonCreate from '@/components/UIComponents/BaseButtonCreate.vue';
-import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
-import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
-import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 
@@ -248,9 +239,6 @@ function handleCreateBtn() {
     router.push('/admin/room/create');
 }
 
-function handleUpdateBtn() {
-    router.push('/admin/room/update');
-}
 
 
 </script>

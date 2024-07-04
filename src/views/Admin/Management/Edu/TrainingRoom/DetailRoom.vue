@@ -43,46 +43,40 @@
                 </button>
             </div>
 
-            <div class="header-sides" style="margin-left: 5%;">
-                <div class="header-sides-title">
-                    <h3>L1 강의실</h3>
+            <div class="header-sides" style="margin-left: 5%; width: 800px;">
+                <div class="header-sides-title" style="display: flex;">
+                    <h3 class="header-title">L1 강의실</h3>
+
+                    <button type="button" @click="handleUpdateBtn" style="border: none; background-color:transparent; margin-left: 50%; margin-bottom: 5%;">
+                        <PhPencilCircle :size="28" color="#6fd41c" weight="duotone" style="width: 30px; height: 30px;"/>
+                    </button>
+
+                    <button type="button" @click="handleDeleteBtn" style="border: none; background-color:transparent; margin-left: 1%; margin-bottom: 5%;">
+                        <PhTrashSimple :size="28" color="#f23c1c" weight="duotone" style="width: 30px; height: 30px;" />
+                    </button>
                 </div>
 
                 <div class="header-sides-contents">
-                    <span>교육장 : </span>
-                    <span>송파교육센터</span>
+                    <span class="contents_mark" style="float:left;">교육장</span>
+                    <p class="contents_txt">&nbsp;&nbsp;송파교육센터</p>
 
-                    <br>
+                    <span class="contents_mark" style="float:left;">수용가능인원</span>
+                    <p class="contents_txt">&nbsp;&nbsp;30명</p>
 
-                    <span>수용가능인원 : </span>
-                    <span>30명</span>
+                    <span class="contents_mark" style="float:left;">사용여부</span>
+                    <p class="contents_txt">&nbsp;&nbsp;사용중</p>
 
-                    <br>
+                    <span class="contents_mark" style="float:left;">진행중인 강의</span>
+                    <p class="contents_txt">&nbsp;&nbsp;MSA 2차 Full Stack 개발자 양성과정</p>
 
-                    <span>사용여부 : </span>
-                    <span>사용중</span>
+                    <span class="contents_mark" style="float:left;">강의실 사용 가능일</span>
+                    <p class="contents_txt">&nbsp;&nbsp;2024.07.26일 이후 강의실 사용가능</p>
 
-                    <br>
+                    <span class="contents_mark" style="float:left;">등록일시</span>
+                    <p class="contents_txt">&nbsp;&nbsp;2024.01. 21 13:15</p>
 
-                    <span>진행중인 강의 : </span>
-                    <span>MSA 2차 Full Stack 개발자 양성과정</span>
-
-                    <br>
-
-                    <span>사용 가능 기간 : </span>
-                    <span>2024.07.26일 이후 강의실 사용가능</span>
-
-                    <br>
-
-                    <span>등록일시 : </span>
-                    <span>2024.01. 21 13:15</span>
-
-                    <br>
-
-                    <span>수정일시 : </span>
-                    <span>2024.01. 21 13:15</span>
-
-                    <br>
+                    <span class="contents_mark" style="float:left;">수정일시</span>
+                    <p class="contents_txt">&nbsp;&nbsp;2024.01. 21 13:15</p>
                 </div>
             </div>
         </div>
@@ -130,10 +124,10 @@
                     </h5>
                     <div class="body">
                         <span class="contents_mark" style="float:left;">교육일정</span>
-                        <p class="contents_txt">2024.01.25 ~ 2024.06.25</p>
+                        <p class="contents_txt">&nbsp;&nbsp;2024.01.25 ~ 2024.06.25</p>
 
                         <span class="contents_mark" style="float:left;">수강인원</span>
-                        <p class="contents_txt">20명</p> 
+                        <p class="contents_txt">&nbsp;&nbsp;20명</p> 
                     </div>
                 </li>
 
@@ -150,19 +144,43 @@
                     </h5>
                     <div class="body">
                         <span class="contents_mark" style="float:left;">교육일정</span>
-                        <p class="contents_txt">2024.02.26 ~ 2024.07.26</p>
+                        <p class="contents_txt">&nbsp;&nbsp;2024.02.26 ~ 2024.07.26</p>
 
                         <span class="contents_mark" style="float:left;">수강인원</span>
-                        <p class="contents_txt">20명</p>
+                        <p class="contents_txt">&nbsp;&nbsp;20명</p>
       
                     </div>
                 </li>
             </ul>
         </div>
     </div>
+
+    <DeleteDialog id="deleteDialog"/>
 </template>
 
 <script setup>
+import DeleteDialog from './DeleteDialog.vue';
+import { Modal } from 'bootstrap';
+import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
+
+const router = useRouter();
+
+let deleteDialog = null;
+
+onMounted(() => {
+    // modal 객체 생성
+    deleteDialog = new Modal(document.querySelector("#deleteDialog"));
+})
+
+function handleUpdateBtn() {
+    router.push('/admin/room/update');
+}
+
+function handleDeleteBtn() {
+    // 삭제 모달 활성화
+    deleteDialog.show();
+}
 </script>
 
 <style scoped>
@@ -374,8 +392,7 @@ ul {
 }
 
 .contents_mark {
-    display: block;
-    width: 90px;
+    width: 120px;
     height: 24px;
     border-radius: 4px;
     color: rgb(127, 127, 127);
@@ -408,7 +425,8 @@ ul {
     margin-bottom: 8px;
     color: #373f57;
     font-size: 16px;
-    line-height: 24px;
+    margin-left: 3%;
+    width: 500px;
 }
 
 .self_exam_list>li .body {
@@ -445,4 +463,11 @@ ul {
     font-weight: 600;
     line-height: 40px;
 }
+
+.header-title {
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #373f57;
+}
+
 </style>
