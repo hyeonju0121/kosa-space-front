@@ -26,10 +26,14 @@
                     </div>
                     <div class="tr">
                         <div class="th">
-                            <p class="form_label required">교육장 주소 </p>
+                            <p class="form_label required">교육장 주소</p>
                         </div>
                         <div class="td">
-                            <DaumPostCode3 @send-daumpostcode="postcodeinfo"/>
+                            <DaumPostCode3 
+                                :initialPostcode="centerInfo.ecpostcode"
+                                :initialAddress="centerInfo.ecaddress"
+                                @send-daumpostcode="postcodeinfo"/>
+                            <input type="text" v-model="centerInfo.ecdetailaddress" placeholder="상세주소" style="width:500px; margin-top: 3%;">
                         </div>
                     </div>
 
@@ -44,18 +48,12 @@
                                         <div id="defaultImg">
                                             <PhImage :size="32" color="#636462" weight="duotone" />
                                         </div>
-                                    </div>
-                                    <div class="center_edit">
-                                        <p class="tit">교육장의 이미지를 등록해주세요.</p>
-                                        <div class="attach_wrap">
-                                            <p class="guide_txt">파일 1개당 10MB까지 첨부 가능합니다. (JPG, JPEG, PNG, GIF만 첨부 가능)</p>
-                                            <div>
-                                                <input id="ecattach" type="file" class="form-control-file mt-3"
-                                                    ref="battach" />
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </div>                                                                       
+                                        <input type="file" @change="addImage" multiple ref="ecattach"/>                                    
                                 </div>
+                            </div>
+                            <div>
+                                <img v-for="(item, index) in src" :key="index" :src="item" width="80px" height="80px" />
                             </div>
                         </div>
                     </div>
@@ -75,31 +73,136 @@
 <script setup>
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
-import DaumPostCode2 from './DaumPostCode2.vue';
 import DaumPostCode3 from './DaumPostCode3.vue';
-import { useRouter } from 'vue-router';
-import { ref } from 'vue';
-
-const router = useRouter();
+import { useRouter, useRoute } from 'vue-router';
+import { ref, onMounted } from 'vue';
+import educenterAPI from '@/apis/educenterAPI';
 
 // 교육장 상태 객체 정의
 const centerInfo = ref({
-    ecname: "송파 교육장",
-    postcode: "05717",
-    address: "서울 송파구 중대로 135",
-    ecattach: null
+    ecno: "",
+    ecname: "",
+    ecpostcode: "",
+    ecaddress: "",
+    ecdetailaddress:"",
+    eccreatedat:"",
+    ecupdatedat:"",
+    eanoList:[],
+    attachments:[]
 });
 
-function handleSubmit() {
+//QueryString으로 전달된 ecno 얻기
+const route = useRoute();
+const ecno = route.query.ecno;
+ 
+
+const ecattach = ref(null);
+
+
+//해당 ecno의 educenter 얻는 함수 정의
+async function getEducenterByEcno(ecno) {
+    try {
+        const response = await educenterAPI.getEducenterByEcno(ecno);
+        centerInfo.value = response.data;
+
+        //교육장의 첨부파일 url 가져오기
+        if(centerInfo.value.eanoList && centerInfo.value.eanoList.length >0) {
+            centerInfo.value.attachments = [];
+                for(const eano of centerInfo.value.eanoList) {
+                    const url = await getAttach(eano);
+                    centerInfo.value.attachments.push(url);
+                }
+        }
+        //불러온 교육장에 첨부파일이 존재하는 경우 src에 url정보를 넣어줌
+        if(centerInfo.value.attachments && centerInfo.value.attachments.length >0) {
+            src.value = centerInfo.value.attachments;
+        }
+
+    } catch(error) {
+        console.log(error);
+    }
+}
+
+//eano를 통해 해당 첨부파일을 가져오는 함수
+async function getAttach(eano) {
+    try{
+        const response =await educenterAPI.getEducenterAttach(eano);
+        const blob = response.data;
+        return URL.createObjectURL(blob);        
+    }
+    catch(error) {
+        console.log(error);        
+    }
+}
+
+//컴포넌트가 마운트 될 때 ecno에 해당하는 교육장을 가져온다 
+onMounted(()=> {
+    getEducenterByEcno(ecno);
+});
+
+const router = useRouter();
+
+
+//완료 버튼 눌렀을때 실행
+async function handleSubmit() {
+
     console.log(JSON.parse(JSON.stringify(centerInfo.value)));
+
+    //multipart form-data 객체 생성
+    const formData = new FormData();
     
+    //문자 파트 넣기
+    formData.append("ecno", centerInfo.value.ecno);
+    formData.append("ecname", centerInfo.value.ecname);
+    formData.append("ecpostcode", centerInfo.value.ecpostcode);
+    formData.append("ecaddress", centerInfo.value.ecaddress);
+    formData.append("ecdetailaddress", centerInfo.value.ecdetailaddress);
+    
+    //파일 파트 넣기
+    let elEcattach = ecattach.value;
+    console.log("elEcattach:",elEcattach);
+
+    if(elEcattach.files.length != 0) {
+        for (let i=0; i<elEcattach.files.length; i++){            
+            formData.append("ecattachdata", elEcattach.files[i]);
+        }
+    }
+
+    //교육장 수정 요청
+    try {        
+        await educenterAPI.update(formData);
+        router.push('/admin/educenter/list');
+    } catch(error) {
+        
+        console.log(error);
+    }
+    
+}
+
+//주소api에서 우편번호와 주소 값가져오기
+function postcodeinfo(data1, data2) {
+    centerInfo.value.ecpostcode = data1;
+    centerInfo.value.ecaddress = data2;
+}
+
+//멀티파일 사진 미리보기
+const src = ref([]);
+
+function addImage(e) {
+    const file = (e.target).files;
+    const fileLength = file.length;
+    let newList = [];
+    for (let i = 0; i < fileLength; i++) {
+        newList.push(URL.createObjectURL(file[i]));
+    }
+    src.value = newList;
+}
+
+//취소버튼 눌렀을때 실행
+function handleCancle() {
     router.push('/admin/educenter/list');
 }
 
-function postcodeinfo(data1, data2) {
-    centerInfo.value.postcode = data1;
-    centerInfo.value.address = data2;
-}
 </script>
 
 <style scoped>
