@@ -50,6 +50,15 @@
                 </div>
                 <div class="tr">
                     <div class="th">
+                        <p class="form_label required">강의실 명</p>
+                    </div>
+                    <div class="td">
+                        <input v-model="courseInfo.trno" id="trno" type="text" 
+                            title="강의실 명 입력" placeholder="사용할 강의실을 입력해주세요." maxlength="50">
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="th">
                         <p class="form_label required">교육과정 명</p>
                     </div>
                     <div class="td">
@@ -80,6 +89,22 @@
                     </div>
                     <div class="td">
                         <input v-model="courseInfo.crequireddate" id="crequireddate" type="text" title="훈련일수 입력" placeholder="훈련일수를 입력해주세요." maxlength="50">
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="th">
+                        <p class="form_label required">훈련날짜</p>
+                    </div>
+                    <div class="td">
+                        <input v-model="courseInfo.ctrainingdate" id="ctrainingdate" type="text" title="훈련날짜 입력" placeholder="훈련날짜를 입력해주세요." maxlength="50">
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="th">
+                        <p class="form_label required">훈련시간</p>
+                    </div>
+                    <div class="td">
+                        <input v-model="courseInfo.ctrainingtime" id="ctrainingtime" type="text" title="훈련시간 입력" placeholder="훈련시간을 입력해주세요." maxlength="50">
                     </div>
                 </div>
                 <div class="tr">
@@ -146,12 +171,11 @@ const courseInfo = ref({
     crequireddate: "",
     ctotalnum: "",
     cmanager: "",
-    cprofessor: ""
-
-
+    cprofessor: "",
+    ctrainingdate: "",
+    ctrainingtime: "",
+    trno: ""
 })
-
-
 
 const router = useRouter();
 
@@ -185,6 +209,9 @@ async function handleSubmit() {
     formData.append("ctotalnum", courseInfo.value.ctotalnum);
     formData.append("cmanager", courseInfo.value.cmanager);
     formData.append("cprofessor", courseInfo.value.cprofessor);
+    formData.append("ctrainingdate", courseInfo.value.ctrainingdate);
+    formData.append("ctrainingtime", courseInfo.value.ctrainingtime);
+    formData.append("trno", courseInfo.value.trno);
 
     //파일 파트 넣기
     let elCattach = cattach.value;
@@ -499,5 +526,6 @@ select {
     font-size: 12px;
     color: #999999;
 }
+
 
 </style>
