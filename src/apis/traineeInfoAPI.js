@@ -11,7 +11,7 @@ function traineeRegister(request) { // form-data 형식으로 데이터를 전�
     // console.log("ecname = " + ecname);
     // console.log("cname = " + cname);
     // return axios.post("/admin/trainee/register?ecname="+ecname+"&cname="+cname , request);
-    return axios.post("/admin/trainee/register", request, {
+    return axios.post("edu/admin/trainee/register", request, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }

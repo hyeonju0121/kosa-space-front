@@ -17,7 +17,7 @@
                 <form submit.prevent="handlecheck">
                     <div class="mb-3">
                         <span class="me-3">
-                            <select v-model="trainee.ecname">                                
+                            <select v-model="trainee.ecname">
                                 <option value="교육장" selected disabled>교육장 선택</option>
                                 <option value="전체">전체</option>
                                 <option value="송파 교육장">송파 교육장</option>
@@ -29,7 +29,8 @@
                         <span class="me-3">
                             <select v-model="trainee.cname">
                                 <option value="교육과정" selected disabled>교육과정 선택</option>
-                                <option v-for="course in availableCourses" :key="course" :value="course">{{ course }}</option>
+                                <option v-for="course in availableCourses" :key="course" :value="course">{{ course }}
+                                </option>
                             </select>
                         </span>
                         <span>
@@ -41,10 +42,10 @@
                 <!-- 교육과정 선택했을때 교육과정에 따라 나오는 문구 -->
                 <div>
                     <div style="font-weight:bold" v-if="trainee.cname === 'MSA 1차'">
-                        |MSA 기반 Full Stack기반 전문가 양성과정 1차({{trainee.cstartdate }} ~ {{ trainee.cenddate }})
+                        |MSA 기반 Full Stack기반 전문가 양성과정 1차({{ trainee.cstartdate }} ~ {{ trainee.cenddate }})
                     </div>
                     <div style="font-weight:bold" v-else-if="trainee.cname === 'MSA 2차'">
-                        |MSA 기반 Full Stack기반 전문가 양성과정 2차({{trainee.cstartdate }} ~ {{ trainee.cenddate }})
+                        |MSA 기반 Full Stack기반 전문가 양성과정 2차({{ trainee.cstartdate }} ~ {{ trainee.cenddate }})
                     </div>
                     <div style="font-weight:bold" v-else-if="trainee.cname === '클라우드'">
                         |클라우드 전문가 양성과정({{ trainee.cstartdate }} ~ {{ trainee.cenddate }})
@@ -54,7 +55,7 @@
                     </div>
                     <div style="font-weight:bold" v-else-if="trainee.cname === '도커'">
                         |도커 전문가 양성과정({{ trainee.cstartdate }} ~ {{ trainee.cenddate }})
-                    </div>                    
+                    </div>
                     <div style="font-weight:bold" v-else-if="trainee.cname === 'AI'">
                         |AI 전문가 양성과정({{ trainee.cstartdate }} ~ {{ trainee.cenddate }})
                     </div>
@@ -64,7 +65,9 @@
 
                 <!-- 교육생 등록 버튼 -->
                 <div class="mb-3" style="text-align:right">
-                    <button v-if="!(trainee.cname==='전체' || trainee.ecname==='전체' || trainee.cname==='교육과정' || trainee.ecname==='교육장')" class="btn btn-dark btn-sm" @click="handleCreateBtn">교육생 등록</button>
+                    <button
+                        v-if="!(trainee.cname === '전체' || trainee.ecname === '전체' || trainee.cname === '교육과정' || trainee.ecname === '교육장')"
+                        class="btn btn-dark btn-sm" @click="handleCreateBtn">교육생 등록</button>
                 </div>
                 <!-- 테이블 부분 -->
                 <form>
@@ -85,16 +88,20 @@
                                 <tr>
                                     <!-- <tr v-for="trainee in page.trainees" :key="trainee.tno"> -->
                                     <td>{{ trainee.tno }}</td>
-                                    <td><img src="@/assets/kyungseob.jpg" width="110" height="150" ref="traineeImg"></td>
-                                    <td> 
-                                        <router-link :to="`/admin/trainee/detail?tno=${trainee.tno}&pageNo=${pageNo}`">{{
-                                                trainee.mname }}</router-link></td>
+                                    <td><img src="@/assets/kyungseob.jpg" width="110" height="150" ref="traineeImg">
+                                    </td>
+                                    <td>
+                                        <router-link
+                                            :to="`/admin/trainee/detail?tno=${trainee.tno}&pageNo=${pageNo}`">{{
+                                                trainee.mname }}</router-link>
+                                    </td>
                                     <td>010-xxxx-xxxx {{ trainee.mphone }}</td>
                                     <td>kosa@kosa.com {{ trainee.memail }}</td>
                                     <td>과정진행중 {{ trainee.tstate }}</td>
                                     <td>
                                         <span class="me-2">
-                                            <RouterLink :to="`./update?`"><button class="btn btn-info btn-sm">수정</button>
+                                            <RouterLink :to="`./update?`"><button
+                                                    class="btn btn-info btn-sm">수정</button>
                                             </RouterLink>
                                         </span>
                                         <button class="btn btn-danger btn-sm">삭제</button>
@@ -134,24 +141,24 @@
                             </tbody>
                         </table>
                     </div>
-                </form>                
-            </div>           
+                </form>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router';
-import { ref,computed } from 'vue';
+import { ref, computed } from 'vue';
 
 
 
 // 교육장 및 교육과정 데이터
 const educationCenters = ref([
     { name: '전체', courses: ['전체'] },
-    { name: '송파 교육장', courses: ['전체','MSA 1차', 'MSA 2차', '클라우드'] },
-    { name: '혜화 교육장', courses: ['전체','보안컨설턴트','도커'] },
-    { name: '가산 교육장', courses: ['전체','AI','데이터분석'] }
+    { name: '송파 교육장', courses: ['전체', 'MSA 1차', 'MSA 2차 Full Stack 개발자 양성과정', '클라우드'] },
+    { name: '혜화 교육장', courses: ['전체', '보안컨설턴트', '도커'] },
+    { name: '가산 교육장', courses: ['전체', 'AI', '데이터분석'] }
 ]);
 
 
@@ -173,7 +180,7 @@ let trainee = ref({
     cno: "",
     cstartdate: "",
     cenddate: "",
-    tno:"1",
+    tno: "1",
     tsex: "",
     tage: "",
     taddress: "",
@@ -261,5 +268,4 @@ table {
     text-align: center;
     vertical-align: middle;
 }
-
 </style>
