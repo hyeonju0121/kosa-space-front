@@ -37,8 +37,9 @@ function getEducenterAttach(eano) {
 
 //교육장 삭제
 function educenterDelete(ecno) {
+    console.log(educenterDelete);
     //Path Variable로 데이터 전송
-    return axios.delete("/edu/center/delete" + ecno);
+    return axios.delete("/edu/center/delete?ecno=" + ecno);
 }
 
 
