@@ -13,110 +13,123 @@
                 <BaseButtonCreate class="mt-3" @click="handleCreateBtn">교육장 등록</BaseButtonCreate>
             </div>
         </div>
-
-        <div class="educenter-wrap">            
-            <div v-for="educenter in educenterlist" :key="educenter.ecno" class="card" style="width: 22rem; margin-right: 13px;">
-                <!-- 캐러셀 부분 -->
-                <div :id="`carouselExampleControls${educenter.ecno}`" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div v-for="(url,index) in educenter.attachments" :key="index" class="carousel-item active" data-bs-interval="1000000">
-                            <img :src="url" class="d-block w-100" alt="..." style="width: 150px; height: 200px;">
-                        </div>                        
+        <div class="container mt-3" style="margin-left: %;">
+            <div class="educenter-wrap row">
+                <div v-for="educenter in educenterlist" :key="educenter.ecno" class="card col-md-4 col-sm-6 mb-4"
+                    style="width: 22rem; margin-right: 13px;">
+                    <!-- 캐러셀 부분 -->
+                    <div :id="`carouselExampleControls${educenter.ecno}`" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div v-for="(url, index) in educenter.attachments" :key="index" class="carousel-item active"
+                                data-bs-interval="1000000">
+                                <img :src="url" class="d-block w-100" alt="..." style="width: 150px; height: 200px;">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button"
+                            :data-bs-target="`#carouselExampleControls${educenter.ecno}`" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button"
+                            :data-bs-target="`#carouselExampleControls${educenter.ecno}`" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
-                    <button class="carousel-control-prev" type="button" :data-bs-target="`#carouselExampleControls${educenter.ecno}`"
-                        data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" :data-bs-target="`#carouselExampleControls${educenter.ecno}`"
-                        data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
-                <!-- 교육장 목록 내용 -->
-                <div class="card-body">
-                    <p class="educenter-name" style="font-size: 20px;"><b>{{ educenter.ecname }}</b></p>
-                    <p class="educenter-text">                        
-                       ({{educenter.ecpostcode}}) {{ educenter.ecaddress }}<br>
-                        ,{{ educenter.ecdetailaddress }}
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <div class="educenter-createdat">[등록일시] {{ educenter.eccreatedat }}</div>
-                    <div v-if="educenter.ecupdatedat" class="educneter-updatedat">[수정일시] {{ educenter.ecupdatedat }}</div>
-                    <div class="btn-wrap" style="margin-left: 12px;">                        
-                        <RouterLink :to="`/admin/educenter/update?ecno=${educenter.ecno}`">수정</RouterLink>                        
-                        <button type="button" class="deletebtn" @click="handleRemove(educenter.ecno)">삭제</button>
+                    <!-- 교육장 목록 내용 -->
+                    <div class="card-body">
+                        <p class="educenter-name" style="font-size: 20px;"><b>{{ educenter.ecname }}</b></p>
+                        <p class="educenter-text">
+                            ({{ educenter.ecpostcode }}) {{ educenter.ecaddress }}<br>
+                            ,{{ educenter.ecdetailaddress }}
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="educenter-createdat">[등록일시] {{ educenter.eccreatedat }}</div>
+                        <div v-if="educenter.ecupdatedat" class="educneter-updatedat">[수정일시] {{ educenter.ecupdatedat }}
+                        </div>
+                        <div class="btn-wrap" style="margin-left: 12px;">
+                            <RouterLink :to="`/admin/educenter/update?ecno=${educenter.ecno}`">수정</RouterLink>
+                            <button type="button" class="deletebtn" @click="confirmRemove(educenter.ecno)">삭제</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <DeleteCheckDialog @confirmDelete="handleRemove" />
 </template>
 
 <script setup>
 import BaseButtonCreate from '@/components/UIComponents/BaseButtonCreate.vue';
 import { useRouter } from 'vue-router';
 import educenterAPI from "@/apis/educenterAPI";
-import {onMounted, ref} from 'vue';
+import { onMounted, ref } from 'vue';
+import DeleteCheckDialog from './Dialog/DeleteCheckDialog.vue';
+import { Modal } from 'bootstrap';
+
+
+let deleteCheckDialog = null;
+
 
 
 //상태 정의
 const educenter = ref({
-    ecno:"",
-    ecname:"",
-    ecaddress:"", 
-    ecpostcode:"",
-    ecdetailaddress:"",
-    eanoList:[]    
+    ecno: "",
+    ecname: "",
+    ecaddress: "",
+    ecpostcode: "",
+    ecdetailaddress: "",
+    eanoList: []
 });
 
 
 const router = useRouter();
 
 //교육장 목록 상태정의
-const educenterlist =ref([]);
-
+const educenterlist = ref([]);
+let selectedEcno = null;
 
 //교육장 목록을 가져오는 메소드
 async function fetchEducenterList() {
-    try{
-        const response =await educenterAPI.getEducenterList();
-        educenterlist.value = response.data; 
-        
+    try {
+        const response = await educenterAPI.getEducenterList();
+        educenterlist.value = response.data;
+
         //각 교육장의 첨부파일 URL 가져오기
         for (const center of educenterlist.value) {
-            if(center.eanoList && center.eanoList.length >0) {
+            if (center.eanoList && center.eanoList.length > 0) {
                 center.attachments = [];
-                for(const eano of center.eanoList) {
+                for (const eano of center.eanoList) {
                     const url = await getAttach(eano);
                     center.attachments.push(url);
                 }
             }
         }
 
-    } catch(error) {
+    } catch (error) {
         console.log(error);
     }
 }
 
 //컴포넌트가 마운트 될 때 교육장 목록 가져오기
-onMounted(()=> {
+onMounted(() => {
     fetchEducenterList();
+    // modal 객체 생성
+    deleteCheckDialog = new Modal(document.querySelector("#deleteCheckDialog"));
 });
 
 
 
 //eano를 통해 해당 첨부파일을 가져오는 함수
 async function getAttach(eano) {
-    try{
-        const response =await educenterAPI.getEducenterAttach(eano);
+    try {
+        const response = await educenterAPI.getEducenterAttach(eano);
         const blob = response.data;
-        return URL.createObjectURL(blob);        
+        return URL.createObjectURL(blob);
     }
-    catch(error) {
-        console.log(error);        
+    catch (error) {
+        console.log(error);
     }
 }
 
@@ -126,13 +139,22 @@ function handleCreateBtn() {
     router.push('/admin/educenter/create');
 }
 
+//삭제버튼 누를 때 확인 모달 표시
+function confirmRemove(ecno) {
+    selectedEcno = ecno;
+    deleteCheckDialog.show();
+
+}
+
+
+
 //삭제버튼 눌렀을때 실행
-async function handleRemove(ecno) {
+async function handleRemove() {
     try {
-        await educenterAPI.educenterDelete(ecno);
-        // educenterlist.value = educenterlist.value.filter(item=> item.ecno !== ecno);
-        fetchEducenterList(); // 삭제 후 목록을 다시 가져와서 갱신                
-    } catch(error) {
+        await educenterAPI.educenterDelete(selectedEcno);
+        educenterlist.value = educenterlist.value.filter(item => item.ecno !== selectedEcno);
+        deleteCheckDialog.hide();
+    } catch (error) {
         console.log(error);
     }
 }
@@ -157,6 +179,19 @@ small,
 textarea,
 select {
     font-family: 'Noto Sans KR', sans-serif;
+}
+
+
+
+
+.educenter-wrap {
+    display: grid;
+    width: 100%;
+    gap: 35px 60px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: auto;
+    grid-auto-flow: row;
+    padding-bottom: 72px;
 }
 
 .headingArea {
@@ -227,5 +262,4 @@ select {
     background-color: #232323;
     border: 1px solid black;
     margin-left: 10px;
-}
-</style>
+}</style>
