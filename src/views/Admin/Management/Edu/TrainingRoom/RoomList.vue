@@ -11,134 +11,77 @@
             </div>
         </div>
 
-        <form @submit.prevent="handleSubmitFilter1">
-            <div class="align" style="display: flex;">
-                <div class="InpBox">
-                    <select id="educenter" title="교육장 선택" v-model="filter.ecname">
-                        <option selected disabled value="">교육장 선택</option>
-                        <option value="전체">전체</option>
-                        <option value="송파교육센터">송파교육센터</option>
-                        <option value="가산교육센터">가산교육센터</option>
-                        <option value="혜화교육센터">혜화교육센터</option>
-                    </select>
-                </div>
-                <button type="button" class="BtnType SizeM" @click="handleSubmitFilter1" style="margin-left: 1%;">
-                    강의실 조회
-                </button>
-                <button type="button" class="BtnType SizeM" @click="handleCreateBtn" style="margin-left: 1%;">
-                    강의실 등록
-                </button>
+        <div class="align" style="display: flex;">
+            <div class="InpBox">
+                <select id="educenter" title="교육장 선택" v-model="filter.ecname">
+                    <!--<option seleceted="" value="">교육장 선택</option>-->
+                    <option v-for="name in nameList" :value=name :key="name">{{ name }}</option>
+                    <!--<option selected disabled value="">교육장 선택</option>-->
+                    <!--<option value="전체">전체</option>-->
+                    <!--<option value="송파교육센터">송파교육센터</option>-->
+                    <!--<option value="가산교육센터">가산교육센터</option>
+                        <option value="혜화교육센터">혜화교육센터</option>-->
+                </select>
             </div>
-        </form>
-
-        <div class="interview_list_header">
-            <div class="total_interviews">총 0건</div>
 
             <!-- 필터 -->
             <div class="search_interview">
-                    <div class="InpBox search_order" style="margin-left:120px;">
-                        <!-- 승인여부 -->
-                        <select id="search_status" title="강의실 사용 여부" v-model="filter.trenable">
-                            <option selected disabled value="">강의실 사용 여부</option>
-                            <option value="0">전체</option>
-                            <option value="1">사용중</option>
-                            <option value="2">미사용</option>
-                        </select>
-                    </div>
+                <div class="InpBox search_order" style="margin-left:10px;">
+                    <!-- 승인여부 -->
+                    <select id="search_status" title="강의실 사용 여부" v-model="filter.trenable">
+                        <option selected disabled value="">강의실 사용 여부</option>
+                        <option value="전체">전체</option>
+                        <option value="사용중">사용중</option>
+                        <option value="사용가능">사용가능</option>
+                    </select>
+                </div>
             </div>
+            <button type="button" class="BtnType SizeM" @click="handleSubmitFilter1" style="margin-left: 1%;">
+                강의실 조회
+            </button>
+            <button type="button" class="BtnType SizeM" @click="handleCreateBtn" style="margin-left: 1%;">
+                강의실 등록
+            </button>
+        </div>
+
+        <div class="interview_list_header">
+            <div class="total_interviews">총 {{ roomListlength }}건</div>
         </div>
 
         <!-- 조회 안했을 때 ---------------------------------------------------------->
-        <!--<div class="interview_list" v-if="!submitStatus">-->
+        <div class="interview_list" v-if="!submitStatus">
             <!-- 면접 요청 리스트 없을 경우 -->
-            <!--<div class="empty_data">
+            <div class="empty_data">
                 <img src="//www.saraminimage.co.kr/sri/person/resume/img_empty_announce.png">
                 <strong class="tit">교육장이 선택되지 않았습니다.</strong>
                 <div class="txt">교육장을 선택하고 강의실 조회를 눌러주세요!</div>
             </div>
-        </div>-->
-        
-        <div id="career_growth_contents">
+        </div>
+
+        <div id="career_growth_contents" v-if="submitStatus">
             <section class="careerplus alljob_category">
                 <ul class="list_contents">
-                    <li class="item">
+                    <li class="item" v-for="room in roomList" :key="room.trno">
                         <RouterLink to="/admin/room/detail">
-                        <div class="card_contents">
-                            <div class="thumbnail">
-                                <img src="https://cdn.class101.net/images/dc1a77c6-6e8d-4554-b10e-ff98997c7a0c/640xauto.webp"
-                                    alt="[웹 개발자 단과반 1교시] HTML, CSS, JS 프론트엔드 속성 실무!"
-                                    onerror="this.onerror=null; this.src='//www.saraminimage.co.kr/sri/careertip/img_class_one_o_one.png'"
-                                    loading="lazy">
+                            <div class="card_contents">
+                                <div class="thumbnail">
+                                    <img v-if="roomattach != null" :src="roomattach" />
+                                </div>
+                                <strong class="ecname">{{ room.trname }} 강의실</strong>
+                                <div class="meta">
+                                    <span class="new_mark_complete" v-if="room.trenableResult === '사용중'">{{
+                                        room.trenableResult }}</span>
+                                    <span class="new_mark2" v-if="room.trenableResult === '사용가능'">{{ room.trenableResult
+                                    }}</span>
+                                    <span class="new_mark1"> {{ room.ecname }}</span>
+                                </div>
+                                <div class="keywords" v-if="room.trenableResult === '사용중'">
+                                    <span class="date_author">현재 {{ room.cname }} 진행중</span>
+                                    <br>
+                                    <span class="date_author">{{ room.cstartdate }}~{{ room.cenddate }}까지 강의실 사용불가</span>
+                                </div>
                             </div>
-                            <strong class="ecname">L1 강의실</strong>
-                            <div class="meta">
-                                <span class="new_mark_complete">사용중</span>
-                                <span class="new_mark1"> 송파교육센터</span>
-                            </div>
-                            <div class="keywords">
-                                <span class="date_author">현재 MSA 2차 Full Stack 개발자 양성과정 진행중</span>
-                                <br>
-                                <span class="date_author">2024.02.26~2024.07.26까지 강의실 사용불가</span>
-                            </div>
-                        </div>
                         </RouterLink>
-                    </li>
-
-                    <li class="item">
-                        <div class="card_contents">
-                            <div class="thumbnail">
-                                <img src="https://cdn.class101.net/images/dc1a77c6-6e8d-4554-b10e-ff98997c7a0c/640xauto.webp"
-                                    alt="[웹 개발자 단과반 1교시] HTML, CSS, JS 프론트엔드 속성 실무!"
-                                    onerror="this.onerror=null; this.src='//www.saraminimage.co.kr/sri/careertip/img_class_one_o_one.png'"
-                                    loading="lazy">
-                            </div>
-                            <strong class="ecname">L2 강의실</strong>
-                            <div class="meta">
-                                <span class="new_mark2">사용가능</span>
-                                <span class="new_mark1"> 송파교육센터</span>
-                            </div>
-                            <div class="keywords">
-                                <!--#css #프론트엔드 #node.js #html #mysql #api #aws #javascript #풀스택 #백엔드/서버개발--> 
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="item">
-                        <div class="card_contents">
-                            <div class="thumbnail">
-                                <img src="https://cdn.class101.net/images/dc1a77c6-6e8d-4554-b10e-ff98997c7a0c/640xauto.webp"
-                                    alt="[웹 개발자 단과반 1교시] HTML, CSS, JS 프론트엔드 속성 실무!"
-                                    onerror="this.onerror=null; this.src='//www.saraminimage.co.kr/sri/careertip/img_class_one_o_one.png'"
-                                    loading="lazy">
-                            </div>
-                            <strong class="ecname">L3 강의실</strong>
-                            <div class="meta">
-                                <span class="new_mark2">사용가능</span>
-                                <span class="new_mark1"> 송파교육센터</span>
-                            </div>
-                            <div class="keywords">
-                               <!--#css #프론트엔드 #node.js #html #mysql #api #aws #javascript #풀스택 #백엔드/서버개발 -->
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="item">
-                        <div class="card_contents">
-                            <div class="thumbnail">
-                                <img src="https://cdn.class101.net/images/dc1a77c6-6e8d-4554-b10e-ff98997c7a0c/640xauto.webp"
-                                    alt="[웹 개발자 단과반 1교시] HTML, CSS, JS 프론트엔드 속성 실무!"
-                                    onerror="this.onerror=null; this.src='//www.saraminimage.co.kr/sri/careertip/img_class_one_o_one.png'"
-                                    loading="lazy">
-                            </div>
-                            <strong class="ecname">L4 강의실</strong>
-                            <div class="meta">
-                                <span class="new_mark2">사용가능</span>
-                                <span class="new_mark1"> 송파교육센터</span>
-                            </div>
-                            <div class="keywords">
-                               <!--#css #프론트엔드 #node.js #html #mysql #api #aws #javascript #풀스택 #백엔드/서버개발 -->
-                            </div>
-                        </div>
                     </li>
                 </ul>
             </section>
@@ -216,22 +159,82 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import educenterAPI from '@/apis/educenterAPI';
+import trainingroomAPI from '@/apis/trainingroomAPI';
 
 const router = useRouter();
 
 // 필터 상태 객체 정의
 const filter = ref({
-    ecname: "",
+    ecname: "교육장 선택",
     trenable: ""
 });
+
+
+// 교육장 이름 전체 목록을 가져오는 메소드
+const nameList = ref([]);
+
+async function educenterNameList() {
+    try {
+        const response = await educenterAPI.educenterNamaList();
+        nameList.value = response.data;
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+// 교육장 이름 기준으로 강의실 목록을 가져오는 메소드
+const roomList = ref([]);
+const roomattach = ref(null);
+let roomListlength = ref(roomList.value.length);
+async function trainingroomList() {
+    try {
+        const response = await trainingroomAPI.getTrainingroomList(
+            filter.value.ecname, filter.value.trenable);
+        roomList.value = response.data;
+        // console.log(response.data);
+        // console.log(JSON.parse(JSON.stringify(roomList)));
+
+        roomListlength.value = roomList.value.length;
+        // console.log(roomListlength.value);
+
+        const data = roomList.value;
+        const eano = data[0].eanoList[0];
+        console.log(eano);
+
+        getAttach(eano);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+//eano를 통해 해당 첨부 파일을 가져오는 함수
+async function getAttach(eano) {
+    try {
+        const response = await trainingroomAPI.getRoomAttach(eano);
+        const blob = response.data;
+        roomattach.value = URL.createObjectURL(blob);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+onMounted(() => {
+    educenterNameList();
+})
+
 
 let submitStatus = ref(false);
 
 // 교육장 필터 선택하고, 승인 조회 버튼 클릭 시 
 function handleSubmitFilter1() {
     submitStatus.value = !submitStatus.value;
-    console.log(filter.value);
+    console.log("필터 선택: ", filter.value.ecname);
+
+    // 강의실 목록 가져오기
+    trainingroomList();
 }
 
 
@@ -240,6 +243,10 @@ function handleCreateBtn() {
 }
 
 
+function handleSelectSubmit() {
+    console.log(filter.value.trenable);
+}
+
 
 </script>
 
@@ -247,7 +254,7 @@ function handleCreateBtn() {
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 body,
@@ -708,6 +715,4 @@ img {
     text-align: center;
     background-color: #defaf6;
 }
-
-
 </style>

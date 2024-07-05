@@ -42,6 +42,10 @@ function educenterDelete(ecno) {
     return axios.delete("/edu/center/delete?ecno=" + ecno);
 }
 
+// 교육장 이름 전체 조회
+function educenterNamaList() {
+    return axios.get("/edu/center/name/list");
+}
 
 export default {
     create,
@@ -49,6 +53,6 @@ export default {
     getEducenterByEcno,
     getEducenterList,
     getEducenterAttach,
-    educenterDelete
-
+    educenterDelete,
+    educenterNamaList
 }
