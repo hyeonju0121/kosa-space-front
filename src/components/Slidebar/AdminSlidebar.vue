@@ -200,7 +200,9 @@ min-height: 100vh;
 */
 
 .sidebar {
-  position: relative;
+  position: sticky;
+  top: 0; /* 화면 상단에 고정 */
+  align-self: flex-start; /* 추가된 속성 */
   width: 290px;
   height: 100vh;
   display: flex;
