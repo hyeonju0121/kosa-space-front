@@ -45,20 +45,18 @@
                 교육과정 등록
             </button>
         </div>
-
-        <!--<BaseButtonSubmit @click="handleCreateBtn" style="margin-top: 1%;">교육과정 등록</BaseButtonSubmit>-->
-
+        <!-- 교육과정 목록 부분 -->
         <div>
             <ul class="self_exam_list">
-                <li class="personality_test">
-                    <div class="course-img">
-                        <img src="@/assets/course1.png" class="course-img-detail">
+                <li v-for="course in courselist" :key="course.cno" class="personality_test">
+                    <div v-for="(url,index) in course.attachments" :key="index" class="course-img">
+                        <img :src="url" class="course-img-detail" style="width: 150px; height: 140px;">
                     </div>
-                    <h5 class="tit">MSA 기반 Full Stack 개발 전문가 양성과정 1차
+                    <h5 class="tit">{{ course.cname }}
                         <div style="display: flex;">
-                            <span class="new_mark1">송파교육센터</span>
-                            <span class="new_mark_complete" style="margin-left:2%;">진행완료</span>
-                            <span class="new_mark3" style="margin-left:2%;">마성일 교수</span>
+                            <span class="new_mark1">{{ course.ecname }}</span>
+                            <span class="new_mark_complete" style="margin-left:2%;">{{ course.cstatus }}</span>
+                            <span class="new_mark3" style="margin-left:2%;">{{ course.cprofessor }}</span>
                         </div>
                         <div style="margin-top: 2%;">
                             <button type="button" class="btn btn-outline-secondary btn-sm" @click="handleUpdateBtn">수정</button>
@@ -67,107 +65,27 @@
                     </h5>
                     <div class="body">
                         <span class="contents_mark" style="float:left;">교육일정</span>
-                        <p class="contents_txt">2024.01.25 ~ 2024.06.25</p>
+                        <p class="contents_txt">{{ course.cstartdate }}~{{ course.cenddate }}</p>
 
                         <span class="contents_mark" style="float:left;">요일시간</span>
-                        <p class="contents_txt">월, 화, 수, 목, 금 / 9:00 ~ 18:00</p>
+                        <p class="contents_txt">{{ course.ctrainingdate }} / {{ course.ctrainingtime }}</p>
                      
                         <span class="contents_mark" style="float:left;">수강인원</span>
-                        <p class="contents_txt">20명</p>
+                        <p class="contents_txt">{{ course.ctotalnum }}명</p>
 
                         <span class="contents_mark" style="float:left;">교육장</span>
-                        <p class="contents_txt">송파교육센터</p>          
+                        <p class="contents_txt">{{ course.ecname }}</p>          
                     </div>
-                </li>
-
-                <li class="personality_test">
-                    <div class="course-img">
-                        <img src="@/assets/course1.png" class="course-img-detail">
-                    </div>
-                    <h5 class="tit">MSA 기반 Full Stack 개발 전문가 양성과정 2차
-                        <div style="display: flex;">
-                            <span class="new_mark1">송파교육센터</span>
-                            <span class="new_mark_proceeding" style="margin-left:2%;">진행중</span>
-                            <span class="new_mark3" style="margin-left:2%;">신용권 교수</span>
-                        </div>
-                        <div style="margin-top: 2%;">
-                            <button type="button" class="btn btn-outline-secondary btn-sm" @click="handleUpdateBtn">수정</button>
-                            <button type="button" class="btn btn-outline-dark btn-sm" style="margin-left: 2%;">삭제</button>
-                        </div>
-                    </h5>
-                    <div class="body">
-                        <span class="contents_mark" style="float:left;">교육일정</span>
-                        <p class="contents_txt">2024.02.26 ~ 2024.07.26</p>
-
-                        <span class="contents_mark" style="float:left;">요일시간</span>
-                        <p class="contents_txt">월, 화, 수, 목, 금 / 9:00 ~ 18:00</p>
-                     
-                        <span class="contents_mark" style="float:left;">수강인원</span>
-                        <p class="contents_txt">20명</p>
-
-                        <span class="contents_mark" style="float:left;">교육장</span>
-                        <p class="contents_txt">송파교육센터</p>          
-                    </div>
-                </li>
-
-                <li class="personality_test">
-                    <div class="course-img">
-                        <img src="@/assets/course3.png" class="course-img-detail">
-                    </div>
-                    <h5 class="tit">클라우드 솔루션즈 아키텍트 양성과정 1차
-                        <div style="display: flex;">
-                            <span class="new_mark1">송파교육센터</span>
-                            <span class="new_mark_proceeding" style="margin-left:2%;">진행중</span>
-                            <span class="new_mark3" style="margin-left:2%;">조효석 교수</span>
-                        </div>
-                        <div style="margin-top: 2%;">
-                            <button type="button" class="btn btn-outline-secondary btn-sm" @click="handleUpdateBtn">수정</button>
-                            <button type="button" class="btn btn-outline-dark btn-sm" style="margin-left: 2%;">삭제</button>
-                        </div>
-                    </h5>
-                    <div class="body">
-                        <span class="contents_mark" style="float:left;">교육일정</span>
-                        <p class="contents_txt">2024.02.26 ~ 2024.07.26</p>
-
-                        <span class="contents_mark" style="float:left;">요일시간</span>
-                        <p class="contents_txt">월, 화, 수, 목, 금 / 9:00 ~ 18:00</p>
-                     
-                        <span class="contents_mark" style="float:left;">수강인원</span>
-                        <p class="contents_txt">20명</p>
-
-                        <span class="contents_mark" style="float:left;">교육장</span>
-                        <p class="contents_txt">송파교육센터</p>          
-                    </div>
-                </li>
-                <li class="personality_test">
-                    <div class="course-img">
-                        <img src="@/assets/course3.png" class="course-img-detail">
-                    </div>
-                    <h5 class="tit">MSA 기반 Full Stack 개발 전문가 양성과정 3차
-                        <div style="display: flex;">
-                            <span class="new_mark1">송파교육센터</span>
-                            <span class="new_mark2" style="margin-left:2%;">진행예정</span>
-                            <span class="new_mark3" style="margin-left:2%;">신용권 교수</span>
-                        </div>
-                        <div style="margin-top: 2%;">
-                            <button type="button" class="btn btn-outline-secondary btn-sm" @click="handleUpdateBtn">수정</button>
-                            <button class="btn btn-outline-dark btn-sm" style="margin-left: 2%;">삭제</button>
-                        </div>
-                    </h5>
-                    <div class="body">
-                    </div>
-                </li>
+                </li>               
             </ul>
         </div>
     </div>
 </template>
 
 <script setup>
-import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
-import BaseButtonCreate from '@/components/UIComponents/BaseButtonCreate.vue';
-import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
-import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import { useRouter } from 'vue-router';
+import courseAPI from '@/apis/courseAPI';
+import { onMounted, ref } from 'vue';
 
 const router = useRouter();
 
@@ -178,6 +96,74 @@ function handleCreateBtn() {
 function handleUpdateBtn() {
     router.push('/admin/course/update');
 }
+
+//교육과정 상태 정의
+const course = ref({ 
+    cno:"",  
+    ecname: "",
+    cname: "",
+    ccode: "",
+    cstartdate: "",
+    cenddate: "",
+    crequireddate: "",
+    ctotalnum: "",
+    cmanager: "",
+    cprofessor: "",
+    ctrainingdate: "",
+    ctrainingtime: "",
+    trno: "",
+    cstatus:"",
+    eanoList: []
+});
+
+
+
+
+//교육과정 목록 상태 정의
+const courselist = ref([]);
+
+//교육장 목록을 가져오는 메소드
+async function fetchCourseList() {
+    try {
+        const response = await courseAPI.getCourseList();
+        courselist.value = response.data;
+
+        
+
+        //각 교육과정 첨부파일 URL 가져오기
+        for (const course of courselist.value) {
+            if (course.eanoList && course.eanoList.length > 0) {
+                course.attachments = [];
+                for (const eano of course.eanoList) {
+                    const url = await getAttach(eano);
+                    course.attachments.push(url);
+                }
+            }
+        }
+
+    } catch(error) {
+        console.log(error)
+    }
+}
+
+//컴포넌트가 마운트 될때 교육과정 목록 가져오기
+onMounted(()=> {
+    fetchCourseList();
+
+});
+
+//eano를 통해 해당 첨부 파일을 가져오는 함수
+async function getAttach(eano) {
+    try{       
+        const response = await courseAPI.getCourseAttach(eano);
+        const blob = response.data;
+        return URL.createObjectURL(blob);
+    } catch(error) {
+        console.log(error);
+    }
+}
+
+
 
 </script>
 
