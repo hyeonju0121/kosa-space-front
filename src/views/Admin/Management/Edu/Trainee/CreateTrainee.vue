@@ -123,7 +123,7 @@
                                 <td colspan="3">
                                     <div class="td">
                                         <DaumPostCode3 @send-daumpostcode="postcodeinfo" />
-                                        <input type="text" v-model.trim="request.ecdetailaddress" placeholder="상세주소"
+                                        <input type="text" v-model.trim="request.taddressdetail" placeholder="상세주소"
                                             style="width:500px; margin-top: 3%;">
                                     </div>
                                 </td>
@@ -218,9 +218,6 @@ let request = ref({
     mpassword: "",
     mphone: "",
     memail: "",
-    // cno: "",
-    // cstartdate: "",
-    // cenddate: "",
     tsex: "성별 선택",
     tpostcode: "",
     taddress: "",
@@ -235,48 +232,8 @@ let request = ref({
     tprofileimg: null,
     tprofileoname: "",
     tprofiletype: "",
-    ecdetailaddress: ""
+    taddressdetail: ""
 });
-
-// const tprofileimg = ref(null);
-/*
-let trainee = ref({
-    ecname: "교육장",
-    cname: "교육과정",
-    mid: "",
-    mname: "",
-    mphone: "",
-    memail: "",
-    cno: "",
-    cstartdate: "",
-    cenddate: "",
-    tsex: "성별",
-    taddress: "",
-    tage: "",
-    tfield: "",
-    tacademic: "",
-    tschoolname: "",
-    tmajor: "",
-    tminor: "",
-    tgrade: "",
-    tstatus: "교육상태",
-    tprofileimg: "",
-    tprofileoname: "",
-    tprofiletype: ""
-});
-
-const member = ref({
-    mid: "",
-    mname: "",
-    mphone: "",
-    mpassword: "",
-    memail: "",
-    // mrole: "",
-    // menable: "",
-    // mcreatedat: "",
-    // mupdatedat: ""
-});
-*/
 
 // v-if를 사용하여 DOM 생성 여부를 위한 변수 선언
 let mnameCheck = ref(null); // 이름 유효성 v-if
@@ -312,10 +269,6 @@ const src = ref();
 let attach = null;
 
 function addImage(e) {
-    // const file = (e.target).files;
-    // let preImg = [];
-    // preImg.push(URL.createObjectURL(file[0]));
-    // src.value = preImg;
     console.log("파일 추가");
     const file = e.target.files[0];
     console.log("file = " + file);
@@ -419,9 +372,6 @@ function handleCancle() {
     router.push('/admin/trainee/list');
 }
 
-// submit error 상태 변수 추가-등록버튼 눌렀을시 다른 유효성 검사가 통과 되지않으면 등록이 안되도록 함
-// let submitError = ref(false);
-
 //등록 버튼을 눌렀을때
 async function handleSubmit() {
     console.log("handleSubmit 버튼 실행");
@@ -451,7 +401,7 @@ async function handleSubmit() {
     // 우편번호와 주소, 상세주소 넣기
     formData.append("tpostcode", request.value.tpostcode);
     formData.append("taddress", request.value.taddress);
-    formData.append("ecdetailaddress", request.value.ecdetailaddress);
+    formData.append("taddressdetail", request.value.taddressdetail);
     // tprofileimg: "",
     // tprofileoname: "",
     // tprofiletype: ""
@@ -459,12 +409,6 @@ async function handleSubmit() {
     for (let [key, value] of formData.entries()) {
         console.log(key, value);
     }
-
-    //파일넣기
-    // const elAttach = tattach.value;
-    // if(elAttach.files.length != 0) {
-    //     formData.append("nattach", elAttach.files[0]);
-    // }
 
     console.log("formData = " + formData);
     //교육생 등록 요청
@@ -475,27 +419,6 @@ async function handleSubmit() {
     } catch (error) {
         console.log(error);
     }
-
-
-
-    //교육생 등록 값 잘 넘어가는지 확인
-    // console.log(formData);
-    // console.log(JSON.parse(JSON.stringify(request.value)));
-
-    //유효성 검사 결과가 전부 참일때 등록 가능
-    // 경섭이 방식. --> 스타일의 차이. 좋음! 둘 중 뭘할지 선택. 일단 보류 (주석)
-    /*if (mnameCheck.value && mphoneTotalCheck.value && tsexCheck.value) {
-        submitError.value = false;
-        router.push('/admin/trainee/list');
-    } else {
-        submitError.value = true;
-        namePatternCheck();
-        phonePatternmiddleCheck();
-        phonePatternendCheck();
-        checkSex();
-
-        alert("이름, 성별, 전화번호 유효성에 맞게 작성하여 주세요!");
-    }*/
 }
 
 </script>
