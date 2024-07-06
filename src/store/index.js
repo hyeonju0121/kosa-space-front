@@ -9,7 +9,8 @@ const store = createStore({
   state: {
     userId: "",
     accessToken: "",
-    mrole:""
+    mrole:"",
+    clientIP: "",
   },
   // 루트 상태 값을 읽는 메소드(게터) 정의
   getters: {
@@ -21,6 +22,9 @@ const store = createStore({
     },
     getMrole(state, getters, rootState, rootGetters) {
       return state.mrole;
+    },
+    getClientIP(state, getters, rootState, rootGetters) {
+      return state.clientIP;
     }
   },
   // 루트 상태 값을 변화시키는 메소드(세터) 정의 --> 동기 방식
@@ -33,6 +37,9 @@ const store = createStore({
     },
     setMrole(state, payload) {
       state.mrole = payload;
+    },
+    setClientIP(state, payload) {
+      state.clientIP = payload;
     }
   },
   // 비동기 작업을 실행하고 결과에 따라 상태 값을 변화시키는 메소드를 정의
@@ -82,13 +89,21 @@ const store = createStore({
       context.commit("setMid", payload.mid);
       context.commit("setAccessToken", payload.accessToken);
       context.commit("setMrole", payload.mrole);
+      // 현주 추가
+      context.commit("setClientIP", payload.clientIP);
 
       // 로컬 파일에 저장
       localStorage.setItem("mid", payload.mid);
       localStorage.setItem("accessToken", payload.accessToken);
       localStorage.setItem("mrole", payload.mrole);
+      //현주 추가
+      localStorage.setItem("clientIP", payload.clientIP);
+
       // Axios 요청 공통 헤더에 인증 정보 추가
       axiosConfig.addAuthHeader(payload.accessToken);
+      // 현주 추가
+      axiosConfig.addClientIPHeader(payload.clientIP);
+
       //
       console.log("인증 정보를 전역 상태 및 로컬 스토리지에 파일로 저장");
     },
@@ -98,15 +113,23 @@ const store = createStore({
       context.commit("setMid", "");
       context.commit("setAccessToken", "");
       context.commit("setMrole", "");
+      // 현주 추가
+      context.commit("setClientIP", "");
+
       // 로컬 파일에서 삭제
       localStorage.removeItem("mid");
       localStorage.removeItem("accessToken");
       localStorage.removeItem("mrole");
+      // 현주 추가
+      localStorage.removeItem("clientIP");
+
       // Axios 요청 공통 해더에 인증 정보 삭제
       axiosConfig.removeAuthHeader();
+      // 현주 추가
+      axiosConfig.removeClientIPHeader();
       //
       console.log("인증 정보 삭제");
-    }
+    },
   },
   // 루트 하위 상태 모듈 추가
   modules: {

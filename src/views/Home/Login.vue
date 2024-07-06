@@ -97,6 +97,7 @@ import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import authAPI from '@/apis/authAPI';
+import axios from 'axios';
 
 const store = useStore();
 const router = useRouter();
@@ -106,6 +107,27 @@ const member = ref({
     mpassword: "",
     mrole: ""
 });
+
+// 현주 추가 ------------------------------------
+// 사용자 IP 정보 조회
+const userClientInfo = ref([]);
+const clientIP = ref("");
+
+async function getIpClient() {
+  try {
+    const response = await axios.get('https://ipinfo.io/json');
+    console.log(response.data);
+    // 사용자 IP 값 저장
+    userClientInfo.value = response.data;
+    clientIP.value = userClientInfo.value.ip;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+getIpClient();
+
+// --------------------------------------
 
 // const midVal = store.state.member.mid;
 // const mpasswordVal = store.state.member.mpassword;
@@ -127,7 +149,8 @@ async function handleLogin() {
             const payload = {
                 mid: response.data.mid,
                 accessToken: response.data.accessToken,
-                mrole: response.data.mrole
+                mrole: response.data.mrole,
+                clientIP: clientIP.value
             };
 
             // 스토어에 저장

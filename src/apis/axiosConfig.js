@@ -20,7 +20,25 @@ function removeAuthHeader() {
     console.log(axios.defaults.headers.common);
 }
 
+
+// 현주 추가
+function addClientIPHeader(clientIP) {
+    // 모든 요청 헤더에 clientIP 추가 
+    // common 객체에 동적 속성으로 ClientIP 을 추가
+    axios.defaults.headers.common["ClientIP"] = "IP " + clientIP;
+    console.log(axios.defaults.headers.common);
+} 
+
+function removeClientIPHeader(clientIP) {
+    // common 객체의 ClientIP 속성을 삭제
+    delete axios.defaults.headers.common["ClientIP"];
+    console.log(axios.defaults.headers.common);
+} 
+
+
 export default {
     addAuthHeader,
-    removeAuthHeader
+    removeAuthHeader,
+    addClientIPHeader,
+    removeClientIPHeader
 }
