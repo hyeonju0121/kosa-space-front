@@ -110,7 +110,8 @@ const store = createStore({
   },
   // 루트 하위 상태 모듈 추가
   modules: {
-    member
+    member,
+    userDailyInfo
   }
 });
 
