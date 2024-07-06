@@ -195,6 +195,10 @@ import { onMounted, ref } from 'vue';
 import { Modal } from "bootstrap";
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
+import memberAPI from '@/apis/memberAPI';
+import attendanceAPI from '@/apis/attendanceAPI';
+import axios from 'axios';
+import traineeInfoAPI from '@/apis/traineeInfoAPI';
 
 
 // store 객체 얻기
@@ -202,6 +206,8 @@ const store = useStore();
 
 // router 객체 얻기
 const router = useRoute();
+
+const mid = "2024M2001";
 
 // store 에서 사용자 입실 및 퇴실 여부, 데일리 과제 제출 여부 가져오기
 const userCheckInStatus = store.state.userDailyInfo.userCheckInStatus;
@@ -238,6 +244,28 @@ onMounted(() => {
     checkInDialog = new Modal(document.querySelector("#checkInSubmitDialog"));
 })
 
+// 사용자 IP 정보 조회 -------------------------------------------------
+// const userClientInfo = ref([]);
+const clientIP = ref("");
+
+/*
+async function getIpClient() {
+  try {
+    const response = await axios.get('https://ipinfo.io/json');
+    console.log(response.data);
+    // 사용자 IP 값 저장
+    userClientInfo.value = response.data;
+    clientIP.value = userClientInfo.value.ip;
+  } catch (error) {
+    console.error(error);
+  }
+}
+*/
+// 사용자 IP 가져오기
+clientIP.value = store.state.clientIP;
+console.log(clientIP.value);
+
+// --------------------------------------------------------------------
 // IP 주소가 일치하지 않는 경우 에러 모달 활성화
 function showErrorDialog() {
     attendanceErrorDialog.show();
@@ -262,6 +290,12 @@ const minutesCheckIn = ref();
 const hoursCheckOut = ref();
 const minutesCheckOut = ref();
 
+// 입실 정보 상태 데이터 
+const checkInData = ref({
+    "mid": "",
+    "attendancetime": "",
+    //"clientip": ""
+});
 function submitCheckInDialog(todayCheckIn) {
     console.log("CheckInDialog 에서 정의한 이벤트 수신 완료");
     // '네' 버튼 클릭시, 모달 비활성화
@@ -271,6 +305,18 @@ function submitCheckInDialog(todayCheckIn) {
     console.log("사용자 입실 버튼 누른 시간: " + todayCheckIn.value.formattedDate);
     hoursCheckIn.value = todayCheckIn.value.hours;
     minutesCheckIn.value = todayCheckIn.value.minutes;
+
+    // mid, IP, 현재 날짜와 시간 상태 객체 값 세팅 --------------------
+    checkInData.value.mid = mid;
+    checkInData.value.attendancetime = todayCheckIn.value.formattedDate;
+    //checkInData.value.clientip = clientIP.value;
+
+    console.log(checkInData.value.mid);
+    console.log(checkInData.value.attendancetime);
+    //console.log(checkInData.value.clientip);
+
+    // 입실 API 호출 ------------------------------------------------
+    userCheckIn();
 
     // 입실 상태 변경
     isCheckIn.value = !isCheckIn.value;
@@ -310,9 +356,13 @@ function submitCheckOutDialog(todayCheckOut) {
     console.log("퇴실 성공");
 }
 
+
+
 // 입실하기 버튼 클릭시, IP가 일치하는지 검사하는 함수 ------------------------
 // 교육장 IP 주소와 일치한 경우, 입실 모달 활성화
 function handlerCheckInBtn() {
+    //getIpClient();
+
     // 교육장 IP 주소와 다른 경우, IP 접속 실패 에러 모달 활성화
     if(!isIPstatus.value) { 
         showErrorDialog();
@@ -340,6 +390,33 @@ function handleDailyNoteSubmit(noteData) {
     console.log(store.state.userDailyInfo.userDailyNoteStatus);
 
     console.log("데일리 과제 제출 완료!");
+}
+
+/*
+async function getClientIP() {
+  try {
+    console.log("getClientIP() 호출");
+    const response = await memberAPI.getClientIP();
+    console.log(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+*/
+
+
+// 사용자 입실 기능 
+async function userCheckIn() {
+    try {
+        // 클라이언트가 입력한 값을 -> json 형식의 checkInData 객체 형태로 변환
+        const data = JSON.parse(JSON.stringify(checkInData.value));
+        
+        const response = await attendanceAPI.userCheckin(data);
+        console.log(response.data);
+
+    } catch(error) {
+        console.log(error);
+    }
 }
 
 

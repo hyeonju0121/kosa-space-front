@@ -52,8 +52,7 @@ todayCheckIn.value.minutes = currentDate.getMinutes();
 todayCheckIn.value.seconds = currentDate.getSeconds();
 
 // 날짜와 시간을 문자열로 포맷팅
-todayCheckIn.value.formattedDate = `${todayCheckIn.value.year}-${String(todayCheckIn.value.month).padStart(2, '0')}-
-    ${String(todayCheckIn.value.day).padStart(2, '0')} ${String(todayCheckIn.value.hours).padStart(2, '0')}:${String(todayCheckIn.value.minutes).padStart(2, '0')}:${String(todayCheckIn.value.seconds).padStart(2, '0')}`;
+todayCheckIn.value.formattedDate = `${todayCheckIn.value.year}-${String(todayCheckIn.value.month).padStart(2, '0')}-${String(todayCheckIn.value.day).padStart(2, '0')} ${String(todayCheckIn.value.hours).padStart(2, '0')}:${String(todayCheckIn.value.minutes).padStart(2, '0')}:${String(todayCheckIn.value.seconds).padStart(2, '0')}`;
 
 // 포맷팅된 날짜와 시간을 출력
 //console.log(formattedDate);
