@@ -218,6 +218,9 @@ let request = ref({
     mpassword: "",
     mphone: "",
     memail: "",
+    // cno: "",
+    // cstartdate: "",
+    // cenddate: "",
     tsex: "성별 선택",
     tpostcode: "",
     taddress: "",
@@ -269,6 +272,10 @@ const src = ref();
 let attach = null;
 
 function addImage(e) {
+    // const file = (e.target).files;
+    // let preImg = [];
+    // preImg.push(URL.createObjectURL(file[0]));
+    // src.value = preImg;
     console.log("파일 추가");
     const file = e.target.files[0];
     console.log("file = " + file);
@@ -369,8 +376,11 @@ function onState() {
 
 //취소버튼을 눌렀을때
 function handleCancle() {
-    router.push('/admin/trainee/list');
+    router.push('/admin/trainee/list?ecname=' + request.value.ecname + "&canme=" + request.value.cname);
 }
+
+// submit error 상태 변수 추가-등록버튼 눌렀을시 다른 유효성 검사가 통과 되지않으면 등록이 안되도록 함
+// let submitError = ref(false);
 
 //등록 버튼을 눌렀을때
 async function handleSubmit() {
@@ -406,6 +416,7 @@ async function handleSubmit() {
     // tprofileoname: "",
     // tprofiletype: ""
 
+    // formData 확인하기.
     for (let [key, value] of formData.entries()) {
         console.log(key, value);
     }
@@ -415,7 +426,7 @@ async function handleSubmit() {
     try {
         console.log("traineeInfoAPI 실행 전");
         await traineeInfoAPI.traineeRegister(formData);
-        router.push("/admin/trainee/list");
+        router.push('/admin/trainee/list?ecname=' + request.value.ecname + "&canme=" + request.value.cname);
     } catch (error) {
         console.log(error);
     }
