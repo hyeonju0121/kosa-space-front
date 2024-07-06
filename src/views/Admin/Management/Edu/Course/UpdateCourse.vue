@@ -24,16 +24,11 @@
                                         <PhImage :size="32" color="#636462" weight="duotone" />
                                     </div>
                                 </div>
-                                <div class="center_edit">
-                                    <p class="tit">교육과정 이미지를 등록해주세요.</p>
-                                    <div class="attach_wrap">
-                                        <p class="guide_txt">파일 1개당 10MB까지 첨부 가능합니다. (JPG, JPEG, PNG, GIF만 첨부 가능)</p>
-                                        <div>
-                                            <input id="cattach" type="file" class="form-control-file mt-3" ref="cattach" />
-                                        </div>
-                                    </div>
-                                </div>
+                                <input type="file" @change="addImage" multiple ref="cattach" />
                             </div>
+                        </div>
+                        <div>
+                            <img v-for="(item, index) in src" :key="index" :src="item" width="80px" height="80px"/>
                         </div>
                     </div>
                 </div>
@@ -42,8 +37,18 @@
                         <p class="form_label required">교육장 명</p>
                     </div>
                     <div class="td">
-                        <input @input="checkECname" v-model="courseInfo.ecname" id="ecname" type="text" title="교육장 명 입력" placeholder="교육장 명을 입력해주세요." maxlength="50">
+                        <input @input="checkECname" v-model="courseInfo.ecname" id="ecname" type="text" title="교육장 명 입력"
+                            placeholder="교육장 명을 입력해주세요." maxlength="50">
                         <p v-show="!isEcname" style="color: rgb(247, 78, 27);">한글만 입력해주세요.</p>
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="th">
+                        <p class="form_label required">강의실 명</p>
+                    </div>
+                    <div class="td">
+                        <input v-model="courseInfo.trname" id="trno" type="text" title="강의실 명 입력"
+                            placeholder="사용할 강의실을 입력해주세요." maxlength="50">
                     </div>
                 </div>
                 <div class="tr">
@@ -51,7 +56,8 @@
                         <p class="form_label required">교육과정 명</p>
                     </div>
                     <div class="td">
-                        <input v-model="courseInfo.cname" id="cname" type="text" title="교육과정 명 입력" placeholder="교육과정 명을 입력해주세요." maxlength="50">
+                        <input v-model="courseInfo.cname" id="cname" type="text" title="교육과정 명 입력"
+                            placeholder="교육과정 명을 입력해주세요." maxlength="50">
                     </div>
                 </div>
                 <div class="tr">
@@ -59,7 +65,8 @@
                         <p class="form_label required">교육과정 번호</p>
                     </div>
                     <div class="td">
-                        <input @input="checkCcode" v-model="courseInfo.ccode" id="ccode" type="text" title="교육과정 번호 입력" placeholder="교육과정 번호를 입력해주세요." maxlength="50">
+                        <input @input="checkCcode" v-model="courseInfo.ccode" id="ccode" type="text" title="교육과정 번호 입력"
+                            placeholder="교육과정 번호를 입력해주세요." maxlength="50">
                         <p style="margin-top: 1%;">해당연도 + 교육과정 코드 로 입력해주세요. </p>
                         <p>[예시] 해당연도(2024) + 교육과정 코드(M2) : 2024M2</p>
                         <p v-show="!isCcode" style="color: rgb(247, 78, 27);">앞에 숫자 4글자와 대문자 1자, 숫자 1자로 작성해주세요.</p>
@@ -76,7 +83,26 @@
                         <p class="form_label required">훈련일수</p>
                     </div>
                     <div class="td">
-                        <input v-model="courseInfo.crequireddate" id="crequireddate" type="text" title="훈련일수 입력" placeholder="훈련일수를 입력해주세요." maxlength="50">
+                        <input v-model="courseInfo.crequireddate" id="crequireddate" type="text" title="훈련일수 입력"
+                            placeholder="훈련일수를 입력해주세요." maxlength="50">
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="th">
+                        <p class="form_label required">훈련날짜</p>
+                    </div>
+                    <div class="td">
+                        <input v-model="courseInfo.ctrainingdate" id="ctrainingdate" type="text" title="훈련날짜 입력"
+                            placeholder="훈련날짜를 입력해주세요." maxlength="50">
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="th">
+                        <p class="form_label required">훈련시간</p>
+                    </div>
+                    <div class="td">
+                        <input v-model="courseInfo.ctrainingtime" id="ctrainingtime" type="text" title="훈련시간 입력"
+                            placeholder="훈련시간을 입력해주세요." maxlength="50">
                     </div>
                 </div>
                 <div class="tr">
@@ -84,7 +110,8 @@
                         <p class="form_label required">총 수강인원</p>
                     </div>
                     <div class="td">
-                        <input v-model="courseInfo.ctotalnum" id="ctotalnum" type="text" title="총 수강인원" placeholder="총 수강인원을 입력해주세요." maxlength="50">
+                        <input v-model="courseInfo.ctotalnum" id="ctotalnum" type="text" title="총 수강인원"
+                            placeholder="총 수강인원을 입력해주세요." maxlength="50">
                     </div>
                 </div>
                 <div class="tr">
@@ -92,7 +119,8 @@
                         <p class="form_label required">담당 운영진</p>
                     </div>
                     <div class="td">
-                        <input @input="checkCmanager" v-model="courseInfo.cmanager" id="cmanager" type="text" title="담당 운영진" placeholder="담당 운영진을 입력해주세요." maxlength="50">
+                        <input @input="checkCmanager" v-model="courseInfo.cmanager" id="cmanager" type="text" title="담당 운영진"
+                            placeholder="담당 운영진을 입력해주세요." maxlength="50">
                         <p v-show="!isCmanager" style="color: rgb(247, 78, 27);">한글 2자 이상 4자 이하로만 입력해주세요. </p>
                     </div>
                 </div>
@@ -101,15 +129,32 @@
                         <p class="form_label required">담당 강사진</p>
                     </div>
                     <div class="td">
-                        <input @input="checkCprofessor" v-model="courseInfo.cprofessor" id="cprofessor" type="text" title="담당 강사진" placeholder="담당 강사진을 입력해주세요." maxlength="50">
+                        <input @input="checkCprofessor" v-model="courseInfo.cprofessor" id="cprofessor" type="text"
+                            title="담당 강사진" placeholder="담당 강사진을 입력해주세요." maxlength="50">
                         <p v-show="!isCprofessor" style="color: rgb(247, 78, 27);">한글 2자 이상 4자 이하로만 입력해주세요. </p>
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="th">
+                        <p class="form_label required">교육과정 상태</p>
+                    </div>
+                    <div class="td">
+                        <select v-model="courseInfo.cstatus">
+                            <option value="진행예정">진행예정</option>
+                            <option value="진행중">진행중</option>
+                            <option value="진행완료">진행완료</option>
+                        </select>
+                        <span>{{ courseInfo.cstatus }}</span>
+                        <!-- <input v-model="courseInfo.cstatus" id="cstatus" type="text"
+                            title="교육과정 상태" placeholder="담당 강사진을 입력해주세요." maxlength="50"> -->
+                       
                     </div>
                 </div>
                 <div class="btn_big_wrap">
                     <RouterLink to="/admin/course/list">
                         <BaseButtonCancle>취소</BaseButtonCancle>
                     </RouterLink>
-                    <BaseButtonSubmit type="submit">완료</BaseButtonSubmit>
+                    <BaseButtonSubmit @click="handleSubmit">완료</BaseButtonSubmit>
                 </div>
             </form>
         </div>
@@ -119,20 +164,104 @@
 <script setup>
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import courseAPI from '@/apis/courseAPI';
+import { watch } from 'vue';
+
+
+//QueryString으로 전달된 cno 얻기
+const route = useRoute();
+const cno = route.query.cno;
+// console.log(route);
+// console.log("cno:", route.query.cno);
+
+watch(() => route.query.cno, async (newCno) => {
+    if (newCno) {
+        await getCourseByCno(newCno);
+    } else {
+        console.error("cno 값이 정의되지 않았습니다.");
+    }
+}, { immediate: true });
+
+console.log("cno:", cno);
+const cattach = ref(null);
+
+//해당 cno의 courseInfo 얻기
+async function getCourseByCno(cno) {
+    try {
+        const response = await courseAPI.getCourseByCno(cno);
+        courseInfo.value = response.data;
+
+        //교육과정의 첨부파일 url 가져오기
+        if (courseInfo.value.eanoList && courseInfo.value.eanoList.length > 0) {
+            courseInfo.value.attachments = []; 
+            for (const eano of courseInfo.value.eanoList) {
+                const url = await getAttach(eano);
+                courseInfo.value.attachments.push(url);
+            }
+        }
+        //불러온 교육과정에 첨부파일이 존재하는 경우 src에 url정보를 넣어줌
+        if (courseInfo.value.attachments && courseInfo.value.attachments.length > 0) {
+            src.value = courseInfo.value.attachments;
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+
+    // console.log("cno:", cno);
+}
+
+//eano를 통해 해당 첨부파일을 가져오는 함수
+async function getAttach(cno) {
+    try {
+        const response = await courseAPI.getCourseAttach(cno);
+        const blob = response.data;
+        return URL.createObjectURL(blob);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+//멀티파일 사진 미리보기
+const src = ref([]);
+
+function addImage(e) {
+    const file = (e.target).files;
+    const fileLength = file.length;
+    let newList = [];
+    for (let i = 0; i < fileLength; i++) {
+        newList.push(URL.createObjectURL(file[i]));
+    }
+    src.value = newList;
+}
+
+
 
 const date = ref();
 
-onMounted(() => {
-  const startDate = new Date();
-  const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
-  date.value = [startDate, endDate];
+onMounted(async() => {
+    const startDate = new Date();
+    const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
+    date.value = [startDate, endDate];
+    
+    // if (cno) {
+    //     await getCourseByCno(cno);
+    // } else {
+    //     console.error("cno 값이 정의되지 않았습니다.");
+    // }
+
+    
 })
 
-const courseInfo = ref({
+//교육과정 상태정의
+const courseInfo = ref({   
+    cstatus:"",
+    cno:"", 
     cattach: null,
     ecname: "",
     cname: "",
@@ -142,7 +271,11 @@ const courseInfo = ref({
     crequireddate: "",
     ctotalnum: "",
     cmanager: "",
-    cprofessor: ""
+    cprofessor: "",
+    ctrainingdate: "",
+    ctrainingtime: "",
+    trno: "",
+    attachments: []
 })
 
 let isEcname = ref(true);
@@ -152,21 +285,56 @@ let isCprofessor = ref(true);
 
 const router = useRouter();
 
-function handleSubmit() {
+//완료 버튼을 눌렀을때 실행
+async function handleSubmit() {
     courseInfo.value.cstartdate = date.value[0];
     courseInfo.value.cenddate = date.value[1];
 
     console.log(JSON.parse(JSON.stringify(courseInfo)));
+
+    //multipart form-data 객체 생성
+    const formData = new FormData();
+
+    //문자 파트 넣기
+    formData.append("cno", courseInfo.value.cno);
+    formData.append("ecname", courseInfo.value.ecname);
+    formData.append("cname", courseInfo.value.cname);
+    formData.append("ccode", courseInfo.value.ccode);
+    formData.append("cstartdate", courseInfo.value.cstartdate);
+    formData.append("cenddate", courseInfo.value.cenddate);
+    formData.append("crequireddate", courseInfo.value.crequireddate);
+    formData.append("ctotalnum", courseInfo.value.ctotalnum);
+    formData.append("cmanager", courseInfo.value.cmanager);
+    formData.append("cprofessor", courseInfo.value.cprofessor);
+    formData.append("ctrainingdate", courseInfo.value.ctrainingdate);
+    formData.append("ctrainingtime", courseInfo.value.ctrainingtime);
+    formData.append("trno", courseInfo.value.trno);
+    formData.append("cstatus", courseInfo.value.cstatus);
+
+    //파일 파트 넣기
+    let elCattach = cattach.value;
     
-    router.push('/admin/course/list');
+    if (elCattach.files.length != 0) {        
+        for (let i=0; i<elCattach.files.length; i++){            
+            formData.append("cattachdata", elCattach.files[i]);
+        }
+    }
+    //교육과정 수정 요청
+    try {
+        await courseAPI.update(formData);
+        router.push('/admin/course/list');
+    } catch(error){
+        console.log(error);
+    }
+    
 }
 
 // 교육장 유효성 검증 (한글만 입력)
 function checkECname() {
     var ecnamePattern = /^[가-힣]*$/;
     var checkEcname = ecnamePattern.test(courseInfo.value.ecname);
-    
-    if(!checkEcname) {
+
+    if (!checkEcname) {
         isEcname.value = false;
     } else {
         isEcname.value = true;
@@ -178,7 +346,7 @@ function checkCcode() {
     var ccodePattern = /^\d{4}[A-Z]\d$/;
     var checkCcode = ccodePattern.test(courseInfo.value.ccode);
 
-    if(!checkCcode) {
+    if (!checkCcode) {
         isCcode.value = false;
     } else {
         isCcode.value = true;
@@ -190,7 +358,7 @@ function checkCmanager() {
     var namePattern = /^[ㄱ-ㅎ가-힣]{2,4}$/;
     var checkManager = namePattern.test(courseInfo.value.cmanager);
 
-    if(!checkManager) {
+    if (!checkManager) {
         isCmanager.value = false;
     } else {
         isCmanager.value = true;
@@ -202,7 +370,7 @@ function checkCprofessor() {
     var namePattern = /^[ㄱ-ㅎ가-힣]{2,4}$/;
     var checkProfessor = namePattern.test(courseInfo.value.cprofessor);
 
-    if(!checkProfessor) {
+    if (!checkProfessor) {
         isCprofessor.value = false;
     } else {
         isCprofessor.value = true;
@@ -420,5 +588,4 @@ select {
     font-size: 12px;
     color: #999999;
 }
-
 </style>
