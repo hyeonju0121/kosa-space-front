@@ -1,4 +1,5 @@
 <template>
+  <div class="container">
   <aside class="sidebar">
     <div class="menu-btn">
         <i><PhCaretLeft class="icon" weight="bold" /></i>
@@ -105,6 +106,7 @@
       </div>
     </div>
  </aside>
+</div>
 </template>
 
 <script setup>
@@ -151,17 +153,24 @@ font-family: "Inter", sans-serif;
 body {
 background-color: #dbe2f4;
 }
-/*
-.container {
+
+/* .container {
 display: flex;
 align-items: center;
 width: 100%;
 min-height: 100vh;
+} */
+
+/* sticky부모요소의 높이가 충분하지 않아서 sticky가 중간에 깨지는 현상이 발생함 따라서 부모요소에 최소 높이를 2000px줌으로써 해결함 */
+.container {
+  min-height: 2000px; /* 원하는 높이로 설정 */
 }
-*/
+
 
 .sidebar {
-position: relative;
+position: sticky;
+top: 0; /* 화면 상단에 고정 */
+align-self: flex-start; /* 추가된 속성 */
 width: 290px;
 height: 100vh;
 display: flex;
@@ -172,6 +181,7 @@ padding: 24px;
 border-radius: 0px;
 transition: all 0.3s;
 }
+
 .sidebar .head {
 display: flex;
 gap: 20px;

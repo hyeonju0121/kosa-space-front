@@ -1,144 +1,146 @@
 <template>
-  <aside class="sidebar">
-    <div class="menu-btn">
-      <i>
-        <PhCaretLeft class="icon" weight="bold" />
-      </i>
-    </div>
-    <div class="head">
-      <div class="sidebar-logo">
+  <div class="container">
+    <aside class="sidebar">
+      <div class="menu-btn">
         <i>
-          <PhSquaresFour class="icon" weight="fill" color="#07b278" />
+          <PhCaretLeft class="icon" weight="bold" />
         </i>
       </div>
-      <div class="logo-text">
-        <p class="title">KOSA SPACE</p>
+      <div class="head">
+        <div class="sidebar-logo">
+          <i>
+            <PhSquaresFour class="icon" weight="fill" color="#07b278" />
+          </i>
+        </div>
+        <div class="logo-text">
+          <p class="title">KOSA SPACE</p>
+        </div>
       </div>
-    </div>
-    <!-- admin ----------------------------------------------------------->
-    <div class="nav">
+      <!-- admin ----------------------------------------------------------->
+      <div class="nav">
+        <div class="menu">
+          <p class="title">Main</p>
+          <ul>
+            <li class="active">
+              <a href="#">
+                <i>
+                  <PhUser class="icon" />
+                </i>
+                <span class="text">마이페이지</span>
+                <i class="arrow">
+                  <PhCaretDown class="icon" />
+                </i>
+              </a>
+              <ul class="sub-menu">
+                <li>
+                  <RouterLink to="/admin/dashboard">
+                    대시보드
+                  </RouterLink>
+                </li>
+                <li>
+                  <RouterLink to="/admin/mypage/info/modify">
+                    회원정보 수정
+                  </RouterLink>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="#">
+                <i>
+                  <PhMonitor class="icon" />
+                </i>
+                <span class="text">교육관리</span>
+                <i class="arrow">
+                  <PhCaretDown class="icon" />
+                </i>
+              </a>
+              <ul class="sub-menu">
+                <li>
+                  <RouterLink to="/admin/educenter/list">
+                    교육장 관리
+                  </RouterLink>
+                </li>
+                <li>
+                  <RouterLink to="/admin/course/list">
+                    교육과정 관리
+                  </RouterLink>
+                </li>
+                <li>
+                  <RouterLink to="/admin/room/list">
+                    강의실 관리
+                  </RouterLink>
+                </li>
+                <li>
+                  <RouterLink to="/admin/trainee/list">
+                    교육생 관리
+                  </RouterLink>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="#">
+                <i>
+                  <PhGraduationCap class="icon" />
+                </i>
+                <span class="text">학습관리</span>
+                <i class="arrow">
+                  <PhCaretDown class="icon" />
+                </i>
+              </a>
+              <ul class="sub-menu">
+                <li>
+                  <RouterLink to="/admin/attendance/approve">
+                    교육생 출결 승인 처리
+                  </RouterLink>
+                </li>
+                <li>
+                  <RouterLink to="/admin/attendance/list">
+                    출결 현황 조회
+                  </RouterLink>
+                </li>
+                <li>
+                  <RouterLink to="/admin/dailynote/list">
+                    과제 현황 조회
+                  </RouterLink>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <RouterLink to="/admin/notice/list">
+                <i>
+                  <PhBrowser class="icon" />
+                </i>
+                공지사항 관리
+              </RouterLink>
+            </li>
+          </ul>
+        </div>
+      </div>
       <div class="menu">
-        <p class="title">Main</p>
+        <p class="title">Account</p>
         <ul>
-          <li class="active">
-            <a href="#">
-              <i>
-                <PhUser class="icon" />
-              </i>
-              <span class="text">마이페이지</span>
-              <i class="arrow">
-                <PhCaretDown class="icon" />
-              </i>
-            </a>
-            <ul class="sub-menu">
-              <li>
-                <RouterLink to="/admin/dashboard">
-                  대시보드
-                </RouterLink>
-              </li>
-              <li>
-                <RouterLink to="/admin/mypage/info/modify">
-                  회원정보 수정
-                </RouterLink>
-              </li>
-            </ul>
-          </li>
           <li>
             <a href="#">
               <i>
-                <PhMonitor class="icon" />
+                <PhSignOut class="icon" />
               </i>
-              <span class="text">교육관리</span>
-              <i class="arrow">
-                <PhCaretDown class="icon" />
-              </i>
+              <span class="text">로그아웃</span>
             </a>
-            <ul class="sub-menu">
-              <li>
-                <RouterLink to="/admin/educenter/list">
-                  교육장 관리
-                </RouterLink>
-              </li>
-              <li>
-                <RouterLink to="/admin/course/list">
-                  교육과정 관리
-                </RouterLink>
-              </li>
-              <li>
-                <RouterLink to="/admin/room/list">
-                  강의실 관리
-                </RouterLink>
-              </li>
-              <li>
-                <RouterLink to="/admin/trainee/list">
-                  교육생 관리
-                </RouterLink>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <a href="#">
-              <i>
-                <PhGraduationCap class="icon" />
-              </i>
-              <span class="text">학습관리</span>
-              <i class="arrow">
-                <PhCaretDown class="icon" />
-              </i>
-            </a>
-            <ul class="sub-menu">
-              <li>
-                <RouterLink to="/admin/attendance/approve">
-                  교육생 출결 승인 처리
-                </RouterLink>
-              </li>
-              <li>
-                <RouterLink to="/admin/attendance/list">
-                  출결 현황 조회
-                </RouterLink>
-              </li>
-              <li>
-                <RouterLink to="/admin/dailynote/list">
-                  과제 현황 조회
-                </RouterLink>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <RouterLink to="/admin/notice/list">
-              <i>
-                <PhBrowser class="icon" />
-              </i>
-              공지사항 관리
-            </RouterLink>
           </li>
         </ul>
       </div>
-    </div>
-    <div class="menu">
-      <p class="title">Account</p>
-      <ul>
-        <li>
-          <a href="#">
-            <i>
-              <PhSignOut class="icon" />
-            </i>
-            <span class="text">로그아웃</span>
-          </a>
-        </li>
-      </ul>
-    </div>
 
-    <div class="user">
-      <div class="user-img">
-        <img src="@/assets/hyeonju.jpg" alt="" class="user-img-detail">
+      <div class="user">
+        <div class="user-img">
+          <img src="@/assets/hyeonju.jpg" alt="" class="user-img-detail">
+        </div>
+        <div class="user-details">
+          <p class="title">KOSA_운영진</p>
+          <p class="name">유현주</p>
+        </div>
       </div>
-      <div class="user-details">
-        <p class="title">KOSA_운영진</p>
-        <p class="name">유현주</p>
-      </div>
-    </div>
-  </aside>
+    </aside>
+  </div>
 </template>
 
 <script setup>
@@ -171,8 +173,19 @@ onMounted(() => {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
-body, h1, h2, h3, h4, h5, h6, input, span, p, textarea, select {
-	font-family: 'Noto Sans KR', sans-serif;
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+span,
+p,
+textarea,
+select {
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 * {
@@ -199,10 +212,17 @@ min-height: 100vh;
 }
 */
 
+/* sticky부모요소의 높이가 충분하지 않아서 sticky가 중간에 깨지는 현상이 발생함 따라서 부모요소에 최소 높이를 2000px줌으로써 해결함 */
+.container {
+  min-height: 2000px; /* 원하는 높이로 설정 */
+}
+
 .sidebar {
   position: sticky;
-  top: 0; /* 화면 상단에 고정 */
-  align-self: flex-start; /* 추가된 속성 */
+  top: 0;
+  /* 화면 상단에 고정 */
+  align-self: flex-start;
+  /* 추가된 속성 */
   width: 290px;
   height: 100vh;
   display: flex;
