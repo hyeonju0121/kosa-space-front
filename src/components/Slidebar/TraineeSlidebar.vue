@@ -164,6 +164,8 @@ min-height: 100vh;
 /* sticky부모요소의 높이가 충분하지 않아서 sticky가 중간에 깨지는 현상이 발생함 따라서 부모요소에 최소 높이를 2000px줌으로써 해결함 */
 .container {
   min-height: 2000px; /* 원하는 높이로 설정 */
+  max-width: 340px;
+  padding: 0%;
 }
 
 
