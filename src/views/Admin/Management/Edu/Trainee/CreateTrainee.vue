@@ -415,7 +415,7 @@ async function handleSubmit() {
     try {
         console.log("traineeInfoAPI 실행 전");
         await traineeInfoAPI.traineeRegister(formData);
-        router.back();
+        router.push("/admin/trainee/list");
     } catch (error) {
         console.log(error);
     }
