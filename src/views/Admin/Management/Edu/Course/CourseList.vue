@@ -13,13 +13,9 @@
 
         <div class="align" style="display: flex;">
             <div class="InpBox">
-                <select id="room" title="교육장 선택" @change="handleFilterChange">
-                    <option value="" selected="">교육장 선택</option>
-                    <option value="전체">전체</option>
-                    <option value="미정">미정</option>
-                    <option value="송파교육센터">송파교육센터</option>
-                    <option value="가산교육센터">가산교육센터</option>
-                    <option value="혜화교육센터">혜화교육센터</option>
+                <select id="room" title="교육장 선택" @change="handleFilterChange" v-model="filter.ecname">
+                    <option value="교육장 선택" disabled selected>교육장 선택</option>
+                    <option v-for="name in nameList" :value="name" :key="name">{{ name }}</option>                    
                 </select>
             </div>
             <div class="InpBox" style="margin-left: 1%;">
@@ -90,6 +86,7 @@
 import { useRouter } from 'vue-router';
 import courseAPI from '@/apis/courseAPI';
 import { onMounted, ref, computed } from 'vue';
+import educenterAPI from '@/apis/educenterAPI';
 
 const router = useRouter();
 
@@ -99,6 +96,26 @@ function handleCreateBtn() {
 
 function handleUpdateBtn() {
     router.push('/admin/course/update');
+}
+
+// 필터 상태 객체 정의
+const filter = ref({
+    ecname: "교육장 선택"
+});
+
+
+
+// 교육장 이름 전체 목록을 가져오는 메소드
+const nameList = ref([]);
+
+async function educenterNameList() {
+    try {
+        const response = await educenterAPI.educenterNameList();
+        nameList.value = response.data;
+
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 //교육과정 상태 정의
@@ -126,12 +143,12 @@ const selectedStatus = ref('');
 const selectedProfessor = ref('');
 
 //필터링된 교육과정 목록을 반환하는 계산된 속성
-const filteredCourses = computed(()=>{
-    return courselist.value.filter(course =>{
-    const roomMatch = selectedRoom.value === '' || selectedRoom.value === '전체' || course.ecname === selectedRoom.value;
-    const statusMatch = selectedStatus.value === '' || selectedStatus.value === '전체' || course.cstatus === selectedStatus.value;
-    const professorMatch = selectedProfessor.value === '' || selectedProfessor.value === '전체' || course.cprofessor === selectedProfessor.value;
-    return roomMatch && statusMatch && professorMatch;
+const filteredCourses = computed(() => {
+    return courselist.value.filter(course => {
+        const roomMatch = selectedRoom.value === '' || selectedRoom.value === '전체' || course.ecname === selectedRoom.value;
+        const statusMatch = selectedStatus.value === '' || selectedStatus.value === '전체' || course.cstatus === selectedStatus.value;
+        const professorMatch = selectedProfessor.value === '' || selectedProfessor.value === '전체' || course.cprofessor === selectedProfessor.value;
+        return roomMatch && statusMatch && professorMatch;
     });
 });
 
@@ -174,6 +191,7 @@ async function fetchCourseList() {
 //컴포넌트가 마운트 될때 교육과정 목록 가져오기
 onMounted(() => {
     fetchCourseList();
+    educenterNameList();
 });
 
 //eano를 통해 해당 첨부 파일을 가져오는 함수
@@ -476,4 +494,5 @@ ul {
     font-size: 16px;
     font-weight: 600;
     line-height: 40px;
-}</style>
+}
+</style>

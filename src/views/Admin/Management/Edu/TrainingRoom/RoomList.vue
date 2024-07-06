@@ -177,7 +177,7 @@ const nameList = ref([]);
 
 async function educenterNameList() {
     try {
-        const response = await educenterAPI.educenterNamaList();
+        const response = await educenterAPI.educenterNameList();
         nameList.value = response.data;
 
     } catch (error) {

@@ -43,7 +43,7 @@ function educenterDelete(ecno) {
 }
 
 // 교육장 이름 전체 조회
-function educenterNamaList() {
+function educenterNameList() {
     return axios.get("/edu/center/name/list");
 }
 
@@ -54,5 +54,5 @@ export default {
     getEducenterList,
     getEducenterAttach,
     educenterDelete,
-    educenterNamaList
+    educenterNameList
 }
