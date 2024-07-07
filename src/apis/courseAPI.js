@@ -34,6 +34,11 @@ function update(FormData) {
     return axios.put("/edu/course/update", FormData);
 }
 
+// 교육과정 이름 전체 조회
+function getCourseNameList(ecname) {
+    return axios.get("/edu/course/cnamelist?ecname=" + ecname);
+}
+
 
 
 export default {
@@ -41,5 +46,6 @@ export default {
     getCourseList,
     getCourseAttach,
     getCourseByCno,
-    update
+    update,
+    getCourseNameList
 }

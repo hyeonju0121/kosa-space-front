@@ -67,10 +67,8 @@
                                         }}</router-link>
 
                                 </td>
-                                <td>
-                                    <!-- <img :src="traineeImg(items.mid)" width="110" height="150"> -->
-                                    <img :src="`http://localhost/edu/download/traineeattach/${items.mid}`" width="110"
-                                        height="150">
+                                <td><img :src="`${axios.defaults.baseURL}/edu/download/traineeattach/${items.mid}`"
+                                        width="110" height="150">
                                 </td>
                                 <td>{{ items.mname }}</td>
                                 <td>{{ items.mphone }}</td>
@@ -105,10 +103,11 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import educenterAPI from '@/apis/educenterAPI';
 import courseAPI from '@/apis/courseAPI';
 import traineeInfoAPI from '@/apis/traineeInfoAPI';
+import axios from 'axios';
 
 /* 
     교육생 목록에 현재 DB에 등록되어있는 교육장들과 
@@ -136,7 +135,7 @@ let responseList = ref([]);
 // 등록된 교육과정 불러오기
 async function listCenterSet() {
     try {
-        const response = await educenterAPI.educenterNamaList();
+        const response = await educenterAPI.educenterNameList();
         ecname.value = response.data;
         console.log("center 리스트 가져오기 성공");
     } catch (error) {
@@ -164,27 +163,27 @@ async function traineeList(ecname, cname) {
         if (cname === "undefined") cname = "all";
         const response = await traineeInfoAPI.getTraineeList(ecname, cname);
         responseList.value = response.data;
-        console.log("traineeList 메소드 성공");
+        // console.log("traineeList 메소드 성공");
+        // console.log("response.data = " + JSON.parse(JSON.stringify(response.data[1].trno)));
+        // // mid에 맞는 이미지 파일
+        // const url = await traineeImg(responseList.value.mid);
+        // console.log(url);
+        // responseList.value.tprofileimg.push(url);
+        // console.log(responseList.value.tprofileimg);
     } catch (error) {
         console.log("traineeList 메소드 실패");
     }
 }
 
-// // 첨부 파일 다운로드 구현하기
-// const tattach = ref(null);
-
-// // 교육생 이미지 파일 가져오기
+// 교육생 이미지 파일 가져오기
 // async function traineeImg(mid) {
 //     // /download/traineeattach/{mid}
-//     console.log("traineeImg 실행");
-//     console.log("mid = " + mid);
 //     try {
 //         console.log("tprofileimg 메소드 실행");
 //         const response = await traineeInfoAPI.getTraineeAttach(mid);
-//         const blob = response.data.tprofileimg;
+//         const blob = response.data;
 //         console.log("blob = " + blob);
-//         // return URL.createObjectURL(blob);
-//         tattach.value = URL.createObjectURL(blob);
+//         return URL.createObjectURL(blob);
 //     } catch (error) {
 //         console.log(error);
 //     }
@@ -225,8 +224,8 @@ function handleCreateBtn() {
     router.push({
         path: '/admin/trainee/register',
         query: {
-            ecname: educenter.value.ecname,
-            cname: course.value.cname
+            // ecname: trainee.value.ecname,
+            // cname: trainee.value.cname
         }
     })
 

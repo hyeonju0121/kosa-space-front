@@ -18,7 +18,28 @@ function traineeRegister(request) { // form-data 형식으로 데이터를 전�
     });
 }
 
+// 교육생 상세조회
+function traineeInfo(mid) {
+    console.log("traineeInfoAPI traineeInfo 메소드 실행");
+    return axios.get("/admin/trainee/info");
+}
+
+// 교육생 (교육장, 교육과정 기준) 목록 조회
+function getTraineeList(ecname, cname) {
+    console.log(getTraineeList);
+    return axios.get("/edu/admin/trainee/list?ecname=" + ecname + "&cname=" + cname);
+}
+
+// 교육생 (아이디를 기준으로) 이미지 첨부파일 가져오기
+function getTraineeAttach(mid) {
+    //PathVariable로 데이터전송
+    return axios.get("/edu/download/traineeattach/" + mid, {responseType:"blob"});
+}
+
 
 export default {
-    traineeRegister
+    traineeRegister,
+    traineeInfo,
+    getTraineeList,
+    getTraineeAttach
 }
