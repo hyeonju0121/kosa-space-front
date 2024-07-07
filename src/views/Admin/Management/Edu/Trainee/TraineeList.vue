@@ -11,90 +11,115 @@
             </div>
 
             <!--필터 (현주 추가)-->
-            <div class="align mt-3" style="display: flex;">
-                <div class="InpBox">
-                    <select id="educenter" title="교육장 선택" v-model.trim="educenter.ecname" @change="centerChange()">
-                        <option value="교육장 선택" disabled selected>교육장 선택</option>
-                        <option v-for="ecname in ecname" :key="ecname" :value="ecname"> {{ ecname }}
-                        </option>
-                    </select>
+            <div v-if="isLoading === false">
+                <div class="align mt-3" style="display: flex;">
+                    <div class="InpBox">
+                        <select id="educenter" title="교육장 선택" v-model.trim="educenter.ecname" @change="centerChange()">
+                            <!-- educenter.value.ecname의 값이 ''이면 "교육장 선택" 옵션 값을 보여줌 -->
+                            <option :value="''" disabled selected>교육장 선택</option>
+                            <option v-for="ecname in ecname" :key="ecname" :value="ecname"> {{ ecname }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="InpBox" style="margin-left: 1%; width: 370px;">
+                        <select :class="courseShow" id="course" title="교육과정 선택" v-model.trim="course.cname"
+                            @change="courseChange()">
+                            <!-- course.value.cname의 값이 ''이면 "교육과정 선택" 옵션 값을 보여줌 -->
+                            <option :value="''" disabled selected>교육과정 선택</option>
+                            <option v-for="cname in cname" :key="cname" :value="cname"> {{ cname }}
+                            </option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="InpBox" style="margin-left: 1%; width: 370px;">
-                    <select :class="courseShow" id="course" title="교육과정 선택" v-model.trim="course.cname"
-                        @change="courseChange()">
-                        <option value="교육과정 선택" disabled selected>교육과정 선택</option>
-                        <option v-for="cname in cname" :key="cname" :value="cname"> {{ cname }}
-                        </option>
-                    </select>
+                <!-- 교육과정 선택했을때 교육과정에 따라 나오는 문구 -->
+                <div class="d-flex justify-content-between mt-3">
+                    <div style="font-weight:bold; font-size: 1.2em;" v-if="course.cname !== ''">
+                        | {{ course.cname }}
+                        <!-- <span v-for="items in responseList" :key="items">
+                            <p v-if="items.cname === course.cname">
+                                ({{ items.cstartdate }} ~ {{ items.cenddate }})
+                            </p>
+                        </span> -->
+                        <!-- responseList는 객체들의 배열 값.. (수정할 필요가 있음) -->
+                        <p v-if="responseList[0].cname === course.cname">
+                            ({{ responseList[0].cstartdate }} ~ {{ responseList[0].cenddate }})
+                        </p>
+                    </div>
+
+                    <!-- 교육생 등록 버튼 -->
+                    <div class="mb-3 me-3" style="text-align:right">
+                        <button v-if="course.cname !== ''" class="btn btn-dark" @click="handleCreateBtn()">교육생
+                            등록</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- 교육과정 선택했을때 교육과정에 따라 나오는 문구 -->
-            <div class="d-flex justify-content-between mt-3">
-                <div style="font-weight:bold; font-size: 1.2em;" v-if="course.cname !== '교육과정 선택'">
-                    | {{ course.cname }} ({{ course.cstartdate }} ~ {{ course.cenddate }})
-                </div>
-                <!-- 교육생 등록 버튼 -->
-                <div class="mb-3" style="text-align:right">
-                    <button v-if="course.cname !== '교육과정 선택'" class="btn btn-dark btn-sm" @click="handleCreateBtn">교육생
-                        등록</button>
+            <!-- 스피너 -->
+            <div v-if="isLoading === true" class="d-flex justify-content-center">
+                <div class="spinner-grow text-success" style="width: 8rem; height: 8rem;" role="status">
+                    <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
 
-            <!-- 테이블 부분 -->
-            <form v-if="course.cname !== '교육과정 선택'">
-                <div class="container-fluid mt-3">
-                    <!-- 필터 선택에 따른 보임 여부 (테이블) -->
-                    <table class="styled-table" style="width: 100%;">
-                        <thead>
-                            <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">교육생 번호</th>
-                                <th scope="col">사진</th>
-                                <th scope="col">이름</th>
-                                <th scope="col">전화번호</th>
-                                <th scope="col">이메일</th>
-                                <th scope="col">상태</th>
-                                <th scope="col">수정</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-group-divider">
-                            <tr v-for="items in responseList" :key="items">
-                                <td>pager 사용</td>
-                                <td>
-                                    <router-link :to="`/admin/trainee/detail?mid=${items.mid}`">{{ items.mid
-                                        }}</router-link>
+            <div v-if="isLoading === false">
+                <!-- 테이블 부분 -->
+                <form v-if="course.cname !== '교육과정 선택'">
+                    <div class="container-fluid mt-3">
+                        <!-- 필터 선택에 따른 보임 여부 (테이블) -->
+                        <table class="styled-table" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">교육생 번호</th>
+                                    <th scope="col">사진</th>
+                                    <th scope="col">이름</th>
+                                    <th scope="col">전화번호</th>
+                                    <th scope="col">이메일</th>
+                                    <th scope="col">상태</th>
+                                    <th scope="col">수정</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                                <tr v-for="items in responseList" :key="items">
+                                    <td>pager 사용</td>
+                                    <td>
+                                        <!-- <router-link :to="`/admin/trainee/detail?mid=${items.mid}`" @click="traineeDetail(items.mid)>{{ items.mid
+                                        }}</router-link> -->
+                                        <span @click="traineeDetail(items.mid)">{{ items.mid
+                                            }}</span>
 
-                                </td>
-                                <td><img :src="`${axios.defaults.baseURL}/edu/download/traineeattach/${items.mid}`"
-                                        width="110" height="150">
-                                </td>
-                                <td>{{ items.mname }}</td>
-                                <td>{{ items.mphone }}</td>
-                                <td>{{ items.memail }}</td>
-                                <td>과정진행중 {{ items.tstate }}</td>
-                                <td>
-                                    <span class="me-2">
-                                        <RouterLink :to="`./update?`"><button type="button" class="btn btn-outline-dark"
-                                                @click="handleUpdateBtn">수정</button>
-                                        </RouterLink>
-                                    </span>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td><img :src="`${axios.defaults.baseURL}/edu/download/traineeattach/${items.mid}`"
+                                            width="110" height="150">
+                                    </td>
+                                    <td>{{ items.mname }}</td>
+                                    <td>{{ items.mphone }}</td>
+                                    <td>{{ items.memail }}</td>
+                                    <td>과정진행중 {{ items.tstate }}</td>
+                                    <td>
+                                        <span class="me-2">
+                                            <RouterLink :to="`./update?`"><button type="button"
+                                                    class="btn btn-outline-dark" @click="handleUpdateBtn">수정</button>
+                                            </RouterLink>
+                                        </span>
+                                    </td>
+                                </tr>
 
-                        </tbody>
-                    </table>
-                </div>
-            </form>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
 
-            <!-- 조회 안했을 때 ---------------------------------------------------------->
-            <div class="interview_list" v-if="course.cname === '교육과정 선택'">
-                <!-- 면접 요청 리스트 없을 경우 -->
-                <div class="empty_data">
-                    <img src="//www.saraminimage.co.kr/sri/person/resume/img_empty_announce.png">
-                    <strong class="tit">교육장이 선택되지 않았습니다.</strong>
-                    <div class="txt">교육장을 선택하고 강의실 조회를 눌러주세요!</div>
+                <!-- 조회 안했을 때 ---------------------------------------------------------->
+                <div class="interview_list" v-if="course.cname === '교육과정 선택'">
+                    <!-- 면접 요청 리스트 없을 경우 -->
+                    <div class="empty_data">
+                        <img src="//www.saraminimage.co.kr/sri/person/resume/img_empty_announce.png">
+                        <strong class="tit">교육장이 선택되지 않았습니다.</strong>
+                        <div class="txt">교육장을 선택하고 강의실 조회를 눌러주세요!</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -102,22 +127,40 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
-import { ref, computed, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { ref, watch, onMounted } from 'vue';
 import educenterAPI from '@/apis/educenterAPI';
 import courseAPI from '@/apis/courseAPI';
 import traineeInfoAPI from '@/apis/traineeInfoAPI';
 import axios from 'axios';
 
 const router = useRouter();
+const route = useRoute();
+const isLoading = ref(true);  // 로딩 상태 변수 추가
 
 /* 
     교육생 목록에 현재 DB에 등록되어있는 교육장들과 
     그에 따른 교육과정들의 정보가 마운트되어야 함.
 */
+
 onMounted(() => {
-    console.log("화면 랜더링 완료");
+    console.group("onMounted 실행");
+    educenter.value.ecname = route.query.ecname || '';
+    course.value.cname = route.query.cname || '';
+
+    console.log("educenter.value.ecname = " + educenter.value.ecname);
+    console.log("course.value.ecname = " + course.value.cname);
+
+    if (educenter.value.ecname === "" || educenter.value.ecname === "전체") {
+        courseShow.value = "btn disabled";
+    } else {
+        courseShow.value = "";
+    }
+
     listCenterSet();
+    listCourseSet(educenter.value.ecname);
+    traineeList(educenter.value.ecname, course.value.cname);
+    console.groupEnd();
 });
 
 let educenter = ref({
@@ -129,8 +172,8 @@ const course = ref({
 });
 
 // 필터 옵션 값을 위한 상태 변수 선언
-let ecname = ref("");
-let cname = ref("");
+let ecname = ref("교육장 선택");  // 값을 받아오면 배열 형식이 된다.
+let cname = ref("교육과정 선택");  // 값을 받아오면 배열 형식이 된다.
 let responseList = ref([]);
 
 // 등록된 교육과정 불러오기
@@ -157,53 +200,41 @@ async function listCourseSet(ecname) {
 
 // 교육생 리스트 가져오기
 async function traineeList(ecname, cname) {
+    isLoading.value = true;
     try {
-        console.log("ecname = " + ecname);
-        console.log("cname = " + cname);
-        if (ecname === "undefined") ecname = "all";
-        if (cname === "undefined") cname = "all";
+        console.log("traineeList 실행");
+        console.log("ecname.value = " + ecname.value);
+        console.log("cname.value = " + cname.value);
+        if (ecname.value === "undefined") ecname = "all";
+        if (cname.value === "undefined") cname = "all";
         const response = await traineeInfoAPI.getTraineeList(ecname, cname);
         responseList.value = response.data;
-        // console.log("traineeList 메소드 성공");
-        // console.log("response.data = " + JSON.parse(JSON.stringify(response.data[1].trno)));
-        // // mid에 맞는 이미지 파일
-        // const url = await traineeImg(responseList.value.mid);
-        // console.log(url);
-        // responseList.value.tprofileimg.push(url);
-        // console.log(responseList.value.tprofileimg);
+        isLoading.value = false;
     } catch (error) {
         console.log("traineeList 메소드 실패");
     }
 }
-
-// 교육생 이미지 파일 가져오기
-// async function traineeImg(mid) {
-//     // /download/traineeattach/{mid}
-//     try {
-//         console.log("tprofileimg 메소드 실행");
-//         const response = await traineeInfoAPI.getTraineeAttach(mid);
-//         const blob = response.data;
-//         console.log("blob = " + blob);
-//         return URL.createObjectURL(blob);
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
 
 // 교육장 필터 선택에 따른 교육과정 select 태그 선택 여부
 let courseShow = ref("btn disabled");
 
 // 교육장 필터값 변경시
 function centerChange() {
-    console.log("cneterChange 실행");
+    console.group("교육장 필터 값 변경");
     console.log("educter.ecname = " + educenter.value.ecname);
-    course.value.cname = "교육과정 선택";
+    // course.value.cname = "교육과정 선택";
+    // cname.value = "교육과정 선택";
+    course.value.cname = '';
+    // 교육장에 따른 교육과정 목록 가져오기
     listCourseSet(educenter.value.ecname);
-    if (educenter.value.ecname === "교육장 선택" || educenter.value.ecname === "전체") {
+
+    if (educenter.value.ecname === "" || educenter.value.ecname === "전체") {
         courseShow.value = "btn disabled";
     } else {
         courseShow.value = "";
     }
+
+    // '선택된 교육장의 모든 교육과정' 교육생 목록을 불러옴.
     traineeList(educenter.value.ecname, "all");
 }
 
@@ -213,10 +244,17 @@ function courseChange() {
     traineeList(educenter.value.ecname, course.value.cname);
 }
 
-
 //교육생 조회 눌렀을때
-function handlecheck() {
-    // console.log(JSON.parse(JSON.stringify(trainee.value)));
+function traineeDetail(e) {
+    console.log("e : " + e);
+    router.push({
+        path: '/admin/trainee/detail?mid=' + e,
+        query: {
+            mid: e,
+            ecname: educenter.value.ecname,
+            cname: course.value.cname
+        }
+    })
 }
 
 // 교육생 등록 버튼을 눌렀을 시 path와 쿼리 스트링 값 전달
@@ -235,18 +273,13 @@ function handleUpdateBtn() {
     router.push('/admin/trainee/update');
 }
 
-
-// ----------------------------------------
-
-// 현주
-// 필터 상태 객체 정의
-const filter = ref({
-    ecname: "",
-    cname: "",
-    approve: "",
-    mname: "",
-});
-
+// watch(educenter.value.ecname, (newEcname, oldEcname) => {
+//     if (newEcname === '' && newEcname === '전체') {
+//         courseShow.value = "btn disabled";
+//     } else {
+//         courseShow.value = "";
+//     }
+// });
 
 </script>
 

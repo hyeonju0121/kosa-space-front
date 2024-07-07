@@ -197,8 +197,13 @@ const route = useRoute();
 
 // 교육장과 교육과정을 이전의 라우터에서 받아옴.
 onMounted(() => {
+    console.log("교육생 등록 랜더링 완료");
     request.value.ecname = route.query.ecname || '';
     request.value.cname = route.query.cname || '';
+    console.log("route.query.ecname = " + route.query.ecname);
+    console.log("route.query.cname = " + route.query.cname);
+    console.log("request.value.ecname = " + request.value.ecname);
+    console.log("request.value.cname = " + request.value.cname);
 });
 
 
@@ -237,6 +242,46 @@ let request = ref({
     tprofiletype: "",
     taddressdetail: ""
 });
+
+// const tprofileimg = ref(null);
+/*
+let trainee = ref({
+    ecname: "교육장",
+    cname: "교육과정",
+    mid: "",
+    mname: "",
+    mphone: "",
+    memail: "",
+    cno: "",
+    cstartdate: "",
+    cenddate: "",
+    tsex: "성별",
+    taddress: "",
+    tage: "",
+    tfield: "",
+    tacademic: "",
+    tschoolname: "",
+    tmajor: "",
+    tminor: "",
+    tgrade: "",
+    tstatus: "교육상태",
+    tprofileimg: "",
+    tprofileoname: "",
+    tprofiletype: ""
+});
+
+const member = ref({
+    mid: "",
+    mname: "",
+    mphone: "",
+    mpassword: "",
+    memail: "",
+    // mrole: "",
+    // menable: "",
+    // mcreatedat: "",
+    // mupdatedat: ""
+});
+*/
 
 // v-if를 사용하여 DOM 생성 여부를 위한 변수 선언
 let mnameCheck = ref(null); // 이름 유효성 v-if
@@ -376,7 +421,7 @@ function onState() {
 
 //취소버튼을 눌렀을때
 function handleCancle() {
-    router.push('/admin/trainee/list?ecname=' + request.value.ecname + "&canme=" + request.value.cname);
+    router.push('/admin/trainee/list');
 }
 
 // submit error 상태 변수 추가-등록버튼 눌렀을시 다른 유효성 검사가 통과 되지않으면 등록이 안되도록 함
@@ -416,20 +461,46 @@ async function handleSubmit() {
     // tprofileoname: "",
     // tprofiletype: ""
 
-    // formData 확인하기.
     for (let [key, value] of formData.entries()) {
         console.log(key, value);
     }
+
+    //파일넣기
+    // const elAttach = tattach.value;
+    // if(elAttach.files.length != 0) {
+    //     formData.append("nattach", elAttach.files[0]);
+    // }
 
     console.log("formData = " + formData);
     //교육생 등록 요청
     try {
         console.log("traineeInfoAPI 실행 전");
         await traineeInfoAPI.traineeRegister(formData);
-        router.push('/admin/trainee/list?ecname=' + request.value.ecname + "&canme=" + request.value.cname);
+        router.push("/admin/trainee/list");
     } catch (error) {
         console.log(error);
     }
+
+
+
+    //교육생 등록 값 잘 넘어가는지 확인
+    // console.log(formData);
+    // console.log(JSON.parse(JSON.stringify(request.value)));
+
+    //유효성 검사 결과가 전부 참일때 등록 가능
+    // 경섭이 방식. --> 스타일의 차이. 좋음! 둘 중 뭘할지 선택. 일단 보류 (주석)
+    /*if (mnameCheck.value && mphoneTotalCheck.value && tsexCheck.value) {
+        submitError.value = false;
+        router.push('/admin/trainee/list');
+    } else {
+        submitError.value = true;
+        namePatternCheck();
+        phonePatternmiddleCheck();
+        phonePatternendCheck();
+        checkSex();
+
+        alert("이름, 성별, 전화번호 유효성에 맞게 작성하여 주세요!");
+    }*/
 }
 
 </script>
