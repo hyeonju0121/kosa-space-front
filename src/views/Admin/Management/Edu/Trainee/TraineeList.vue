@@ -109,11 +109,12 @@ import courseAPI from '@/apis/courseAPI';
 import traineeInfoAPI from '@/apis/traineeInfoAPI';
 import axios from 'axios';
 
+const router = useRouter();
+
 /* 
     교육생 목록에 현재 DB에 등록되어있는 교육장들과 
     그에 따른 교육과정들의 정보가 마운트되어야 함.
 */
-
 onMounted(() => {
     console.log("화면 랜더링 완료");
     listCenterSet();
@@ -218,14 +219,13 @@ function handlecheck() {
     // console.log(JSON.parse(JSON.stringify(trainee.value)));
 }
 
-const router = useRouter();
-
+// 교육생 등록 버튼을 눌렀을 시 path와 쿼리 스트링 값 전달
 function handleCreateBtn() {
     router.push({
         path: '/admin/trainee/register',
         query: {
-            // ecname: trainee.value.ecname,
-            // cname: trainee.value.cname
+            ecname: educenter.value.ecname,
+            cname: course.value.cname
         }
     })
 
