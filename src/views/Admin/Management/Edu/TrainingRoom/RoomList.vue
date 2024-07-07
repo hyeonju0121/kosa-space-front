@@ -10,17 +10,12 @@
                 <h1 id="itemTitle">강의실 목록</h1>
             </div>
         </div>
-
+        <!-- 필터부분 -->
         <div class="align" style="display: flex;">
             <div class="InpBox">
-                <select id="educenter" title="교육장 선택" v-model="filter.ecname">
-                    <!--<option seleceted="" value="">교육장 선택</option>-->
-                    <option v-for="name in nameList" :value=name :key="name">{{ name }}</option>
-                    <!--<option selected disabled value="">교육장 선택</option>-->
-                    <!--<option value="전체">전체</option>-->
-                    <!--<option value="송파교육센터">송파교육센터</option>-->
-                    <!--<option value="가산교육센터">가산교육센터</option>
-                        <option value="혜화교육센터">혜화교육센터</option>-->
+                <select id="room" title="교육장 선택" @change="handleFilterChange" v-model="filter.ecname">
+                    <option disabled seleceted value="교육장 선택">교육장 선택</option>
+                    <option v-for="name in nameList" :value=name :key="name">{{ name }}</option>                    
                 </select>
             </div>
 
@@ -28,7 +23,7 @@
             <div class="search_interview">
                 <div class="InpBox search_order" style="margin-left:10px;">
                     <!-- 승인여부 -->
-                    <select id="search_status" title="강의실 사용 여부" v-model="filter.trenable">
+                    <select id="status" title="강의실 사용 여부"  @change="handleFilterChange" v-model="filter.trenable">
                         <option selected disabled value="">강의실 사용 여부</option>
                         <option value="전체">전체</option>
                         <option value="사용중">사용중</option>
@@ -36,9 +31,7 @@
                     </select>
                 </div>
             </div>
-            <button type="button" class="BtnType SizeM" @click="handleSubmitFilter1" style="margin-left: 1%;">
-                강의실 조회
-            </button>
+            
             <button type="button" class="BtnType SizeM" @click="handleCreateBtn" style="margin-left: 1%;">
                 강의실 등록
             </button>
@@ -49,20 +42,20 @@
         </div>
 
         <!-- 조회 안했을 때 ---------------------------------------------------------->
-        <div class="interview_list" v-if="!submitStatus">
+        <!-- <div class="interview_list" v-if="!submitStatus"> -->
             <!-- 면접 요청 리스트 없을 경우 -->
-            <div class="empty_data">
+            <!-- <div class="empty_data">
                 <img src="//www.saraminimage.co.kr/sri/person/resume/img_empty_announce.png">
                 <strong class="tit">교육장이 선택되지 않았습니다.</strong>
                 <div class="txt">교육장을 선택하고 강의실 조회를 눌러주세요!</div>
-            </div>
-        </div>
+            </div> -->
+        
 
-        <div id="career_growth_contents" v-if="submitStatus">
+        <div id="career_growth_contents">
             <section class="careerplus alljob_category">
                 <ul class="list_contents">
                     <li class="item" v-for="room in roomList" :key="room.trno">
-                        <RouterLink to="/admin/room/detail">
+                        <RouterLink :to="`/admin/room/detail?trno=${room.trno}`">
                             <div class="card_contents">
                                 <div class="thumbnail">
                                     <img v-if="roomattach != null" :src="roomattach" />
@@ -86,6 +79,7 @@
                 </ul>
             </section>
         </div>
+    </div>
 
         <!--
         <div class="container mt-3">
@@ -154,14 +148,26 @@
             </table>
         </div>
     -->
-    </div>
+    
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import educenterAPI from '@/apis/educenterAPI';
 import trainingroomAPI from '@/apis/trainingroomAPI';
+
+
+// const room = ref({    
+//     trno:"",
+//     attachments:[],
+//     eanoList:[],
+//     ecname:"",
+//     trenable:""
+// });
+
+
+
 
 const router = useRouter();
 
@@ -185,11 +191,34 @@ async function educenterNameList() {
     }
 }
 
-// 교육장 이름 기준으로 강의실 목록을 가져오는 메소드
+
+//교육장 이름 기준으로 강의실 목록을 가져오는 메소드
 const roomList = ref([]);
 const roomattach = ref(null);
 let roomListlength = ref(roomList.value.length);
 async function trainingroomList() {
+    // try {
+    //     const response = await trainingroomAPI.getTrainingroomList(filter.value.ecname, filter.value.trenable);
+    //     roomList.value = response.data;
+    //     console.log(response.data);
+    //     roomListlength.value = roomList.value.length;
+
+    //     //각 강의실 첨부파일 URL 가져오기
+    //     for (const room of roomList.value) {
+    //         if (room.eanoList && room.eanoList.length > 0) {
+    //             room.attachments = [];
+    //             for (const eano of room.eanoList) {
+    //                 const url = await getAttach(eano);
+    //                 room.attachments.push(url);
+    //             }
+    //         }
+    //     }
+
+    // } catch (error) {
+    //     console.log(error)
+    // }
+    
+    
     try {
         const response = await trainingroomAPI.getTrainingroomList(
             filter.value.ecname, filter.value.trenable);
@@ -200,22 +229,26 @@ async function trainingroomList() {
         roomListlength.value = roomList.value.length;
         // console.log(roomListlength.value);
 
+        //사진 얻기위해 eano를 얻음
         const data = roomList.value;
         const eano = data[0].eanoList[0];
         console.log(eano);
-
         getAttach(eano);
+
+        
     } catch (error) {
         console.log(error);
     }
 }
+
+console.log(roomList);
 
 //eano를 통해 해당 첨부 파일을 가져오는 함수
 async function getAttach(eano) {
     try {
         const response = await trainingroomAPI.getRoomAttach(eano);
         const blob = response.data;
-        roomattach.value = URL.createObjectURL(blob);
+        roomattach.value = URL.createObjectURL(blob);       
     } catch (error) {
         console.log(error);
     }
@@ -223,19 +256,10 @@ async function getAttach(eano) {
 
 onMounted(() => {
     educenterNameList();
+    console.log(nameList);    
 })
 
 
-let submitStatus = ref(false);
-
-// 교육장 필터 선택하고, 승인 조회 버튼 클릭 시 
-function handleSubmitFilter1() {
-    submitStatus.value = !submitStatus.value;
-    console.log("필터 선택: ", filter.value.ecname);
-
-    // 강의실 목록 가져오기
-    trainingroomList();
-}
 
 
 function handleCreateBtn() {
@@ -243,9 +267,30 @@ function handleCreateBtn() {
 }
 
 
-function handleSelectSubmit() {
-    console.log(filter.value.trenable);
+
+
+//선택된 필터의 상태값 정의
+const selectedRoom = ref('');
+const selectedStatus = ref('');
+
+
+//필터링된 교육과정 목록을 반환하는 계산된 속성
+const filteredRoomList = computed(() => {
+    return roomList.value.filter(room => {
+        const roomMatch = selectedRoom.value === '' || selectedRoom.value === '전체' || room.ecname === selectedRoom.value;
+        const statusMatch = selectedStatus.value === '' || selectedStatus.value === '전체' || room.trenableResult === selectedStatus.value;
+        
+        return roomMatch && statusMatch;
+    });
+});
+
+//선택된 필터 값 변경 시 호출되는 메소드
+function handleFilterChange() {
+    selectedRoom.value = document.getElementById('room').value;
+    selectedStatus.value = document.getElementById('status').value;    
+    trainingroomList();
 }
+
 
 
 </script>

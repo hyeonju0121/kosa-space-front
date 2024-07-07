@@ -18,11 +18,12 @@
                         <p class="form_label">교육장 명</p>
                     </div>
                     <div class="td">
-                        <select @click="checkSelectedEcname" v-model="roomInfo.ecname" id="room" style="margin-top: 10px;">
-                            <option value="none" selected>교육장 선택</option>
-                            <option value="송파 교육장">송파 교육장</option>
-                            <option value="가산 교육장">가산 교육장</option>
-                            <option value="혜화 교육장">혜화 교육장</option>
+                        <select @click="checkSelectedEcname" title="교육장 선택" v-model="trainingroom.ecname" id="room"
+                            style="margin-top: 10px;">
+                            <option value="none" selected disabled>교육장 선택</option>
+                            <option v-for="educenter in educenterList" :value="educenter" :key="educenter.ecno">{{ educenter }}</option>
+                            
+                            
                         </select>
                         <p v-show="!isSelected" style="color: rgb(247, 78, 27); margin-top: 2%;">교육장을 선택해주세요.</p>
                     </div>
@@ -32,7 +33,7 @@
                         <p class="form_label">강의실 명 </p>
                     </div>
                     <div class="textarea_group_title sm">
-                        <textarea v-model="roomInfo.trname" id="tname" title="강의실 명 입력" placeholder="강의실 명을 입력해주세요."
+                        <textarea v-model="trainingroom.trname" id="tname" title="강의실 명 입력" placeholder="강의실 명을 입력해주세요."
                             maxlength="10"></textarea>
                         <p class="form_bytes"><span class="byte">0</span>/10</p>
                     </div>
@@ -42,7 +43,7 @@
                         <p class="form_label">수용 가능 인원</p>
                     </div>
                     <div class="textarea_group_title sm">
-                        <textarea v-model="roomInfo.trcapacity" id="tcapacity" title="수용 가능 인원 입력"
+                        <textarea v-model="trainingroom.trcapacity" id="tcapacity" title="수용 가능 인원 입력"
                             placeholder="수용 가능 인원을 입력해주세요." maxlength="10"></textarea>
                         <p class="form_bytes"><span class="byte">0</span>/10</p>
                     </div>
@@ -52,11 +53,34 @@
                         <p class="form_label">사용 가능 여부 </p>
                     </div>
                     <div style="width: 200px; display: flex;">
-                        <input type="radio" id="tenable1" value="가능" v-model="roomInfo.trenable" />
-                        <label for="tenable1" style="margin-top: 17%; margin-left: 5%; margin-right: 5%;"><p>가능</p></label>
+                        <input type="radio" id="tenable1" value="0" v-model="trainingroom.trenable" />
+                        <label for="tenable1" style="margin-top: 17%; margin-left: 5%; margin-right: 5%;">
+                            <p>가능</p>
+                        </label>
 
-                        <input type="radio" id="tenable2" value="불가능" v-model="roomInfo.trenable"/>
-                        <label for="tenable2" style="margin-top: 17%; margin-left: 5%;"><p>불가능</p></label>   
+                        <input type="radio" id="tenable2" value="1" v-model="trainingroom.trenable" />
+                        <label for="tenable2" style="margin-top: 17%; margin-left: 5%;">
+                            <p>불가능</p>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="tr">
+                    <div class="th">
+                        <p class="form_label required">강의실 사진 </p>
+                    </div>
+                    <div class="td">
+                        <div class="center_wrap">
+                            <div class="center_attach">
+                                <div class="img_box d-flex">
+                                    <div id="defaultImg">
+                                        <PhImage :size="32" color="#636462" weight="duotone" />
+                                    </div>
+                                </div>
+                                <input type="file" @change="addImage" multiple ref="trattach" />
+                            </div>
+                        </div>
+                        <img v-for="(item, index) in src" :key="index" :src="item" width="80px" height="80px" />
                     </div>
                 </div>
 
@@ -64,7 +88,7 @@
                     <RouterLink to="/admin/room/list">
                         <BaseButtonCancle>취소</BaseButtonCancle>
                     </RouterLink>
-                    <BaseButtonSubmit type="submit">완료</BaseButtonSubmit>
+                    <BaseButtonSubmit @click="handleSubmit">완료</BaseButtonSubmit>
                 </div>
             </form>
         </div>
@@ -74,20 +98,46 @@
 <script setup>
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import trainingroomAPI from '@/apis/trainingroomAPI';
+import educenterAPI from '@/apis/educenterAPI';
 
-const roomInfo = ref({
-    ecname: "none",
+const trattach = ref(null);
+
+// 강의실 상태 정의
+const trainingroom = ref({
+    ecname: "",
     trname: "",
     trcapacity: "",
-    trenable: "",
+    trenable: ""
 })
 
+
+
+//교육장 이름 전체 목록 가져오는 메소드
+const educenterList = ref([]);
+
+async function educenterNameList() {
+    try{
+        const response = await educenterAPI.educenterNameList();
+        educenterList.value = response.data;
+    } catch(error) {
+        console.log(error)
+    }
+
+}
+
+onMounted(()=>{
+    educenterNameList();
+})
+
+
+//교육장이 선택 안됐을 경우 문구가 나오는 부분
 let isSelected = ref(true);
 
 function checkSelectedEcname() {
-    if(roomInfo.value.ecname === 'none') {
+    if (trainingroom.value.ecname === 'none') {
         isSelected.value = false;
     } else {
         isSelected.value = true;
@@ -96,11 +146,57 @@ function checkSelectedEcname() {
 
 const router = useRouter();
 
-function handleSubmit() {
-    console.log(JSON.parse(JSON.stringify(roomInfo)));
-    
-    router.push('/admin/room/list');
+//완료 버튼을 눌렀을때
+async function handleSubmit() {
+    console.log(JSON.parse(JSON.stringify(trainingroom)));
+
+    //전송폼데이타 만들기
+    const formData = new FormData();
+
+    //문자 파트 넣기
+    formData.append("ecname", trainingroom.value.ecname);
+    formData.append("trname", trainingroom.value.trname);
+    formData.append("trcapacity", trainingroom.value.trcapacity);
+    formData.append("trenable", trainingroom.value.trenable);
+
+    //파일 파트 넣기
+    let elTrattach = trattach.value;
+
+    if (elTrattach.files.length != 0) {
+        for (let i = 0; i < elTrattach.files.length; i++) {
+            formData.append("trattachdata", elTrattach.files[i]);
+        }
+    }
+
+    //강의실 등록 요청
+    try{
+        const response = await trainingroomAPI.create(formData);
+        router.push('/admin/room/list');
+    } catch(error){
+        console.log(error);
+    }    
 }
+
+//멀티파일 사진 미리보기
+const src = ref([]);
+
+function addImage(e) {
+    const file = (e.target).files;
+    const fileLength= file.length;
+    let newList = [];
+    for(let i=0; i< fileLength; i++) {
+        newList.push(URL.createObjectURL(file[i]));
+    }
+    src.value= newList
+}
+
+
+
+
+
+
+
+
 
 </script>
 
@@ -285,5 +381,4 @@ select {
     justify-content: center;
     padding: 0;
     margin-top: 60px;
-}
-</style>
+}</style>
