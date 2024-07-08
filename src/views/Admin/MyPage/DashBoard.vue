@@ -96,7 +96,7 @@
                                     </thead>
                                     <tbody class="align-middle">
                                         <!-- 테이블의 수는 8개가 적당해보임. 페이징 처리해야함. -->
-                                        <tr v-for="item in resultData.noticeTotalInfo" :key="item">
+                                        <tr v-for="item in resultData.noticeTotalInfo.noticeInfo" :key="item">
                                             <td>
                                                 <div class="d-flex">
                                                     <span class="btn btn-info btn-sm me-2">{{ item.ncategory }}</span>
@@ -373,12 +373,18 @@ async function totalAttendanceInfo(ecname, pageNo, adate) {
 
 // ecname 기준으로 공지사항 조회
 async function totalNoticeInfo(ecname, pageNo) {
-    //getEcnameNoticeList
     isLoading.value = true;
     try {
-        const response = noticeAPI.getEcnameNoticeList(ecname, pageNo);
-        resultData.value.noticeTotalInfo.noticeInfo = response.data.noticeInfo;
-        resultData.value.noticeTotalInfo.pager = response.data.pager;
+        console.group("totalNoticeInfo 검사");
+        console.log("ecname = " + ecname);
+        console.log("pageNo = " + pageNo);
+        const response = await noticeAPI.getEcnameNoticeList(ecname, pageNo);
+        console.log("response.date = " + response.data);
+        // resultData.value.noticeTotalInfo.noticeInfo = response.data.noticeInfo;
+        // resultData.value.noticeTotalInfo.pager = response.data.pager;
+        console.log("response.data" + response.data);
+        console.log("response.data" + JSON.stringify(response.data));
+        console.groupEnd();
         console.log("교육과정 공지사항 정보(페이지) 리스트 가져오기 성공");
         isLoading.value = false;
         console.log("resultData.value.noticeTotalInfo = " + JSON.stringify(resultData.value.noticeTotalInfo));
