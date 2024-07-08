@@ -100,9 +100,8 @@
                                     <td>과정진행중 {{ items.tstate }}</td>
                                     <td>
                                         <span class="me-2">
-                                            <RouterLink :to="`./update?`"><button type="button"
-                                                    class="btn btn-outline-dark" @click="handleUpdateBtn">수정</button>
-                                            </RouterLink>
+                                            <button type="button" class="btn btn-outline-dark"
+                                                @click="handleUpdateBtn(items.mid)">수정</button>
                                         </span>
                                     </td>
                                 </tr>
@@ -203,15 +202,16 @@ async function traineeList(ecname, cname) {
     isLoading.value = true;
     try {
         console.log("traineeList 실행");
-        console.log("ecname.value = " + ecname.value);
-        console.log("cname.value = " + cname.value);
-        if (ecname.value === "undefined") ecname = "all";
-        if (cname.value === "undefined") cname = "all";
+        console.log("ecname = " + ecname);
+        console.log("cname = " + cname);
+        if (ecname === "undefined") ecname = "all";
+        if (cname === "undefined") cname = "all";
         const response = await traineeInfoAPI.getTraineeList(ecname, cname);
         responseList.value = response.data;
         isLoading.value = false;
     } catch (error) {
         console.log("traineeList 메소드 실패");
+        isLoading.value = true;
     }
 }
 
@@ -226,7 +226,7 @@ function centerChange() {
     // cname.value = "교육과정 선택";
     course.value.cname = '';
     // 교육장에 따른 교육과정 목록 가져오기
-    listCourseSet(educenter.value.ecname);
+    listCourseSet(educenter.value.ecname); // O
 
     if (educenter.value.ecname === "" || educenter.value.ecname === "전체") {
         courseShow.value = "btn disabled";
@@ -269,8 +269,16 @@ function handleCreateBtn() {
 
 }
 
-function handleUpdateBtn() {
-    router.push('/admin/trainee/update');
+function handleUpdateBtn(e) {
+    console.log("e : " + e);
+    router.push({
+        path: '/admin/trainee/update?mid=' + e,
+        query: {
+            mid: e,
+            ecname: educenter.value.ecname,
+            cname: course.value.cname
+        }
+    })
 }
 
 // watch(educenter.value.ecname, (newEcname, oldEcname) => {

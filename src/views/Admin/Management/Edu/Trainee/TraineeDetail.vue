@@ -29,8 +29,7 @@
                                     <div style="text-align:left">
                                         <!-- <img :src="`${axios.defaults.baseURL}/edu/download/traineeattach/${route.query.mid}`"
                                             width="110" height="150" class="ms-5"> -->
-                                        <img :src="`${axios.defaults.baseURL}/edu/download/traineeattach/${traineeInfoData.mid}`"
-                                            width="110" height="150" class="ms-5">
+                                        <img :src="src" width="110" height="150" class="ms-5">
                                     </div>
                                 </td>
                             </tr>
@@ -155,13 +154,17 @@ import axios from 'axios';
 const router = useRouter();
 const route = useRoute();
 
+// 라우트 이동간에 onBeforeMout 보다 빠르게 실행됨.
 const mid = route.query.mid;
 const ecname = route.query.ecname;
 const cname = route.query.cname;
 
+// mid에 따른 교육생 정보를 받아올 변수
 let traineeInfoData = ref();
-const isLoading = ref(true);  // 로딩 상태 변수 추가
+let isLoading = ref(true);  // 로딩 상태 변수 추가
 
+// 교육생 이미지 다운로드
+let src = ref();
 
 onBeforeMount(() => {
     console.log("onBeforeMount 실행");
@@ -175,9 +178,6 @@ onBeforeMount(() => {
 
 onMounted(() => {
     console.log("onMount 실행");
-    // console.log(mid);
-    // traineeInfoData.value = traineeInfoSet(mid);
-    // console.log("TEST traineeInfoData.value = " + JSON.stringify(traineeInfoData.value));
 })
 
 
@@ -192,6 +192,7 @@ async function traineeInfoSet(mid) {
         // console.log("traineeInfoData.value = " + JSON.stringify(traineeInfoData.value));
         console.log("traineeInfoData.value.mid = " + traineeInfoData.value.mid);
         console.log("traineeInfoData.value.mname = " + traineeInfoData.value.mname);
+        src.value = `${axios.defaults.baseURL}/edu/download/traineeattach/${traineeInfoData.value.mid}`;
         isLoading.value = false;  // 데이터 로드 완료 후 로딩 상태 변경
     } catch (error) {
         console.log("교육생 정보 불러오기 실패");
@@ -201,15 +202,15 @@ async function traineeInfoSet(mid) {
 
 // 확인 버튼
 function handleSubmit() {
-    // router.push({
-    //     path: '/admin/trainee/register',
-    //     query: {
-    //         ecname: educenter.value.ecname,
-    //         cname: course.value.cname
-    //     }
-    // });
-    // router.push('/admin/trainee/list?ecname=' + ecname + "&cname=" + cname);
-    router.back();
+    router.push({
+        path: '/admin/trainee/register',
+        query: {
+            ecname: traineeInfoData.value.ecname,
+            cname: traineeInfoData.value.cname
+        }
+    });
+    router.push('/admin/trainee/list?ecname=' + ecname + "&cname=" + cname);
+    // router.back();
 }
 
 
