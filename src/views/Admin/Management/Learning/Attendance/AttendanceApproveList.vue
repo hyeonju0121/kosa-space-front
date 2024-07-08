@@ -84,8 +84,18 @@
             <div class="search_interview">
                     <div class="InpBox search_order">
                         <!-- 승인여부 -->
-                        <select id="search_status" title="승인 여부" v-model="filter.approve">
-                            <option selected disabled value="">승인 여부</option>
+                        <select id="search_status" title="출결 승인 여부" v-model="filter.approve" style="width: 150px;">
+                            <option selected disabled value="">사유 작성 여부</option>
+                            <option value="0">전체</option>
+                            <option value="1">작성</option>
+                            <option value="2">미작성</option>
+                            <option value="3">해당없음</option>
+                        </select>
+                    </div>
+                    <div class="InpBox search_order">
+                        <!-- 승인여부 -->
+                        <select id="search_status" title="출결 승인 여부" v-model="filter.approve" style="width: 150px; margin-left: 3%;">
+                            <option selected disabled value="">출결 승인 여부</option>
                             <option value="0">전체</option>
                             <option value="1">승인</option>
                             <option value="2">미승인</option>
