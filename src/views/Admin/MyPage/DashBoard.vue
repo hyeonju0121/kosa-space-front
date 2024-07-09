@@ -14,231 +14,64 @@
                 <!-- 스피너 -->
                 <div v-if="isLoading === true" class="spinner d-flex justify-content-center align-items-center"
                     style="height: 800px">
+                    <!-- <div class="spinner d-flex justify-content-center align-items-center"
+                    style="height: 800px">-->
                     <div class="d-flex flex-column">
-                        <div class="spinner-border"
-                            style="width: 8rem; height: 8rem; border-width: 1rem; color:#22C55E;" role="status">
+                        <div class="spinner-border" style="width: 8rem; height: 8rem; border-width: 1rem; color:#22C55E;"
+                            role="status">
                         </div>
                         <span class="visually ms-4 mt-3" style="color: #22C55E"><b>Loading...</b></span>
                     </div>
                 </div>
 
                 <div v-if="isLoading === false">
-                    <!-- 필터 -->
-                    <div class="align mt-3 mb-4" style="display: flex;">
-                        <div class="InpBox">
-                            <select id="educenter" title="교육장 선택" v-model.trim="resultData.ecname"
-                                @change="centerChange()">
-                                <!-- ecname의 값이 ''이면 "교육장 선택" 옵션 값을 보여줌 -->
-                                <option :value="''" disabled selected>교육장 선택</option>
-                                <option v-for="ecname in ecnames" :key="ecname" :value="ecname"> {{ ecname }}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
+                    <div>
+                        <!-- 필터 -->
+                        <div class="align mt-3 mb-4" style="display: flex;">
+                            <div class="InpBox">
+                                <select id="educenter" title="교육장 선택" v-model.trim="ecname" @change="centerChange()">
+                                    <!-- ecname의 값이 ''이면 "교육장 선택" 옵션 값을 보여줌 -->
+                                    <option :value="''" disabled selected>교육장 선택</option>
+                                    <option v-for="ecname in ecnames" :key="ecname" :value="ecname"> {{ ecname }}
+                                    </option>
+                                </select>
 
-                    <!-- 교육장 조회(필터) 안했을 때 ---------------------------------------------------------->
-                    <div class="interview_list" v-if="resultData.ecname === ''">
-                        <!-- 면접 요청 리스트 없을 경우 -->
-                        <div class="empty_data">
-                            <img src="//www.saraminimage.co.kr/sri/person/resume/img_empty_announce.png">
-                            <strong class="tit">교육장이 선택되지 않았습니다.</strong>
-                            <div class="txt">교육장을 선택하고 강의실 조회를 눌러주세요!</div>
-                        </div>
-                    </div>
-
-                    <div v-if="resultData.ecname !== ''" class="row d-flex">
-                        <!-- 왼쪽 부분 -->
-                        <div class="col-5 d-flex flex-column pe-5">
-                            <!-- 교육과정 대시보드 -->
-                            <!-- <div class="row d-flex mb-4" style="border: 1px solid grey; border-radius: 100px;"> -->
-                            <div class="row d-flex mb-4">
-                                <div class="row mb-3">
-                                    <h4><b style="color:#22C55E">|</b> 교육과정 대시보드</h4>
-                                </div>
-
-                                <div class="attandance_approve_card" style="display: flex;">
-                                    <div class="card1">
-                                        <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
-                                            <span class="card-title" style="color: rgb(115, 68, 227);">진행중인 교육과정</span>
-                                            <h5 class="reason-num" style="color: rgb(115, 68, 227);">{{
-                                                resultData.courseTotalCnt.inprogresscnt }}건</h5>
-                                        </div>
-                                    </div>
-
-                                    <div class="card2 ms-3">
-                                        <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
-                                            <span class="card-title" style="color: rgb(115, 68, 227);">진행예정인 교육과정</span>
-                                            <h5 class="reason-num" style="color: rgb(115, 68, 227);">{{
-                                                resultData.courseTotalCnt.scheduledcnt }}건</h5>
-                                        </div>
-                                    </div>
-
-                                    <div class="card3 ms-3">
-                                        <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
-                                            <span class="card-title" style="color: rgb(233, 25, 39);">종료된 교육과정</span>
-                                            <h5 class="reason-num" style="color: rgb(233, 25, 39);">{{
-                                                resultData.courseTotalCnt.completecnt }}건</h5>
-                                        </div>
-                                    </div>
-                                </div>
+                                <span>{{ ecname }}</span>
                             </div>
-
-                            <div class="row mt-3">
-                                <table class="table">
-                                    <thead>
-                                        <th style="width: 70%;">
-                                            <h4><b style="color:#22C55E">공지사항</b></h4>
-                                        </th>
-                                        <th style="text-align: end;">
-                                            <RouterLink to="/admin/notice/list" class="btn btn-outline-info btn-sm">더보기
-                                            </RouterLink>
-                                        </th>
-                                    </thead>
-                                    <tbody class="align-middle">
-                                        <!-- 테이블의 수는 8개가 적당해보임. 페이징 처리해야함. -->
-                                        <tr v-for="item in resultData.noticeTotalInfo.noticeInfo" :key="item">
-                                            <td>
-                                                <div class="d-flex">
-                                                    <span class="btn btn-info btn-sm me-2">{{ item.ncategory }}</span>
-                                                    <span>{{ item.ntitle }}</span>
-                                                </div>
-                                            </td>
-                                            <td style="text-align: end;">
-                                                {{ item.ncreatedat }}
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
                         </div>
-                        <!-- 오른쪽 부분 -->
-                        <div class="col-7">
-                            <div class="d-flex flex-column">
 
-                                <!-- 교육과정 진행 현황 -->
-                                <div class="row mb-4">
-                                    <div class="row mb-3">
-                                        <div class="d-flex">
-                                            <h4><b style="color:#22C55E">|</b> 교육과정 진행 현황</h4>
-                                        </div>
-                                        <div class="d-flex justify-content-between ms-3 mt-3 mb-2">
-                                            <div class="d-flex">
-                                                <span class="me-3" style="" :style="style1" @click="status1()"><b>진행
-                                                        중</b></span>
-                                                <span class="me-3" style="" :style="style2" @click="status2()"><b>진행
-                                                        예정</b></span>
-                                                <span class="me-3" style="" :style="style3" @click="status3()"><b>진행
-                                                        완료</b></span>
-                                            </div>
-                                            <div class="me-5">
-                                                <RouterLink to="/admin/course/list"
-                                                    class="btn btn-outline-info btn-sm d-flex justify-content-end">더보기
-                                                </RouterLink>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <table class="table align-middle" style="width: 95%;">
-                                        <!-- 페이징 처리 4개씩 -->
-                                        <tr v-for="item in resultData.courseTotalInfo.course" :key="item"
-                                            class="table align-middle" style="width: 95%;">
-                                            <td style="width: 40%;"><b>{{ item.cname }}</b></td>
-                                            <td style="width: 30%;">{{ item.cstartdate.substring(0, 10) }} ~ {{
-                                                item.cenddate.substring(0, 10) }}</td>
-                                            <td style="width: 30%;">
-                                                <div class="d-flex flex-row justify-content-between">
-                                                    <span style="font-size: 8px;">2024.06.19 기준</span>
-                                                    <span style="font-size: 8px;">70% (84 / 105)</span>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar progress-bar-striped bg-success"
-                                                        style="width:70%">70%</div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr v-if="resultData.courseTotalInfo.course.length >= 1">
-                                            <td colspan="5" class="text-center">
-                                                <button class="btn btn-outline-primary btn-sm me-1"
-                                                    @click="changePageNo(1)">처음</button>
-                                                <button v-if="resultData.courseTotalInfo.pager.groupNo > 1"
-                                                    class="btn btn-outline-info btn-sm me-1"
-                                                    @click="changePageNo(resultData.courseTotalInfo.pager.startPageNo - 1)">이전</button>
-                                                <button v-for="pageNo in resultData.courseTotalInfo.pager.pageArray"
-                                                    :key="pageNo"
-                                                    :class="(resultData.courseTotalInfo.pager.pageNo === pageNo) ? 'btn-danger' : 'btn-outline-success'"
-                                                    class="btn btn-sm me-1" @click="changePageNo(pageNo)">
-                                                    {{ pageNo }}
-                                                </button>
-                                                <button
-                                                    v-if="resultData.courseTotalInfo.pager.groupNo < resultData.courseTotalInfo.pager.totalGroupNo"
-                                                    class="btn btn-outline-info btn-sm me-1"
-                                                    @click="changePageNo(resultData.courseTotalInfo.pager.endPageNo + 1)">다음</button>
-                                                <button class="btn btn-outline-info btn-sm me-1"
-                                                    @click="changePageNo(resultData.courseTotalInfo.pager.totalPageNo)">맨끝</button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
+                        <!-- 교육장 조회(필터) 안했을 때 ---------------------------------------------------------->
+                        <div class="interview_list" v-if="ecname === ''">
+                            <!-- 면접 요청 리스트 없을 경우 -->
+                            <div class="empty_data">
+                                <img src="//www.saraminimage.co.kr/sri/person/resume/img_empty_announce.png">
+                                <strong class="tit">교육장이 선택되지 않았습니다.</strong>
+                                <div class="txt">교육장을 선택하고 강의실 조회를 눌러주세요!</div>
+                            </div>
+                        </div>
 
-                                <!-- 교육과정 출결 현황 -->
-                                <div class="row">
-                                    <div class="row mb-3">
-                                        <div class="d-flex justify-content-between">
-                                            <div>
-                                                <h4><b style="color:#22C55E">|</b> 교육과정 출결 현황</h4>
-                                            </div>
-                                            <div class="me-4">
-                                                <RouterLink to="/admin/attendance/list"
-                                                    class="btn btn-outline-info btn-sm">더보기
-                                                </RouterLink>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <table class="table align-middle" style="width: 95%;">
-                                        <!-- 페이징 처리 4개씩. -->
-                                        <tr v-for="item in resultData.attendanceTotalInfo.attendanceInfo" :key="item"
-                                            class="table align-middle" style="width: 95%;">
-                                            <td style="width: 5%;"><img
-                                                    src="@/assets/dashboardimages/admindashboardimg1.png" alt=""></td>
-                                            <td style="width: 30%;"><b>{{ item.cname }}</b></td>
-                                            <td style="width: 35%;">
-                                                <div class="d-flex flex-row justify-content-end">
-                                                    <span class="btn btn-dark btn-sm me-2">입실 : {{ item.totalCheckinCnt
-                                                        }}명</span>
-                                                    <span class="btn btn-dark btn-sm me-2">퇴실 : {{ item.totalCheckoutCnt
-                                                        }}명</span>
-                                                    <span class="btn btn-dark btn-sm me-2">결석 : {{ item.totalAbsenceCnt
-                                                        }}명</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr v-if="resultData.attendanceTotalInfo.attendanceInfo.length >= 1">
-                                            <td colspan="5" class="text-center">
-                                                <button class="btn btn-outline-primary btn-sm me-1"
-                                                    @click="changePageNo(1)">처음</button>
-                                                <button v-if="resultData.attendanceTotalInfo.pager.groupNo > 1"
-                                                    class="btn btn-outline-info btn-sm me-1"
-                                                    @click="changePageNo(resultData.attendanceTotalInfo.pager.startPageNo - 1)">이전</button>
-                                                <button v-for="pageNo in resultData.attendanceTotalInfo.pager.pageArray"
-                                                    :key="pageNo"
-                                                    :class="(resultData.attendanceTotalInfo.pager.pageNo === pageNo) ? 'btn-danger' : 'btn-outline-success'"
-                                                    class="btn btn-sm me-1" @click="changePageNo(pageNo)">
-                                                    {{ pageNo }}
-                                                </button>
-                                                <button
-                                                    v-if="resultData.attendanceTotalInfo.pager.groupNo < resultData.attendanceTotalInfo.pager.totalGroupNo"
-                                                    class="btn btn-outline-info btn-sm me-1"
-                                                    @click="changePageNo(resultData.attendanceTotalInfo.pager.endPageNo + 1)">다음</button>
-                                                <button class="btn btn-outline-info btn-sm me-1"
-                                                    @click="changePageNo(resultData.attendanceTotalInfo.pager.totalPageNo)">맨끝</button>
-                                            </td>
-                                        </tr>
+                        <div v-if="ecname !== ''" class="row d-flex">
+                            <!-- 왼쪽 부분 -->
+                            <div class="col-5 d-flex flex-column pe-5">
+                                <!-- Cnt들어갈부분 -->
+                                <CourseCntInfo :ecname="ecname" ref="$courseCnt" />
+                                <!-- 공지목록 들어갈 부분 -->
+                                <NoticeInfo :ecname="ecname" ref="$noticeInfo"/>
+                            </div>
+                            <!-- 오른쪽 부분 -->
+                            <div class="col-7">
+                                <div class="d-flex flex-column">
 
-                                    </table>
+                                    <!-- 교육과정 진행 현황 -->
+                                    <CourseInfo :ecname="ecname"
+                                                ref="$courseInfo"/>
+                                    <!-- 교육과정 출결 현황 -->
+                                    <AttendanceInfo :ecname="ecname"
+                                                ref="$attendanceInfo"/>
+
                                 </div>
 
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -251,7 +84,11 @@
 import { ref, onMounted } from 'vue';
 import educenterAPI from '@/apis/educenterAPI';
 import { useRoute, useRouter } from 'vue-router';
-import noticeAPI from '@/apis/noticeAPI';
+
+import AttendanceInfo from './components/AttendanceInfo.vue';
+import CourseCntInfo from './components/CourseCntInfo.vue';
+import CourseInfo from './components/CourseInfo.vue';
+import NoticeInfo from './components/NoticeInfo.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -262,45 +99,12 @@ const isLoading = ref(true);
 // 교육장 리스트를 받아올 변수
 let ecnames = ref("");
 
-// 교육과정 진행 현황의 옵션 초깃값
-let cstatus = ref("진행중");
-
-
-// 교육과정 출결 현황 (오늘 날짜) 옵션 초깃값
-const adate = ref({
-    year: "",
-    month: "",
-    day: "",
-    hours: "",
-    minutes: "",
-    seconds: "",
-    formattedDate: ""
-});
-// 현재 날짜와 시간을 가져오기
-const currentDate = new Date();
-// 각 구성 요소를 가져오기
-adate.value.year = currentDate.getFullYear();
-adate.value.month = currentDate.getMonth() + 1;
-adate.value.day = currentDate.getDate();
-
-
-// 날짜와 시간을 문자열로 포맷팅
-adate.value.formattedDate = `${adate.value.year}-${String(adate.value.month).padStart(2, '0')}-${String(adate.value.day).padStart(2, '0')}`;
-
+// 교육장 리스트에서 선택한 값을 받아올 변수
+let ecname = ref("");
 
 // 컴포넌트가 마운트 된 후 실행
 onMounted(() => {
     listCenterSet();
-});
-
-// 값을 받고 전달하기 위한 상태 변수
-const resultData = ref({
-    ecname: "",
-    cname: "",
-    courseTotalCnt: "", // inprogresscnt, scheduledcnt, completecnt 사용가능
-    courseTotalInfo: { course: "", pager: "" }, // course : { ecno, ecname, cno, cname, cstatus, cstartdate, cenddate, crequireddate } // pager : { totalRows, ... } -> Pager DTO 참고
-    attendanceTotalInfo: { attendanceInfo: "", pager: "" }, // attendanceInfo : {  }
-    noticeTotalInfo: { noticeInfo: "", pager: "" }, // noticeInfo: { ncategory, ntitle, ncreatedat, ecname }, pager : { totalRows, ... }
 });
 
 // 등록된 교육장 불러오기
@@ -311,167 +115,59 @@ async function listCenterSet() {
         ecnames.value = response.data.splice(1); // 인덱스 0번째 요소 '전체'를 뺌
         console.log("교육장 리스트 가져오기 성공");
         isLoading.value = false;
-        console.log("ResultData = " + JSON.stringify(resultData.value));
+        console.log("ResultData = " + JSON.stringify(ecnames.value));
     } catch (error) {
         console.log("교육장 리스트 가져오기 실패");
     }
 }
 
-// 교육과정 정보(통계) 리스트 가져오기
-async function totalCourseCnt(ecname) {
-    isLoading.value = true;
-    try {
-        const response = await educenterAPI.getTotalCourseCnt(ecname);
-        resultData.value.courseTotalCnt = response.data;
-        console.log("교육과정 정보(통계) 리스트 가져오기 성공");
-        isLoading.value = false;
-        console.log("ResultData = " + JSON.stringify(resultData.value));
-    } catch (error) {
-        console.log("교육과정 정보(통계) 리스트 가져오기 실패");
-        isLoading.value = true;
-    }
+// ----- 자식 컴포넌트의 함수를 부모 컴포넌트에서 호출 --------------------------------------------
+const $courseCnt = ref();
+const $courseInfo = ref();
+const $attendanceInfo = ref();
+const $noticeInfo = ref();
+
+// CourseCntInfo 자식 컴포넌트에 선언된 totalCourseCnt(ecname) 메소드 호출
+function handleCourseCnt(ecname) {
+    $courseCnt.value.totalCourseCnt(ecname);
 }
 
-// 교육과정 진행 현황 조회를 위한 변수 선언
-const pPageNo = ref(route.query.pPageNo || 1);
-const aPageNo = ref(route.query.aPageNo || 1);
-const nPageNo = ref(route.query.nPageNo || 1);
-
-// ecname 기준으로 교육상태에 따른 '교육과정 진행 현황 조회'
-async function totalCourseInfo(ecname, cstatus, pageNo) {
-    isLoading.value = true;
-    try {
-        const response = await educenterAPI.getTotalCourseInfo(ecname, cstatus, pageNo);
-        resultData.value.courseTotalInfo.course = response.data.course;
-        resultData.value.courseTotalInfo.pager = response.data.pager;
-        console.log("교육과정 진행현황 정보(페이지) 리스트 가져오기 성공");
-        isLoading.value = false;
-        console.log("resultData.value.courseTotalInfo = " + JSON.stringify(resultData.value.courseTotalInfo));
-        console.log("resultData.value.courseTotalInfo.course = " + JSON.stringify(resultData.value.courseTotalInfo.course));
-    } catch (error) {
-        console.log("교육과정 진행현황 정보(페이지) 리스트 가져오기 실패");
-        isLoading.value = true;
-    }
+// CourseInfo 자식 컴포넌트에 선언된 totalCourseInfo(ecname, cstatus, pageNo) 메소드 호출
+function handleCourseInfo(ecname, cstatus, pageNo) {
+    $courseInfo.value.totalCourseInfo(ecname, cstatus, pageNo);
 }
 
-// ecname 기준으로 현재 진행중인 교육과정의 '교육생 출결 현황 조회'
-async function totalAttendanceInfo(ecname, pageNo, adate) {
-    isLoading.value = true;
-    try {
-        const response = await educenterAPI.getTotalAttendanceInfo(ecname, pageNo, adate);
-        resultData.value.attendanceTotalInfo.attendanceInfo = response.data.attendanceInfo;
-        resultData.value.attendanceTotalInfo.pager = response.data.pager;
-        console.log("교육과정 출결현황 정보(페이지) 리스트 가져오기 성공");
-        isLoading.value = false;
-        console.log("resultData.value.attendanceTotalInfo = " + JSON.stringify(resultData.value.attendanceTotalInfo));
-        console.log("resultData.value.attendanceTotalInfo.attendanceInfo = " + JSON.stringify(resultData.value.attendanceTotalInfo.attendanceInfo));
-    } catch (error) {
-        console.log("교육과정 출결현황 정보(페이지) 리스트 가져오기 실패");
-        isLoading.value = true;
-    }
+// CourseInfo 자식 컴포넌트에 선언된 status1() 메소드 호출
+function handleCourseInfoStatus1() {
+    $courseInfo.value.status1();
 }
 
-// ecname 기준으로 공지사항 조회
-async function totalNoticeInfo(ecname, pageNo) {
-    isLoading.value = true;
-    try {
-        console.group("totalNoticeInfo 검사");
-        console.log("ecname = " + ecname);
-        console.log("pageNo = " + pageNo);
-        const response = await noticeAPI.getEcnameNoticeList(ecname, pageNo);
-        console.log("response.date = " + response.data);
-        // resultData.value.noticeTotalInfo.noticeInfo = response.data.noticeInfo;
-        // resultData.value.noticeTotalInfo.pager = response.data.pager;
-        console.log("response.data" + response.data);
-        console.log("response.data" + JSON.stringify(response.data));
-        console.groupEnd();
-        console.log("교육과정 공지사항 정보(페이지) 리스트 가져오기 성공");
-        isLoading.value = false;
-        console.log("resultData.value.noticeTotalInfo = " + JSON.stringify(resultData.value.noticeTotalInfo));
-        console.log("resultData.value.noticeTotalInfo.noticeInfo = " + JSON.stringify(resultData.value.noticeTotalInfo.noticeInfo));
-    } catch (error) {
-        console.log("교육과정 공지사항 정보(페이지) 리스트 가져오기 실패");
-        isLoading.value = true;
-    }
+// AttendanceInfo 자식 컴포넌트에 선언된 submit() 메소드 호출
+function handleAttendanceInfo() {
+    $attendanceInfo.value.submit();
 }
 
-// -----
+// NoticeInfo 자식 컴포넌트에 선언된 submit() 메소드 호출
+function handleNoticeInfo() {
+    $noticeInfo.value.submit();
+}
 
 // 교육장 필터값 변경에 따른 함수
 function centerChange() {
+    console.log("선택된 ecname: " + ecname.value);
     console.group("centerChange 실행")
-    // console.log("resultData.value.ecname = " + resultData.value.ecname);
-    // listCourseSet(resultData.value.ecname);
-    totalCourseCnt(resultData.value.ecname);  // 교육장 값에 따른 대시보드 건수 리로드
-    console.log("resultData.value.courseTotalInfo.cstatus = " + resultData.value.courseTotalInfo.cstatus);
+    handleCourseCnt(ecname.value);  // 교육장 값에 따른 대시보드 건수 리로드
     // 교육과정 진행 현황의 초깃값은 '진행중' 상태로 보여준다.
-    if (resultData.value.courseTotalInfo.cstatus === undefined) {
-        console.log("cstatus는 undefined");
-        console.log("resultData.value.ecname = " + resultData.value.ecname);
-        console.log("cstatus.value = " + cstatus.value);
-        console.log("pPageNo = " + pPageNo.value);
-        totalCourseInfo(resultData.value.ecname, cstatus.value, pPageNo.value);
-    } else {
-        console.log("cstatus는 값이 있음");
-        totalCourseInfo(resultData.value.ecname, resultData.value.courseTotalInfo.cstatus, pPageNo.value);
-    }
-    console.log("교육과정 출결 현황 조회");
-    console.log("adate.value = " + adate.value);
+    handleCourseInfoStatus1();  // CourseInfo 자식 컴포넌트에서 가져온 함수를 호출
 
     // 교육과정 출결 현황 조회
-    // totalAttendanceInfo(resultData.value.ecname, aPageNo.value, adate.value.formattedDate); 
-    totalAttendanceInfo(resultData.value.ecname, aPageNo.value, "2024-07-02 09:00:21");
+    handleAttendanceInfo();
 
     // 교육장에 따른 공지사항 조회
-    totalNoticeInfo(resultData.value.ecname, nPageNo.value);
+    handleNoticeInfo();
 
     console.groupEnd();
-    status1();
 }
-
-// 교육과정 진행 현황 옵션 style변수
-let style1 = ref("border-bottom: 4px solid #22C55E; color:#22C55E");
-let style2 = ref("color: black");
-let style3 = ref("color: black");
-
-function status1() {
-    console.log("status1 클릭");
-    // resultData.value.courseTotalInfo.course.cstatus = "진행중";
-    // console.log(resultData.value.courseTotalInfo.course.cstatus);
-    totalCourseInfo(resultData.value.ecname, "진행중", pPageNo.value);
-    style1.value = "border-bottom: 4px solid #22C55E; color:#22C55E";
-    style2.value = ref("color: black");
-    style3.value = ref("color: black");
-}
-
-function status2() {
-    console.log("status2 클릭");
-    // resultData.value.courseTotalInfo.course.cstatus = "진행예정";
-    // console.log(resultData.value.courseTotalInfo.course.cstatus);
-    totalCourseInfo(resultData.value.ecname, "진행예정", pPageNo.value);
-    style1.value = "color: black";
-    style2.value = "border-bottom: 4px solid #22C55E; color:#22C55E";
-    style3.value = "color: black";
-}
-
-function status3() {
-    console.log("status3 클릭");
-    // resultData.value.courseTotalInfo.course.cstatus = "진행완료";
-    // console.log(resultData.value.courseTotalInfo.course.cstatus);
-    totalCourseInfo(resultData.value.ecname, "진행완료", pPageNo.value);
-    style1.value = "color: black";
-    style2.value = "color: black";
-    style3.value = "border-bottom: 4px solid #22C55E; color:#22C55E";
-}
-
-// -- 페이징 처리 --
-function changePageNo(argPageNo) {
-    // router.push(`/admin/dashboard/BoardList?pageNo=${argPageNo}`);
-    // pageNo.value = argPageNo;
-    console.log("페이지 이동 argPageNo = " + argPageNo);
-    totalCourseInfo(resultData.value.ecname, resultData.value.courseTotalInfo.cstatus, argPageNo);
-}
-
 </script>
 
 <style scoped>
