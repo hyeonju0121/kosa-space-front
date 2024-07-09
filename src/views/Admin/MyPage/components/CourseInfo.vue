@@ -2,29 +2,29 @@
     <div>
         <div class="row mb-4">
             <div class="row mb-3">
-                <div class="d-flex">
+                <div class="d-flex justify-content-between">
                     <h4><b style="color:#22C55E">|</b> 교육과정 진행 현황</h4>
+                    <div class="me-4">
+                        <RouterLink to="/admin/course/list"
+                            class="btn btn-outline-info btn-sm d-flex justify-content-end">
+                            자세히 보기
+                        </RouterLink>
+                    </div>
                 </div>
                 <div class="d-flex justify-content-between ms-3 mt-3 mb-2">
                     <div class="d-flex">
-                        <span class="me-3" style="" :style="style1" @click="status1()"><b>진행
+                        <span class="me-3" style="cursor: pointer;" :style="style1" @click="status1()"><b>진행
                                 중</b></span>
-                        <span class="me-3" style="" :style="style2" @click="status2()"><b>진행
+                        <span class="me-3" style="cursor: pointer;" :style="style2" @click="status2()"><b>진행
                                 예정</b></span>
-                        <span class="me-3" style="" :style="style3" @click="status3()"><b>진행
+                        <span class="me-3" style="cursor: pointer;" :style="style3" @click="status3()"><b>진행
                                 완료</b></span>
-                    </div>
-                    <div class="me-5">
-                        <RouterLink to="/admin/course/list" class="btn btn-outline-info btn-sm d-flex justify-content-end">
-                            더보기
-                        </RouterLink>
                     </div>
                 </div>
             </div>
             <table class="table align-middle" style="width: 95%;">
                 <!-- 페이징 처리 4개씩 -->
-                <tr v-for="item in infoData.course" :key="item" class="table align-middle"
-                    style="width: 95%;">
+                <tr v-for="item in infoData.course" :key="item" class="table align-middle" style="width: 95%;">
                     <td style="width: 40%;"><b>{{ item.cname }}</b></td>
                     <td style="width: 30%;">{{ item.cstartdate.substring(0, 10) }} ~ {{
                         item.cenddate.substring(0, 10) }}</td>
@@ -38,8 +38,8 @@
                         </div>
                     </td>
                 </tr>
-               <tr v-if="infoData.course.length >= 1">
-                <!-- <tr>-->
+                <tr v-if="infoData.course.length >= 1">
+                    <!-- <tr>-->
                     <td colspan="5" class="text-center">
                         <button class="btn btn-outline-primary btn-sm me-1" @click="changePageNo(1)">처음</button>
                         <button v-if="infoData.pager.groupNo > 1" class="btn btn-outline-info btn-sm me-1"
@@ -49,8 +49,7 @@
                             class="btn btn-sm me-1" @click="changePageNo(pageNo)">
                             {{ pageNo }}
                         </button>
-                        <button
-                            v-if="infoData.pager.groupNo < infoData.pager.totalGroupNo"
+                        <button v-if="infoData.pager.groupNo < infoData.pager.totalGroupNo"
                             class="btn btn-outline-info btn-sm me-1"
                             @click="changePageNo(infoData.pager.endPageNo + 1)">다음</button>
                         <button class="btn btn-outline-info btn-sm me-1"
@@ -74,7 +73,7 @@ import { defineExpose, onBeforeMount } from 'vue';
 const route = useRoute();
 
 // 자식 컴포넌트의 함수를 부모 컴포넌트로 전달 가능
-defineExpose({totalCourseInfo, status1})
+defineExpose({ totalCourseInfo, status1 })
 
 const educenter = defineProps(["ecname"]);
 
@@ -106,7 +105,7 @@ async function totalCourseInfo(ecname, cstatus, pageNo) {
         const response = await educenterAPI.getTotalCourseInfo(ecname, cstatus, pageNo);
         infoData.value = response.data;
         console.log(infoData.value);
-        
+
         console.log("교육과정 진행현황 정보(페이지) 리스트 가져오기 성공");
         // console.log("infoData.value.pager = " + JSON.stringify(infoData.value.infoData));
         // console.log("infoData.value.course = " + JSON.stringify(infoData.value.course));
@@ -165,7 +164,7 @@ function status3() {
     const status = "진행완료";
     cstatus.value = status;
 
-    totalCourseInfo(educenter.ecname, cstatus.value , pPageNo.value);
+    totalCourseInfo(educenter.ecname, cstatus.value, pPageNo.value);
     style1.value = "color: black";
     style2.value = "color: black";
     style3.value = "border-bottom: 4px solid #22C55E; color:#22C55E";

@@ -17,8 +17,8 @@
                     <!-- <div class="spinner d-flex justify-content-center align-items-center"
                     style="height: 800px">-->
                     <div class="d-flex flex-column">
-                        <div class="spinner-border" style="width: 8rem; height: 8rem; border-width: 1rem; color:#22C55E;"
-                            role="status">
+                        <div class="spinner-border"
+                            style="width: 8rem; height: 8rem; border-width: 1rem; color:#22C55E;" role="status">
                         </div>
                         <span class="visually ms-4 mt-3" style="color: #22C55E"><b>Loading...</b></span>
                     </div>
@@ -35,8 +35,6 @@
                                     <option v-for="ecname in ecnames" :key="ecname" :value="ecname"> {{ ecname }}
                                     </option>
                                 </select>
-
-                                <span>{{ ecname }}</span>
                             </div>
                         </div>
 
@@ -52,22 +50,20 @@
 
                         <div v-if="ecname !== ''" class="row d-flex">
                             <!-- 왼쪽 부분 -->
-                            <div class="col-5 d-flex flex-column pe-5">
+                            <div class="col-5 d-flex flex-column pe-5" style="height: 900px;">
                                 <!-- Cnt들어갈부분 -->
-                                <CourseCntInfo :ecname="ecname" ref="$courseCnt" />
+                                <CourseCntInfo :ecname="ecname" ref="$courseCnt" style="height: 200px;" />
                                 <!-- 공지목록 들어갈 부분 -->
-                                <NoticeInfo :ecname="ecname" ref="$noticeInfo"/>
+                                <NoticeInfo :ecname="ecname" ref="$noticeInfo" style="height: 700px;" />
                             </div>
                             <!-- 오른쪽 부분 -->
                             <div class="col-7">
-                                <div class="d-flex flex-column">
+                                <div class="d-flex flex-column" style="height: 900px;">
 
                                     <!-- 교육과정 진행 현황 -->
-                                    <CourseInfo :ecname="ecname"
-                                                ref="$courseInfo"/>
+                                    <CourseInfo :ecname="ecname" ref="$courseInfo" style="height: 450px;"/>
                                     <!-- 교육과정 출결 현황 -->
-                                    <AttendanceInfo :ecname="ecname"
-                                                ref="$attendanceInfo"/>
+                                    <AttendanceInfo :ecname="ecname" ref="$attendanceInfo" style="height: 450px;"/>
 
                                 </div>
 

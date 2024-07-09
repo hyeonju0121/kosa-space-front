@@ -7,7 +7,7 @@
                         <h4><b style="color:#22C55E">|</b> 교육과정 출결 현황</h4>
                     </div>
                     <div class="me-4">
-                        <RouterLink to="/admin/attendance/list" class="btn btn-outline-info btn-sm">더보기
+                        <RouterLink to="/admin/attendance/list" class="btn btn-outline-info btn-sm">자세히 보기
                         </RouterLink>
                     </div>
                 </div>
@@ -21,27 +21,25 @@
                     <td style="width: 35%;">
                         <div class="d-flex flex-row justify-content-end">
                             <span class="btn btn-dark btn-sm me-2">입실 : {{ item.totalCheckinCnt
-                            }}명</span>
+                                }}명</span>
                             <span class="btn btn-dark btn-sm me-2">퇴실 : {{ item.totalCheckoutCnt
-                            }}명</span>
+                                }}명</span>
                             <span class="btn btn-dark btn-sm me-2">결석 : {{ item.totalAbsenceCnt
-                            }}명</span>
+                                }}명</span>
                         </div>
                     </td>
                 </tr>
                 <tr v-if="attendance.attendanceInfo.length >= 1">
                     <td colspan="5" class="text-center">
                         <button class="btn btn-outline-primary btn-sm me-1" @click="changePageNo(1)">처음</button>
-                        <button v-if="attendance.pager.groupNo > 1"
-                            class="btn btn-outline-info btn-sm me-1"
+                        <button v-if="attendance.pager.groupNo > 1" class="btn btn-outline-info btn-sm me-1"
                             @click="changePageNo(attendance.pager.startPageNo - 1)">이전</button>
                         <button v-for="pageNo in attendance.pager.pageArray" :key="pageNo"
                             :class="(attendance.pager.pageNo === pageNo) ? 'btn-danger' : 'btn-outline-success'"
                             class="btn btn-sm me-1" @click="changePageNo(pageNo)">
                             {{ pageNo }}
                         </button>
-                        <button
-                            v-if="attendance.pager.groupNo < attendance.pager.totalGroupNo"
+                        <button v-if="attendance.pager.groupNo < attendance.pager.totalGroupNo"
                             class="btn btn-outline-info btn-sm me-1"
                             @click="changePageNo(attendance.pager.endPageNo + 1)">다음</button>
                         <button class="btn btn-outline-info btn-sm me-1"
@@ -65,7 +63,7 @@ import { defineExpose, onBeforeMount } from 'vue';
 const route = useRoute();
 
 // 자식 컴포넌트의 함수를 부모 컴포넌트로 전달 가능
-defineExpose({totalAttendanceInfo, submit})
+defineExpose({ totalAttendanceInfo, submit })
 
 const educenter = defineProps(["ecname"]);
 

@@ -7,7 +7,7 @@ import axiosConfig from '../apis/axiosConfig.js';
 const store = createStore({
   // 루트 상태 정의
   state: {
-    userId: "",
+    mid: "",
     accessToken: "",
     mrole:"",
     clientIP: "",

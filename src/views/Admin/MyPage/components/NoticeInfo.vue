@@ -3,11 +3,11 @@
         <div class="row mt-3">
             <table class="table">
                 <thead>
-                    <th style="width: 70%;">
-                        <h4><b style="color:#22C55E">공지사항</b></h4>
+                    <th colspan="2">
+                        <h4><b style="color:#22C55E">| </b>공지사항</h4>
                     </th>
                     <th style="text-align: end;">
-                        <RouterLink to="/admin/notice/list" class="btn btn-outline-info btn-sm">더보기
+                        <RouterLink to="/admin/notice/list" class="btn btn-outline-info btn-sm">자세히 보기
                         </RouterLink>
                     </th>
                 </thead>
@@ -15,13 +15,17 @@
                     <!-- 테이블의 수는 8개가 적당해보임. 페이징 처리해야함. -->
                     <tr v-for="item in notice.noticeInfo" :key="item">
                         <td>
-                            <div class="d-flex">
-                                <span class="btn btn-info btn-sm me-2">{{ item.ncategory }}</span>
-                                <span>{{ item.ntitle }}</span>
-                            </div>
+                            <span class="btn btn-info btn-sm me-2">{{ item.ncategory }}</span>
+                        </td>
+                        <td>
+                            <span>
+                                <!-- 페이지네이션도 추가해야함. -->
+                                <RouterLink :to="`/admin/notice/detail?nno=${item.nno}`"
+                                    style="text-decoration-line: none; color:black">{{ item.ntitle }}</RouterLink>
+                            </span>
                         </td>
                         <td style="text-align: end;">
-                            {{ item.ncreatedat }}
+                            {{ item.ncreatedat.substring(0, 10) }}
                         </td>
                     </tr>
                 </tbody>
@@ -36,12 +40,12 @@ import { defineProps, defineEmits } from "vue";
 import noticeAPI from '@/apis/noticeAPI';
 import { useRoute } from 'vue-router';
 
-import { defineExpose, onBeforeMount } from 'vue';
+import { defineExpose } from 'vue';
 
 const route = useRoute();
 
 // 자식 컴포넌트의 함수를 부모 컴포넌트로 전달 가능
-defineExpose({submit})
+defineExpose({ submit })
 
 const educenter = defineProps(["ecname"]);
 

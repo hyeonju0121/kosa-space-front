@@ -43,7 +43,7 @@ import educenterAPI from '@/apis/educenterAPI';
 
 import { defineExpose } from 'vue';
 
-defineExpose({totalCourseCnt})
+defineExpose({ totalCourseCnt })
 
 const ecname = defineProps(["ecname"]);
 
@@ -80,4 +80,46 @@ async function totalCourseCnt(ecname) {
 //console.log("resultCourseCntInfoData = " + JSON.stringify(resultCourseCntInfoData));
 </script>
 
-<style scoped></style>
+<style scoped>
+/* 카드 부분 */
+.card-title {
+    text-align: center;
+    color: white;
+    font-weight: 500;
+    margin-left: 2%;
+}
+
+.reason-num {
+    text-align: center;
+    color: white;
+    margin-top: 2%;
+    font-size: 1.7rem;
+}
+
+.card1 {
+    width: 250px;
+    height: 100px;
+    border: 1px solid rgb(115, 68, 227);
+    border-radius: 16px;
+    box-sizing: border-box;
+    background-color: rgb(236, 236, 255);
+}
+
+.card2 {
+    width: 250px;
+    height: 100px;
+    border: 1px solid rgb(36, 142, 147);
+    border-radius: 16px;
+    box-sizing: border-box;
+    background-color: rgb(227, 255, 250);
+}
+
+.card3 {
+    width: 250px;
+    height: 100px;
+    border: 1px solid rgb(233, 25, 39);
+    border-radius: 16px;
+    box-sizing: border-box;
+    background-color: rgb(254, 239, 238);
+}
+</style>

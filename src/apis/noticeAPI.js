@@ -15,6 +15,12 @@ function getEcnameNoticeList(ecname, pageNo) {
     // axios.post("/community/dashboard/notice/list", "ecname=" + ecname + "&pageNo=" + pageNo);
 }
 
+// (운영진 대시보드) nno 기준으로 공지사항 단건 조회
+function getNoticeInfo(nno){
+    console.log("getNoticeInfo 실행");
+    return axios.get("/community/notice/detail/" + nno);
+}
+
 export default {
     createNotice,
     getEcnameNoticeList,

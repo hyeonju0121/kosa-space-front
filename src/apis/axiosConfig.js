@@ -8,7 +8,7 @@ axios.defaults.baseURL = "http://localhost";
 function addAuthHeader(accessToken) {
     // common 객체에 동적 속성으로 Authorization 을 추가
     // accessToken은 헤더행의 속성이름 'Authorization'에 추가된다.
-    axios.defaults.headers.common["Authorization"] = "Bearer" + accessToken;
+    axios.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
     console.log(axios.defaults.headers.common);
 }
 
