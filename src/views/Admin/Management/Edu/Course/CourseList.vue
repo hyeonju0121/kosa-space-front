@@ -13,15 +13,15 @@
 
         <div class="align" style="display: flex;">
             <div class="InpBox">
-                <select id="room" title="교육장 선택" @change="handleFilterChange" v-model="filter.ecname">
-                    <option value="교육장 선택" disabled selected>교육장 선택</option>
-                    <option v-for="name in nameList" :value="name" :key="name">{{ name }}</option>                    
+                <select id="room" title="교육장 선택" @change="handleFilterChange" v-model="filter.ecname" :class="btnEnable">
+                    <option :value="''" disabled selected>교육장 선택</option>
+                    <option v-for="name in nameList" :value="name" :key="name">{{ name }}</option>
                 </select>
             </div>
             <div class="InpBox" style="margin-left: 1%;">
-                <select id="status" title="진행 여부" @change="handleFilterChange">
-                    <option value="" selected="">진행 여부</option>
-                    <option value="전체">전체</option>
+                <select id="status" title="진행 여부" @change="handleFilterChange" v-model="filter.cstatus" :class="btnEnable">
+                    <option :value="''" disabled selected>진행 여부</option>
+                    <option value="all">전체</option>
                     <option value="진행예정">진행예정</option>
                     <option value="진행중">진행중</option>
                     <option value="진행완료">진행완료</option>
@@ -29,7 +29,7 @@
             </div>
             <div class="InpBox" style="margin-left: 1%;">
                 <select id="professor" title="강사진" @change="handleFilterChange">
-                    <option value="" selected="">강사진</option>
+                    <option value="" selected>강사진</option>
                     <option value="전체">전체</option>
                     <option value="신용권">신용권</option>
                     <option value="마성일">마성일</option>
@@ -44,7 +44,7 @@
         <!-- 교육과정 목록 부분 -->
         <div>
             <ul class="self_exam_list">
-                <li v-for="course in filteredCourses" :key="course.cno" class="personality_test">
+                <li v-for="course in courseData" :key="course.cno" class="personality_test">
                     <div v-for="(url, index) in course.attachments" :key="index" class="course-img">
                         <img :src="course.attachments[0]" class="course-img-detail" style="width: 150px; height: 140px;">
                     </div>
@@ -83,12 +83,26 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import courseAPI from '@/apis/courseAPI';
 import { onMounted, ref, computed } from 'vue';
 import educenterAPI from '@/apis/educenterAPI';
 
 const router = useRouter();
+const route = useRoute();
+
+onMounted(() => {
+    educenterNameList();
+    // 요청 url에 쿼리 스트링이 있다면
+    if (route.query.ecname) {
+        console.log("route.query.ecname = " + route.query.ecname);
+        btnEnable.value = "btn disabled";
+    } else {
+        filter.value.ecname = "송파교육센터";
+        btnEnable.value = "";
+    }
+    getCourseData(filter.value.ecname, filter.value.cstatus);
+});
 
 function handleCreateBtn() {
     router.push('/admin/course/create');
@@ -100,13 +114,15 @@ function handleUpdateBtn() {
 
 // 필터 상태 객체 정의
 const filter = ref({
-    ecname: "교육장 선택"
+    ecname: route.query.ecname || "교육장 선택",
+    cstatus: route.query.cstatus || ""
 });
 
-
+// route.query값이 있다면 셀렉트 버튼 활성화 / 비활성화
+let btnEnable = ref("");
 
 // 교육장 이름 전체 목록을 가져오는 메소드
-const nameList = ref([]);
+const nameList = ref();
 
 async function educenterNameList() {
     try {
@@ -118,62 +134,18 @@ async function educenterNameList() {
     }
 }
 
-//교육과정 상태 정의
-const course = ref({
-    cno: "",
-    ecname: "",
-    cname: "",
-    ccode: "",
-    cstartdate: "",
-    cenddate: "",
-    crequireddate: "",
-    ctotalnum: "",
-    cmanager: "",
-    cprofessor: "",
-    ctrainingdate: "",
-    ctrainingtime: "",
-    trno: "",
-    cstatus: "",
-    eanoList: []
-});
+// 교육과정 목록을 가져오는 메소드
+const courseData = ref();
 
-//선택된 필터의 상태값 정의
-const selectedRoom = ref('');
-const selectedStatus = ref('');
-const selectedProfessor = ref('');
-
-//필터링된 교육과정 목록을 반환하는 계산된 속성
-const filteredCourses = computed(() => {
-    return courselist.value.filter(course => {
-        const roomMatch = selectedRoom.value === '' || selectedRoom.value === '전체' || course.ecname === selectedRoom.value;
-        const statusMatch = selectedStatus.value === '' || selectedStatus.value === '전체' || course.cstatus === selectedStatus.value;
-        const professorMatch = selectedProfessor.value === '' || selectedProfessor.value === '전체' || course.cprofessor === selectedProfessor.value;
-        return roomMatch && statusMatch && professorMatch;
-    });
-});
-
-//선택된 필터 값 변경 시 호출되는 메소드
-function handleFilterChange() {
-    selectedRoom.value = document.getElementById('room').value;
-    selectedStatus.value = document.getElementById('status').value;
-    selectedProfessor.value = document.getElementById('professor').value;
-}
-
-
-
-//교육과정 목록 상태 정의
-const courselist = ref([]);
-
-//교육장 목록을 가져오는 메소드
-async function fetchCourseList() {
+async function getCourseData(ecname, cstatus) {
     try {
-        const response = await courseAPI.getCourseList();
-        courselist.value = response.data;
-
-
+        console.log("getCourseData 실행");
+        const response = await courseAPI.getCourseList(ecname, cstatus);
+        courseData.value = response.data;
+        console.log("courseData = " + courseData.value);
 
         //각 교육과정 첨부파일 URL 가져오기
-        for (const course of courselist.value) {
+        for (const course of courseData.value) {
             if (course.eanoList && course.eanoList.length > 0) {
                 course.attachments = [];
                 for (const eano of course.eanoList) {
@@ -184,15 +156,9 @@ async function fetchCourseList() {
         }
 
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 }
-
-//컴포넌트가 마운트 될때 교육과정 목록 가져오기
-onMounted(() => {
-    fetchCourseList();
-    educenterNameList();
-});
 
 //eano를 통해 해당 첨부 파일을 가져오는 함수
 async function getAttach(eano) {
@@ -203,6 +169,10 @@ async function getAttach(eano) {
     } catch (error) {
         console.log(error);
     }
+}
+
+function handleFilterChange() {
+    getCourseData(filter.value.ecname, filter.value.cstatus);
 }
 
 

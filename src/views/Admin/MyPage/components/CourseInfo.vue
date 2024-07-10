@@ -5,10 +5,13 @@
                 <div class="d-flex justify-content-between">
                     <h4><b style="color:#22C55E">|</b> 교육과정 진행 현황</h4>
                     <div class="me-4">
-                        <RouterLink to="/admin/course/list"
+                        <!-- <RouterLink to="/admin/course/list"
                             class="btn btn-outline-info btn-sm d-flex justify-content-end">
                             자세히 보기
-                        </RouterLink>
+                        </RouterLink> -->
+                        <button class="btn btn-outline-info btn-sm d-flex justify-content-end" @click="goCourseInfoList()">
+                            {{ cstatus }}인 과정 보기
+                        </button>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between ms-3 mt-3 mb-2">
@@ -71,11 +74,13 @@
 import { ref } from 'vue';
 import { defineProps, defineEmits } from "vue";
 import educenterAPI from '@/apis/educenterAPI';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 import { defineExpose, onBeforeMount } from 'vue';
 
 const route = useRoute();
+
+const router = useRouter();
 
 // 자식 컴포넌트의 함수를 부모 컴포넌트로 전달 가능
 defineExpose({ totalCourseInfo, status1 })
@@ -113,7 +118,7 @@ async function totalCourseInfo(ecname, cstatus, pageNo) {
 }
 
 
-let cstatus = ref("");
+let cstatus = ref("진행중");
 
 // -- 페이징 처리 --
 function changePageNo(argPageNo) {
@@ -141,6 +146,7 @@ function status1() {
     style1.value = "border-bottom: 4px solid #22C55E; color:#22C55E";
     style2.value = ref("color: black");
     style3.value = ref("color: black");
+    
 }
 
 function status2() {
@@ -166,6 +172,16 @@ function status3() {
     style2.value = "color: black";
     style3.value = "border-bottom: 4px solid #22C55E; color:#22C55E";
 }
+
+function goCourseInfoList() {
+    router.push({path: "/admin/course/list",
+            query: {
+                ecname: educenter.ecname,
+                cstatus: cstatus.value
+            }
+})
+}
+
 </script>
 
 <style scoped>

@@ -9,8 +9,13 @@ function create(FormData) {
 }
 
 //교육과정 목록 가져오기
-function getCourseList() {
-    return axios.get("/edu/course/list");
+function getCourseList(ecname, cstatus) {
+    return axios.get("/edu/course/list?ecname=" + ecname + "&cstatus=" + cstatus);
+}
+
+// 진행중인 교육과정 목록 가져오기
+function getInprogressCourseList(ecname) {
+    return axios.get("/edu/course/cnamelist/inprogress?ecname=" + ecname);
 }
 
 
@@ -47,5 +52,6 @@ export default {
     getCourseAttach,
     getCourseByCno,
     update,
-    getCourseNameList
+    getCourseNameList,
+    getInprogressCourseList
 }
