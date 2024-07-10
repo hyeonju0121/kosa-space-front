@@ -14,18 +14,18 @@
         <form @submit.prevent="handleSubmitFilter1">
             <div class="align" style="display: flex;">
                 <div class="InpBox">
-                    <select id="educenter" title="교육장 선택" v-model="filter.ecname">
-                        <option selected disabled value="">교육장 선택</option>
-                        <option value="송파교육센터">송파교육센터</option>
-                        <option value="가산교육센터">가산교육센터</option>
-                        <option value="혜화교육센터">혜화교육센터</option>
+                    <select id="educenter" title="교육장 선택" v-model="filter.ecname" :class="btnEnable">
+                        <option selected disabled :value="''">교육장 선택</option>
+                        <option v-for="item in ecnames" :key="item" :value="item">{{ item }}</option>
                     </select>
                 </div>
                 <div class="InpBox" style="margin-left: 1%; width: 370px;">
-                    <select id="course" title="교육과정 선택" v-model="filter.cname">
-                        <option selected disabled value="">교육과정 선택</option>
+                    <select id="course" title="교육과정 선택" v-model="filter.cname" :class="btnEnable">
+                        <!-- <option selected disabled value="">교육과정 선택</option>
                         <option value="2024M2">MSA 기반 Full Stack 개발 전문가 양성과정 2차</option>
-                        <option value="2024C1">클라우드 솔루션즈 아키텍트 양성과정 1차</option>
+                        <option value="2024C1">클라우드 솔루션즈 아키텍트 양성과정 1차</option> -->
+                        <option selected disabled :value="''">교육과정 선택</option>
+                        <option v-for="item in cnames" :key="item" :value="item">{{ item }}</option>
                     </select>
                 </div>
 
@@ -67,10 +67,12 @@
                                         <div style="width: 340px; margin-top: 5%; margin-left: 10px;">
                                             <div class="d-flex flex-row justify-content-between">
                                                 <span style="font-size: 14px;"> 2024-07-10기준</span>
-                                                <span style="font-size: 14px;">{{ item.percentage }}% ({{ item.approvecnt }}일 / {{ item.crequireddate }}일)</span>
+                                                <span style="font-size: 14px;">{{ item.percentage }}% ({{ item.approvecnt
+                                                }}일 / {{ item.crequireddate }}일)</span>
                                             </div>
                                             <div class="progress">
-                                                <div class="progress-bar bg-success" style="width:70%">{{ item.percentage }}%</div>
+                                                <div class="progress-bar bg-success" style="width:70%">{{ item.percentage
+                                                }}%</div>
                                             </div>
                                         </div>
                                     </div>
@@ -87,9 +89,9 @@
                         </tbody>
                     </table>
                 </div>
-                </div>
             </div>
         </div>
+    </div>
 </template>
 
 <script setup>
@@ -97,12 +99,103 @@ import { ref, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import attendanceAPI from '@/apis/attendanceAPI';
 import '@vuepic/vue-datepicker/dist/main.css';
+import courseAPI from '@/apis/courseAPI';
+import educenterAPI from '@/apis/educenterAPI';
 
 const route = useRoute();
 
+const date = ref();
+
+let ecnames = ref();
+
+let cnames = ref();
+
+let test;
+
+onMounted(() => {
+    const startDate = new Date();
+    const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
+    date.value = [startDate, endDate];
+    console.group("진행중인 교육과정 확인");
+    progressCourseList(filter.value.ecname);
+
+    
+    console.log("route.query.cname = " + route.query.cname);
+    console.log("진행중인 교육과정 확인");
+
+
+    // 요청 url에 쿼리 스트링이 있다면
+    if(route.query.ecname) {
+        console.log("route.query.ecname = " + route.query.ecname);
+        btnEnable.value = "btn disabled";
+    } else {
+        btnEnable.value = "";
+    }
+    
+    // 등록된 교육장 불러오기
+    listCenterSet();
+})
+
+// 필터 상태 객체 정의
+const filter = ref({
+    ecname: route.query.ecname || "송파교육센터",
+    cname: route.query.cname || ""
+});
+
+// route.query값이 있다면 셀렉트 버튼 활성화 / 비활성화
+let btnEnable = ref("");
+
+// 교육장 이름 전체 목록을 가져오는 메소드
+const nameList = ref([]);
+
+
+// 1. 교육장 목록 가져오기
+async function listCenterSet() {
+    try {
+        const response = await educenterAPI.educenterNameList();
+        ecnames.value = response.data.splice(1);
+        console.log("center 리스트 가져오기 성공");
+    } catch (error) {
+        console.log("center 리스트 가져오기 실패");
+    }
+}
+
+// 2. 진행중인 교육과정 목록 가져오기
+async function progressCourseList(ecname) {
+    // getInprogressCourseList
+    try {
+        const response = await courseAPI.getInprogressCourseList(ecname);
+        cnames.value = response.data;
+        console.log("cnames.value = " + cnames.value);
+        console.log("진행중인 교육과정 정보 가져오기 성공");
+    } catch (error) {
+        console.log(error);
+        console.log("진행중인 교육과정 정보 가져오기 실패");
+    }
+}
+
+// 교육생 출결 정보에 대한 테이블 리스트 불러오기
+async function totalAttendanceList(ecname, cname, adate) {
+    try {
+        const response = await attendanceAPI.getTotalAttendanceList(ecname, cname, adate);
+        attendance.value = response.data;
+        console.log(response.data);
+        console.log("출결현황 정보 가져오기 성공");
+
+
+    } catch (error) {
+        console.log("출결현황 정보 가져오기 실패");
+    }
+}
+
+// 교육생 출결 상태 객체 정의
+const attendance = ref([]);
+
+totalAttendanceList(filter.value.ecname, "MSA 2차 Full Stack 개발자 양성과정", "2024-07-10");
+
 // 요청 경로의 변경을 감시
 // watch(route, (newRoute, oldRoute) => {
-//     if(newRoute.query.ecname) { // 쿼리에 ecname 들어있으면 해당 페이지로 요청
+//     if(newRoute.query.pageNo) { // 쿼리에 ecname 들어있으면 해당 페이지로 요청
 //         getBoardList(newRoute.query.pageNo);
 //         pageNo.value =newRoute.query.pageNo;
 //     } else { // 안들어왔으면 1페이지 그대로
@@ -112,43 +205,24 @@ const route = useRoute();
 // });
 
 
-
-
-const date = ref();
-
-onMounted(() => {
-    const startDate = new Date();
-    const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
-    date.value = [startDate, endDate];
-})
-
-// 필터 상태 객체 정의
-const filter = ref({
-    ecname: "송파교육센터",
-    cname: ""
- });
-
-
- // 교육장 이름 전체 목록을 가져오는 메소드
-const nameList = ref([]);
-
- // 교육생 출결 상태 객체 정의
-const attendance = ref([]);
-
-async function totalAttendanceList(ecname, cname, adate) {
-    try {
-        const response = await attendanceAPI.getTotalAttendanceList(ecname, cname, adate);
-        attendance.value = response.data;
-        console.log(response.data);
-        console.log("출결현황 정보 가져오기 성공");
-
-
-    } catch(error) {
-        console.log("출결현황 정보 가져오기 실패");
+watch(
+    () => filter.value.ecname,
+    (newEcname, oldEcname) => {
+        console.log("ecname 값 변경 oldEcname = " + oldEcname);
+        console.log("ecname 값 변경 newEcname = " + newEcname);
+        progressCourseList(newEcname);
     }
-}
+)
 
-totalAttendanceList(filter.value.ecname, "MSA 2차 Full Stack 개발자 양성과정", "2024-07-10");
+watch(route, (newRoute, oldRoute) => {
+    if(newRoute.query.ecname) { // 쿼리에 ecname 들어있으면 해당 페이지로 요청
+        console.log("newRoute.query.ecname = " + newRoute.query.ecname);
+        //totalAttendanceList(newRoute.query.ecname, newRoute.query.cname, "2024-07-10");
+        //filter.value.ecname =newRoute.query.ecname;
+        //filter.value.cname =newRoute.query.cname;
+    } 
+});
+
 
 </script>
 
@@ -315,7 +389,7 @@ table {
 
 .TypoBox .text {
     padding-right: 36px;
-    width:100%;
+    width: 100%;
     padding-block: 1px;
     padding-inline: 2px;
 }

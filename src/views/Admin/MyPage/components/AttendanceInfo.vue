@@ -20,9 +20,12 @@
                         <td style="width: 5%;"><img src="@/assets/dashboardimages/admindashboardimg1.png" alt=""></td>
                         <td style="width: 30%;">
 
-                            <RouterLink :to="`/admin/attendance/list?ecname=${ educenter.ecname }&cname=${ item.cname }`">
+                            <!-- <RouterLink :to="`/admin/attendance/list?ecname=${ educenter.ecname }&cname=${ item.cname }`">
                                 <span class="courseInfo-span">{{ item.cname }}</span>
-                            </RouterLink>
+                            </RouterLink> -->
+                            <button @click="goAttendanceList(item.cname)">
+                                <span class="courseInfo-span">{{ item.cname }}</span>
+                            </button>
                         </td>
                         <td style="width: 35%;">
                             <div class="d-flex flex-row justify-content-end">
@@ -60,11 +63,12 @@
 import { ref } from 'vue';
 import { defineProps, defineEmits } from "vue";
 import educenterAPI from '@/apis/educenterAPI';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 import { defineExpose, onBeforeMount } from 'vue';
 
 const route = useRoute();
+const router = useRouter();
 
 // 자식 컴포넌트의 함수를 부모 컴포넌트로 전달 가능
 defineExpose({ totalAttendanceInfo, submit })
@@ -121,6 +125,15 @@ function submit() {
 // -- 페이징 처리 --
 function changePageNo(argPageNo) {
     totalAttendanceInfo(educenter.ecname, argPageNo, adate.value.formattedDate);
+}
+
+function goAttendanceList(cname) {
+    router.push({path: '/admin/attendance/list', 
+                query: {
+                    ecname: educenter.ecname,
+                    cname: cname
+                }
+})
 }
 </script>
 
