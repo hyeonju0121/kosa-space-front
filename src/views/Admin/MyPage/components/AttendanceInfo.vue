@@ -18,7 +18,12 @@
                     <tr v-for="item in attendance.attendanceInfo" :key="item" class="table align-middle"
                         style="width: 95%;">
                         <td style="width: 5%;"><img src="@/assets/dashboardimages/admindashboardimg1.png" alt=""></td>
-                        <td style="width: 30%;"><span class="courseInfo-span">{{ item.cname }}</span></td>
+                        <td style="width: 30%;">
+
+                            <RouterLink :to="`/admin/attendance/list?ecname=${ educenter.ecname }&cname=${ item.cname }`">
+                                <span class="courseInfo-span">{{ item.cname }}</span>
+                            </RouterLink>
+                        </td>
                         <td style="width: 35%;">
                             <div class="d-flex flex-row justify-content-end">
                                 <span class="btn btn-dark btn-sm me-2">입실 : {{ item.totalCheckinCnt }}명</span>

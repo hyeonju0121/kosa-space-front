@@ -10,6 +10,12 @@ function addClientIPHeader(clientIP) {
     console.log(axios.defaults.headers.common);
 } 
 
+// ecname, cname, adate 기준으로 전체 출결 목록 조회 기능
+function getTotalAttendanceList(ecname, cname, adate) {
+    return axios.get("/attendance/list?ecname=" + ecname + "&cname=" + cname + "&adate=" + adate); 
+}
+
+
 // 입실 기능
 
 function userCheckin(attendanceinfo) {
@@ -18,5 +24,6 @@ function userCheckin(attendanceinfo) {
 
 export default {
     userCheckin,
+    getTotalAttendanceList,
     addClientIPHeader
 }

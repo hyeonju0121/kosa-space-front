@@ -1,5 +1,5 @@
 <template>
-    <div class="main p-3" style="margin-left: 25px; width: 1200px;">
+    <div class="main p-3" style="margin-left: 25px; width: 1400px;">
         <div class="item-section mt-2 mb-2" style="font-size: 12px">
             <span>학습관리 > 출결 관리 > 출결 현황 조회</span>
         </div>
@@ -16,7 +16,6 @@
                 <div class="InpBox">
                     <select id="educenter" title="교육장 선택" v-model="filter.ecname">
                         <option selected disabled value="">교육장 선택</option>
-                        <option value="전체">전체</option>
                         <option value="송파교육센터">송파교육센터</option>
                         <option value="가산교육센터">가산교육센터</option>
                         <option value="혜화교육센터">혜화교육센터</option>
@@ -29,169 +28,91 @@
                         <option value="2024C1">클라우드 솔루션즈 아키텍트 양성과정 1차</option>
                     </select>
                 </div>
-                <button type="button" class="BtnType SizeM" @click="handleSubmitFilter1" style="margin-left: 1%;">
-                    교육생 조회
-                </button>
+
             </div>
         </form>
 
-        <!-- datepicker ----------->
-        <div class="mt-3">
-            <span>기간별 조회</span>
-            <VueDatePicker v-model="date" range />
-        </div>   
-
-        <div class="interview_list_header">
-            <div class="total_interviews">총 0건</div>
-
-            <!-- 필터 -->
-            <div class="search_interview">
-                <div class="InpBox search_order">
-                    <!-- 입실여부 -->
-                    <select id="search_status" name="search_status" title="응답 유형">
-                        <option value="0">입실여부</option>
-                        <option value="0">전체</option>
-                        <option value="1">입실</option>
-                        <option value="2">미입실</option>
-                    </select>
-                </div>
-                <div class="InpBox search_order" style="margin-left: 2%;">
-                    <!-- 퇴실여부 -->
-                    <select id="search_status" name="search_status" title="응답 유형">
-                        <option value="0">퇴실여부</option>
-                        <option value="0">전체</option>
-                        <option value="1">퇴실</option>
-                        <option value="2">미퇴실</option>
-                    </select>
-                </div>
-                <div class="TypoBox search_area" style="margin-left: 2%;">
-                    <input type="text" class="Typo search" id="search_keyword" name="search_keyword" value="" placeholder="교육생 입력">
-                    <button type="button" id="keyword_search">
-                        <PhMagnifyingGlass color="#838181"  style="width: 24px; height: 24px;"/>
-                    </button>
-                </div>
-            </div>
+        <div class="interview_list_header" style="margin-top: 2%;">
+            <div class="total_interviews">총 0건 <span>(2024-07-10 19:50 기준)</span></div>
         </div>
 
         <div class="mt-3">
             <!-- 출결 테이블 부분 -->
             <div class="container">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>번호</th>
-                            <th>이름</th>
-                            <th>교육생 번호</th>
-                            <th>입실시간</th>
-                            <th>퇴실시간</th>
-                            <th>출결 진행률</th>
-                            <th>출석</th>
-                            <th>지각</th>
-                            <th>결석</th>
-                            <th>비고</th>
-                            <th>출결 알림</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ attendance.ano }}</td>
-                            <td>{{ attendance.name }}</td>
-                            <td>{{ attendance.mid }}</td>
-                            <td>{{ attendance.starttime }}</td>
-                            <td>{{ attendance.endtime }}</td>
-                            <td>
-                                <div class="attendance-box" style="width: 120%; height: 80px;">
-                                    <div style="width: 340px; margin-top: 5%; margin-left: 10px;">
-                                        <div class="d-flex flex-row justify-content-between">
-                                            <span style="font-size: 14px;">{{ attendance.attendancestatus[0] }} 기준</span>
-                                            <span style="font-size: 14px;">{{ attendance.attendancestatus[1] }}% ({{ attendance.attendancestatus[2] }}일 / {{ attendance.attendancestatus[3] }}일)</span>
-                                        </div>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-success" style="width:70%">{{ attendance.attendancestatus[1] }}%</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>{{ attendance.attendancetotalnum[0] }}</td>
-                            <td>{{ attendance.attendancetotalnum[1] }}</td>
-                            <td>{{ attendance.attendancetotalnum[2] }}</td>
-                            <td>
-                                <router-link to="./trainee/detail" class="btn btn-dark btn-sm">
-                                    출결현황 보기
-                                </router-link>
-                            </td>
-                            <td><button class="btn btn-dark btn-sm">알림 전송</button></td>      
-                        </tr>
-                        <!------------------------------------------------------------------------------>
-                        <tr>
-                            <td>2</td>
-                            <td>김성민</td>
-                            <td>2024M2002</td>
-                            <td>08:58</td>
-                            <td>18:10</td>
-                            <td>
-                                <div class="attendance-box" style="width: 120%; height: 80px;">
-                                    <div style="width: 340px; margin-top: 5%; margin-left: 10px;">
-                                        <div class="d-flex flex-row justify-content-between">
-                                            <span style="font-size: 14px;">{{ attendance.attendancestatus[0] }} 기준</span>
-                                            <span style="font-size: 14px;">{{ attendance.attendancestatus[1] }}% ({{ attendance.attendancestatus[2] }}일 / {{ attendance.attendancestatus[3] }}일)</span>
-                                        </div>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-success" style="width:70%">{{ attendance.attendancestatus[1] }}%</div>
+                <div class="container mt-3">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">이름</th>
+                                <th scope="col">교육생 번호</th>
+                                <th scope="col">입실</th>
+                                <th scope="col">퇴실</th>
+                                <th scope="col">출결 진행률</th>
+                                <th scope="col">출석</th>
+                                <th scope="col">지각</th>
+                                <th scope="col">결석</th>
+                                <th scope="col">상세보기</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            <tr v-for="item in attendance" :key="item">
+                                <td>{{ item.rnum }}</td>
+                                <td>{{ item.mname }}</td>
+                                <td>{{ item.mid }}</td>
+                                <td>{{ item.acheckin }}</td>
+                                <td>{{ item.acheckout }}</td>
+                                <td>
+                                    <div class="attendance-box" style="width: 120%; height: 80px;">
+                                        <div style="width: 340px; margin-top: 5%; margin-left: 10px;">
+                                            <div class="d-flex flex-row justify-content-between">
+                                                <span style="font-size: 14px;"> 2024-07-10기준</span>
+                                                <span style="font-size: 14px;">{{ item.percentage }}% ({{ item.approvecnt }}일 / {{ item.crequireddate }}일)</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" style="width:70%">{{ item.percentage }}%</div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td>{{ attendance.attendancetotalnum[0] }}</td>
-                            <td>{{ attendance.attendancetotalnum[1] }}</td>
-                            <td>{{ attendance.attendancetotalnum[2] }}</td>
-                            <td>
-                                <router-link to="./trainee/detail" class="btn btn-dark btn-sm">
-                                    출결현황 보기
-                                </router-link>
-                            </td>
-                            <td><button class="btn btn-dark btn-sm">알림 전송</button></td>      
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>이경섭</td>
-                            <td>2024M2003</td>
-                            <td>{{ attendance.starttime }}</td>
-                            <td>{{ attendance.endtime }}</td>
-                            <td>
-                                <div class="attendance-box" style="width: 120%; height: 80px;">
-                                    <div style="width: 340px; margin-top: 5%; margin-left: 10px;">
-                                        <div class="d-flex flex-row justify-content-between">
-                                            <span style="font-size: 14px;">{{ attendance.attendancestatus[0] }} 기준</span>
-                                            <span style="font-size: 14px;">{{ attendance.attendancestatus[1] }}% ({{ attendance.attendancestatus[2] }}일 / {{ attendance.attendancestatus[3] }}일)</span>
-                                        </div>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-success" style="width:70%">{{ attendance.attendancestatus[1] }}%</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>{{ attendance.attendancetotalnum[0] }}</td>
-                            <td>{{ attendance.attendancetotalnum[1] }}</td>
-                            <td>{{ attendance.attendancetotalnum[2] }}</td>
-                            <td>
-                                <router-link to="./trainee/detail" class="btn btn-dark btn-sm">
-                                    출결현황 보기
-                                </router-link>
-                            </td>
-                            <td><button class="btn btn-dark btn-sm">알림 전송</button></td>      
-                        </tr>      
-                    </tbody>
+                                </td>
+                                <td>{{ item.approvecnt }}</td>
+                                <td>{{ item.latenesscnt }}</td>
+                                <td>{{ item.absencecnt }}</td>
+                                <td>
+                                    <router-link to="./trainee/detail" class="btn btn-dark btn-sm">
+                                        출결현황 보기
+                                    </router-link>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
+                </div>
                 </div>
             </div>
         </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import VueDatePicker from '@vuepic/vue-datepicker';
+import { ref, onMounted, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import attendanceAPI from '@/apis/attendanceAPI';
 import '@vuepic/vue-datepicker/dist/main.css';
+
+const route = useRoute();
+
+// 요청 경로의 변경을 감시
+// watch(route, (newRoute, oldRoute) => {
+//     if(newRoute.query.ecname) { // 쿼리에 ecname 들어있으면 해당 페이지로 요청
+//         getBoardList(newRoute.query.pageNo);
+//         pageNo.value =newRoute.query.pageNo;
+//     } else { // 안들어왔으면 1페이지 그대로
+//          getBoardList(1);
+//          pageNo.value = 1;
+//     }
+// });
+
+
+
 
 const date = ref();
 
@@ -203,29 +124,40 @@ onMounted(() => {
 
 // 필터 상태 객체 정의
 const filter = ref({
-    ecname: "",
-    cname: "",
-    approve: "",
-    mname: "",
+    ecname: "송파교육센터",
+    cname: ""
  });
 
+
+ // 교육장 이름 전체 목록을 가져오는 메소드
+const nameList = ref([]);
+
  // 교육생 출결 상태 객체 정의
-const attendance = ref({
-    ano: "1",
-    name: "유현주",
-    mid: "M2001",
-    starttime: "08:45",
-    endtime: "17:55",
-    // 출결 진행률
-    attendancestatus: ["2024-06-27", 70, 84, 105],
-    // 출석, 지각, 결석 
-    attendancetotalnum: [84, 1, 0]
-})
+const attendance = ref([]);
+
+async function totalAttendanceList(ecname, cname, adate) {
+    try {
+        const response = await attendanceAPI.getTotalAttendanceList(ecname, cname, adate);
+        attendance.value = response.data;
+        console.log(response.data);
+        console.log("출결현황 정보 가져오기 성공");
+
+
+    } catch(error) {
+        console.log("출결현황 정보 가져오기 실패");
+    }
+}
+
+totalAttendanceList(filter.value.ecname, "MSA 2차 Full Stack 개발자 양성과정", "2024-07-10");
 
 </script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+
+a {
+    text-decoration: none;
+}
 
 body,
 h1,
@@ -239,7 +171,10 @@ p,
 span,
 small,
 textarea,
-select {
+select,
+strong,
+th,
+td {
     font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -258,6 +193,39 @@ select {
     font-size: 1.6rem;
 }
 
+
+/* table */
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+    background-color: #22C55E;
+    color: #ffffff;
+    text-align: center;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
 
 /* 테이블 크기 고정 */
 table {
