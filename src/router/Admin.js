@@ -59,7 +59,7 @@ const routes = [
             {
                 // 교육관리 > 교육생 --------------------------------------------------------------------------------------
                 path: "trainee/list", // "/admin/trainee/list"
-                component: () => import(/* webpackChunkName: "trainee" */ '@/views/Admin/Management/Edu/Trainee/TraineeList.vue')
+                component: () => import(/* webpackChunkName: "trainee" */ '@/views/Admin/Management/Edu/Trainee/index.vue')
             },
             {
                 path: "trainee/register", // "/admin/trainee/register"
