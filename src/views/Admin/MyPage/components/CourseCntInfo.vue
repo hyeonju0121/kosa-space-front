@@ -41,11 +41,15 @@ import { ref, onMounted } from 'vue';
 import { defineProps, defineEmits } from "vue";
 import educenterAPI from '@/apis/educenterAPI';
 
-import { defineExpose } from 'vue';
+import { defineExpose, onBeforeMount } from 'vue';
 
 defineExpose({ totalCourseCnt })
 
 const ecname = defineProps(["ecname"]);
+
+onBeforeMount(() => {
+    totalCourseCnt(ecname.ecname);
+});
 
 const resultCourseCntInfoData = ref({
     ecname: "",
@@ -71,7 +75,7 @@ async function totalCourseCnt(ecname) {
     }
 }
 
-
+totalCourseCnt(ecname.value);
 
 
 //const ecname = defineProps(["ecname"]);
@@ -81,6 +85,22 @@ async function totalCourseCnt(ecname) {
 </script>
 
 <style scoped>
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+p,
+span,
+small,
+textarea,
+select {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
 /* 카드 부분 */
 .card-title {
     text-align: center;

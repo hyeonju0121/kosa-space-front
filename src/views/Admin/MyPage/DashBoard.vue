@@ -12,19 +12,20 @@
                 </div>
 
                 <!-- 스피너 -->
-                <div v-if="isLoading === true" class="spinner d-flex justify-content-center align-items-center"
-                    style="height: 800px">
+                <!-- <div v-if="isLoading === true" class="spinner d-flex justify-content-center align-items-center" -->
+                    <!-- style="height: 800px"> -->
                     <!-- <div class="spinner d-flex justify-content-center align-items-center"
                     style="height: 800px">-->
-                    <div class="d-flex flex-column">
+                    <!-- <div class="d-flex flex-column">
                         <div class="spinner-border"
                             style="width: 8rem; height: 8rem; border-width: 1rem; color:#22C55E;" role="status">
                         </div>
                         <span class="visually ms-4 mt-3" style="color: #22C55E"><b>Loading...</b></span>
                     </div>
-                </div>
+                </div> -->
 
-                <div v-if="isLoading === false">
+                <!-- <div v-if="isLoading === false"> -->
+                <div>
                     <div>
                         <!-- 필터 -->
                         <div class="align mt-3 mb-4" style="display: flex;">
@@ -39,16 +40,17 @@
                         </div>
 
                         <!-- 교육장 조회(필터) 안했을 때 ---------------------------------------------------------->
-                        <div class="interview_list" v-if="ecname === ''">
+                        <!-- <div class="interview_list" v-if="ecname === ''"> -->
                             <!-- 면접 요청 리스트 없을 경우 -->
-                            <div class="empty_data">
+                            <!-- <div class="empty_data">
                                 <img src="//www.saraminimage.co.kr/sri/person/resume/img_empty_announce.png">
                                 <strong class="tit">교육장이 선택되지 않았습니다.</strong>
                                 <div class="txt">교육장을 선택하고 강의실 조회를 눌러주세요!</div>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <div v-if="ecname !== ''" class="row d-flex">
+                        <!-- <div v-if="ecname !== ''" class="row d-flex"> -->
+                        <div class="row d-flex">
                             <!-- 왼쪽 부분 -->
                             <div class="col-5 d-flex flex-column pe-5" style="height: 900px;">
                                 <!-- Cnt들어갈부분 -->
@@ -90,13 +92,13 @@ const route = useRoute();
 const router = useRouter();
 
 // 비동기 작업을 기다린 후, 화면 랜더링을 위해 로딩 상태 변수 추가 --> 서버로부터 데이터를 받아오기 전까지 spinner를 보여줌
-const isLoading = ref(true);
+//const isLoading = ref(true);
 
 // 교육장 리스트를 받아올 변수
 let ecnames = ref("");
 
 // 교육장 리스트에서 선택한 값을 받아올 변수
-let ecname = ref("");
+let ecname = ref("송파교육센터");
 
 // 컴포넌트가 마운트 된 후 실행
 onMounted(() => {
@@ -105,12 +107,12 @@ onMounted(() => {
 
 // 등록된 교육장 불러오기
 async function listCenterSet() {
-    isLoading.value = true;
+    //isLoading.value = true;
     try {
         const response = await educenterAPI.educenterNameList();
         ecnames.value = response.data.splice(1); // 인덱스 0번째 요소 '전체'를 뺌
         console.log("교육장 리스트 가져오기 성공");
-        isLoading.value = false;
+        //isLoading.value = false;
         console.log("ResultData = " + JSON.stringify(ecnames.value));
     } catch (error) {
         console.log("교육장 리스트 가져오기 실패");
@@ -147,6 +149,8 @@ function handleAttendanceInfo() {
 function handleNoticeInfo() {
     $noticeInfo.value.submit();
 }
+
+
 
 // 교육장 필터값 변경에 따른 함수
 function centerChange() {

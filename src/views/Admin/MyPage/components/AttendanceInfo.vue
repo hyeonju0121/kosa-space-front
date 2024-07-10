@@ -12,25 +12,26 @@
                     </div>
                 </div>
             </div>
-            <table class="table align-middle" style="width: 95%;">
-                <!-- 페이징 처리 4개씩. -->
-                <tr v-for="item in attendance.attendanceInfo" :key="item" class="table align-middle"
-                    style="width: 95%;">
-                    <td style="width: 5%;"><img src="@/assets/dashboardimages/admindashboardimg1.png" alt=""></td>
-                    <td style="width: 30%;"><b>{{ item.cname }}</b></td>
-                    <td style="width: 35%;">
-                        <div class="d-flex flex-row justify-content-end">
-                            <span class="btn btn-dark btn-sm me-2">입실 : {{ item.totalCheckinCnt
-                                }}명</span>
-                            <span class="btn btn-dark btn-sm me-2">퇴실 : {{ item.totalCheckoutCnt
-                                }}명</span>
-                            <span class="btn btn-dark btn-sm me-2">결석 : {{ item.totalAbsenceCnt
-                                }}명</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr v-if="attendance.attendanceInfo.length >= 1">
-                    <td colspan="5" class="text-center">
+            <div style="height: 160px;">
+                <table class="table align-middle" style="width: 95%;">
+                    <!-- 페이징 처리 4개씩. -->
+                    <tr v-for="item in attendance.attendanceInfo" :key="item" class="table align-middle"
+                        style="width: 95%;">
+                        <td style="width: 5%;"><img src="@/assets/dashboardimages/admindashboardimg1.png" alt=""></td>
+                        <td style="width: 30%;"><span class="courseInfo-span">{{ item.cname }}</span></td>
+                        <td style="width: 35%;">
+                            <div class="d-flex flex-row justify-content-end">
+                                <span class="btn btn-dark btn-sm me-2">입실 : {{ item.totalCheckinCnt }}명</span>
+                                <span class="btn btn-dark btn-sm me-2">퇴실 : {{ item.totalCheckoutCnt }}명</span>
+                                <span class="btn btn-dark btn-sm me-2">결석 : {{ item.totalAbsenceCnt }}명</span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="display: flex; justify-content: center;">
+                <div v-if="attendance.attendanceInfo.length >= 1">
                         <button class="btn btn-outline-primary btn-sm me-1" @click="changePageNo(1)">처음</button>
                         <button v-if="attendance.pager.groupNo > 1" class="btn btn-outline-info btn-sm me-1"
                             @click="changePageNo(attendance.pager.startPageNo - 1)">이전</button>
@@ -44,10 +45,8 @@
                             @click="changePageNo(attendance.pager.endPageNo + 1)">다음</button>
                         <button class="btn btn-outline-info btn-sm me-1"
                             @click="changePageNo(attendance.pager.totalPageNo)">맨끝</button>
-                    </td>
-                </tr>
-
-            </table>
+                </div>
+             </div>
         </div>
     </div>
 </template>
@@ -68,6 +67,13 @@ defineExpose({ totalAttendanceInfo, submit })
 const educenter = defineProps(["ecname"]);
 
 const aPageNo = ref(route.query.pPageNo || 1);
+
+onBeforeMount(() => {
+    console.group("AttendanceInfo 컴포넌트 마운트 직전");
+    totalAttendanceInfo(educenter.ecname, aPageNo.value, adate.value.formattedDate);
+    console.groupEnd();
+});
+
 
 // 교육과정 출결 현황 (오늘 날짜) 옵션 초깃값
 const adate = ref({
@@ -113,4 +119,25 @@ function changePageNo(argPageNo) {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+p,
+span,
+small,
+textarea,
+select,
+b {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.courseInfo-span {
+    font-weight: 500;
+}
+</style>

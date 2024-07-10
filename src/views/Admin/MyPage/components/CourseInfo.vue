@@ -13,50 +13,55 @@
                 </div>
                 <div class="d-flex justify-content-between ms-3 mt-3 mb-2">
                     <div class="d-flex">
-                        <span class="me-3" style="cursor: pointer;" :style="style1" @click="status1()"><b>진행
-                                중</b></span>
-                        <span class="me-3" style="cursor: pointer;" :style="style2" @click="status2()"><b>진행
-                                예정</b></span>
-                        <span class="me-3" style="cursor: pointer;" :style="style3" @click="status3()"><b>진행
-                                완료</b></span>
+                        <span class="me-3" style="cursor: pointer;" :style="style1" @click="status1()">
+                            <b>진행중</b>
+                        </span>
+                        <span class="me-3" style="cursor: pointer;" :style="style2" @click="status2()">
+                            <b>진행예정</b>
+                        </span>
+                        <span class="me-3" style="cursor: pointer;" :style="style3" @click="status3()">
+                            <b>진행완료</b>
+                        </span>
                     </div>
                 </div>
             </div>
-            <table class="table align-middle" style="width: 95%;">
-                <!-- 페이징 처리 4개씩 -->
-                <tr v-for="item in infoData.course" :key="item" class="table align-middle" style="width: 95%;">
-                    <td style="width: 40%;"><b>{{ item.cname }}</b></td>
-                    <td style="width: 30%;">{{ item.cstartdate.substring(0, 10) }} ~ {{
-                        item.cenddate.substring(0, 10) }}</td>
-                    <td style="width: 30%;">
-                        <div class="d-flex flex-row justify-content-between">
-                            <span style="font-size: 8px;">2024.06.19 기준</span>
-                            <span style="font-size: 8px;">70% (84 / 105)</span>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped bg-success" style="width:70%">70%</div>
-                        </div>
-                    </td>
-                </tr>
-                <tr v-if="infoData.course.length >= 1">
-                    <!-- <tr>-->
-                    <td colspan="5" class="text-center">
-                        <button class="btn btn-outline-primary btn-sm me-1" @click="changePageNo(1)">처음</button>
-                        <button v-if="infoData.pager.groupNo > 1" class="btn btn-outline-info btn-sm me-1"
-                            @click="changePageNo(infoData.pager.startPageNo - 1)">이전</button>
-                        <button v-for="pageNo in infoData.pager.pageArray" :key="pageNo"
+            <div style="height: 270px;">
+                <table class="table align-middle" style="width: 95%;">
+                    <!-- 페이징 처리 4개씩 -->
+                    <tr v-for="item in infoData.course" :key="item" class="table align-middle" style="width: 95%;">
+                        <td style="width: 40%;"><span class="courseInfo-span"> {{ item.cname }}</span></td>
+                        <td style="width: 30%;"><b>{{ item.cstartdate.substring(0, 10) }} ~ {{
+                            item.cenddate.substring(0, 10) }}</b></td>
+                        <td style="width: 30%;">
+                            <div class="d-flex flex-row justify-content-between">
+                                <span style="font-size: 8px;">2024.06.19 기준</span>
+                                <span style="font-size: 8px;">70% (84 / 105)</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped bg-success" style="width:70%">70%</div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>      
+            
+            <div style="display: flex; justify-content: center;">
+                <div>
+                <button class="btn btn-outline-primary btn-sm me-1" @click="changePageNo(1)">처음</button>
+                <button v-if="infoData.pager.groupNo > 1" class="btn btn-outline-info btn-sm me-1"
+                        @click="changePageNo(infoData.pager.startPageNo - 1)">이전</button>
+                    <button v-for="pageNo in infoData.pager.pageArray" :key="pageNo"
                             :class="(infoData.pager.pageNo === pageNo) ? 'btn-danger' : 'btn-outline-success'"
                             class="btn btn-sm me-1" @click="changePageNo(pageNo)">
                             {{ pageNo }}
-                        </button>
-                        <button v-if="infoData.pager.groupNo < infoData.pager.totalGroupNo"
+                    </button>
+                    <button v-if="infoData.pager.groupNo < infoData.pager.totalGroupNo"
                             class="btn btn-outline-info btn-sm me-1"
                             @click="changePageNo(infoData.pager.endPageNo + 1)">다음</button>
-                        <button class="btn btn-outline-info btn-sm me-1"
+                <button class="btn btn-outline-info btn-sm me-1"
                             @click="changePageNo(infoData.pager.totalPageNo)">맨끝</button>
-                    </td>
-                </tr>
-            </table>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -77,15 +82,7 @@ defineExpose({ totalCourseInfo, status1 })
 
 const educenter = defineProps(["ecname"]);
 
-//const cstatus = defineProps(["cstatus"]);
-
 const pPageNo = ref(route.query.pPageNo || 1);
-
-
-// const resultCourseInfoData = ref({
-//     ecname: "",
-//     courseTotalInfo: [], // course : { ecno, ecname, cno, cname, cstatus, cstartdate, cenddate, crequireddate } // pager : { totalRows, ... } -> Pager DTO 참고
-// });
 
 const infoData = ref({
     course: "",
@@ -94,7 +91,7 @@ const infoData = ref({
 
 onBeforeMount(() => {
     console.group("CourseInfo 컴포넌트 마운트 직전");
-    console.log("educenter.ecname = " + educenter.ecname);
+    totalCourseInfo(educenter.ecname, "진행중", pPageNo.value);
     console.groupEnd();
 });
 
@@ -171,4 +168,25 @@ function status3() {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+p,
+span,
+small,
+textarea,
+select,
+b {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.courseInfo-span {
+    font-weight: 500;
+}
+</style>

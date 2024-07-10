@@ -15,7 +15,10 @@
                     <!-- 테이블의 수는 8개가 적당해보임. 페이징 처리해야함. -->
                     <tr v-for="item in notice.noticeInfo" :key="item">
                         <td>
-                            <span class="btn btn-info btn-sm me-2">{{ item.ncategory }}</span>
+                            <div style="display: flex;">
+                                <span class="new_mark2">전체</span>
+                                <span class="new_mark_complete" style="margin-left: 3%;">{{ item.ncategory }}</span>
+                            </div>
                         </td>
                         <td>
                             <span>
@@ -40,7 +43,7 @@ import { defineProps, defineEmits } from "vue";
 import noticeAPI from '@/apis/noticeAPI';
 import { useRoute } from 'vue-router';
 
-import { defineExpose } from 'vue';
+import { defineExpose, onBeforeMount } from 'vue';
 
 const route = useRoute();
 
@@ -50,6 +53,13 @@ defineExpose({ submit })
 const educenter = defineProps(["ecname"]);
 
 const nPageNo = ref(route.query.nPageNo || 1);
+
+
+onBeforeMount(() => {
+    console.group("CourseInfo 컴포넌트 마운트 직전");
+    totalNoticeInfo(educenter.ecname, nPageNo.value);
+    console.groupEnd();
+});
 
 let notice = ref({
     noticeInfo: "",
@@ -83,4 +93,47 @@ function changePageNo(argPageNo) {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+p,
+span,
+small,
+textarea,
+select {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* tag */
+.new_mark_complete {
+    display: block;
+    width: 38px;
+    height: 24px;
+    border-radius: 4px;
+    color: rgb(235, 25, 39);
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 24px;
+    text-align: center;
+    background-color: rgb(254, 239, 238);
+}
+
+.new_mark2 {
+    display: block;
+    width: 50px;
+    height: 24px;
+    border-radius: 4px;
+    color: #2a7c6d;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 24px;
+    text-align: center;
+    background-color: #defaf6;
+}
+</style>
