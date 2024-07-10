@@ -1,108 +1,78 @@
 <template>
-    <div class="main p-3" style="margin-left: 25px;">
+    <div class="main p-3" style="margin-left: 25px; width: 1200px;">
         <div class="item-section mt-2 mb-2" style="font-size: 12px">
             <span>공지사항 관리 > 공지사항 상세 조회</span>
         </div>
 
-        <!-- contents -->
+
         <div class="headingArea">
             <div class="title">
                 <h1 id="itemTitle">공지사항 상세 조회</h1>
             </div>
 
-            <!-- 테이블 -->
+
             <div class="container mt-5" style="text-align: left;">
-                <form @submit.prevent="handleSubmit">
-                    <table class="table" style="text-align:center">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    제목
-                                </td>
-                                <td colspan="3" style="text-align:left">
-                                    <textarea maxlength="100" @input="checkTitleLength" required v-model="notice.ntitle"
-                                        cols="90" rows="1" style="resize: none;" placeholder="공지사항 제목을 입력해주세요.(100자 이내)">
-                                            </textarea>
-                                    <p>{{ notice.ntitle.length }}/100</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>작성날짜</td>
-                                <td style="text-align:left">
-                                    <input v-model="notice.ncreatedat">
 
-                                </td>
-                                <td>작성자</td>
-                                <td style="text-align:left">
-                                    <input v-model="notice.writer">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>공지사항 유형</td>
-                                <td colspan="3" style="text-align: left;">
-                                    <input v-model="notice.ncategory">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>교육장 명</td>
-                                <td style="text-align:left">
-                                    <input v-model="notice.ecname">
-                                </td>
-                                <td>교육과정</td>
-                                <td>
-                                    <input v-model="notice.cname">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>첨부파일</td>
-                                <td colspan="3" style="text-align:left">
-                                    <input ref="nattach" type="file">
-                                </td>
-                            </tr>
+                <div class="mb-3">
+                    <span
+                        style="font-size: 2rem; border-bottom: 4px solid #22C55E; padding-bottom: 3px; font-weight: 500;">{{
+                            notice.ntitle }}</span>
+                </div>
 
-                            <tr>
-                                <td colspan="4">
-                                    <textarea v-model="notice.ncontent" rows="15" cols="100" style="resize: none"
-                                        placeholder="공지사항 내용을 입력해주세요.(1000자 이내)" maxlength="1000">
-                                    </textarea>
-                                    <p>{{ notice.ncontent.length }}/1000</p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <!-- 버튼부분 -->
-                    <div style="display: flex; justify-content: center;">
-                        <input class="btn btn-dark  me-3" @click="handleList()" value="목록">
-                        <input class="btn btn-info  me-3" @click="handleUpdate()" value="수정">
-                        <input class="btn btn-danger " @click="handleDelete()" value="삭제">
+                <div class="d-flex justify-content-between mb-1">
+                    <div class="d-flex ms-2">
+                        <span class="caregory">{{ notice.ncategory }}</span>
+                        <span class="center ms-2">{{ notice.ecname }}</span>
+                        <span class="center ms-2">{{ notice.cname }}</span>
                     </div>
-                </form>
+                    <div class="me-3">
+                        <span class="text-end">{{ notice.ncreatedat }}</span>
+                    </div>
+                </div>
+
+                <div class="p-2 mb-3" style="border-bottom: 1px solid #22C55E;">
+                    <!-- <input ref="nattach" type="file"> -->
+                </div>
+
+                <div class="d-flex flex-column p-3 mb-3"
+                    style="width: 100%; min-height: 460px; border: 1px solid #22C55E">
+                    <span>
+                        <img class="p-3" src="//www.saraminimage.co.kr/sri/person/resume/img_empty_announce.png">
+                        <img :src="`${axios.defaults.baseURL}/edu/download/traineeattach/${notice.mid}`" width="110"
+                            height="150">
+                    </span>
+                    <span class="p-3" style="font-size: 1.3rem">
+                        {{ notice.ncontent }}
+                    </span>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-outline-secondary me-3" @click="handleList()" value="목록">목록으로</button>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
+
+
 <script setup>
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
-// import axios from "axios";
+import axios from "axios";
 // import { useStore } from "vuex";
 
 //라우터 객체 얻기
 const router = useRouter();
-
-
 
 //상태 정의
 let notice = ref({
     nno: "",
     ecno: "",
     cno: "",
-    writer: "홍길동",
-    mid: "",
+    writer: "관리자",
+    mid: "2024M2003",
     ncategory: "강의장",
-    ntitle: "강의장 청결",
+    ntitle: "강의장 청결 관련",
     ncontent: "강의장 깔끔하게 사용해주세요!",
     nhitcount: "",
     nattach: "",
@@ -203,7 +173,6 @@ function handleDelete() {
 //     router.push("/");
 // }
 
-
 </script>
 
 <style scoped>
@@ -248,5 +217,32 @@ select {
     justify-content: center;
     padding: 0;
     margin-top: 60px;
+}
+
+/* 레이아웃 수정 */
+.caregory {
+    display: block;
+    width: 90px;
+    height: 30px;
+    border-radius: 4px;
+    color: rgb(235, 25, 39);
+    font-size: 13px;
+    line-height: 24px;
+    text-align: center;
+    background-color: rgb(254, 239, 238);
+    font-weight: 500;
+}
+
+.center {
+    display: block;
+    width: 90px;
+    height: 30px;
+    border-radius: 4px;
+    color: rgb(102, 241, 21);
+    font-size: 13px;
+    line-height: 24px;
+    text-align: center;
+    background-color: rgb(40, 167, 172);
+    font-weight: 500;
 }
 </style>
