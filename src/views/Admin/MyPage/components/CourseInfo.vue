@@ -1,73 +1,77 @@
 <template>
-    <div>
         <div class="row mb-4">
-            <div class="row mb-3">
-                <div class="d-flex justify-content-between">
-                    <h4><b style="color:#22C55E">|</b> 교육과정 진행 현황</h4>
-                    <div class="me-4">
-                        <!-- <RouterLink to="/admin/course/list"
+            <div class="content">
+                <div class="box">
+                    <div class="row mb-3">
+                        <div class="d-flex justify-content-between">
+                            <h4><b style="color:#22C55E">|</b> 교육과정 진행 현황</h4>
+                            <div class="me-4">
+                                <!-- <RouterLink to="/admin/course/list"
                             class="btn btn-outline-info btn-sm d-flex justify-content-end">
                             자세히 보기
                         </RouterLink> -->
-                        <button class="btn btn-outline-info btn-sm d-flex justify-content-end" @click="goCourseInfoList()">
-                            {{ cstatus }}인 과정 보기
-                        </button>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between ms-3 mt-3 mb-2">
-                    <div class="d-flex">
-                        <span class="me-3" style="cursor: pointer;" :style="style1" @click="status1()">
-                            <b>진행중</b>
-                        </span>
-                        <span class="me-3" style="cursor: pointer;" :style="style2" @click="status2()">
-                            <b>진행예정</b>
-                        </span>
-                        <span class="me-3" style="cursor: pointer;" :style="style3" @click="status3()">
-                            <b>진행완료</b>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div style="height: 270px;">
-                <table class="table align-middle" style="width: 95%;">
-                    <!-- 페이징 처리 4개씩 -->
-                    <tr v-for="item in infoData.course" :key="item" class="table align-middle" style="width: 95%;">
-                        <td style="width: 40%;"><span class="courseInfo-span"> {{ item.cname }}</span></td>
-                        <td style="width: 30%;"><b>{{ item.cstartdate.substring(0, 10) }} ~ {{
-                            item.cenddate.substring(0, 10) }}</b></td>
-                        <td style="width: 30%;">
-                            <div class="d-flex flex-row justify-content-between">
-                                <span style="font-size: 8px;">2024.06.19 기준</span>
-                                <span style="font-size: 8px;">70% (84 / 105)</span>
+                                <button class="btn btn-outline-info btn-sm d-flex justify-content-end"
+                                    @click="goCourseInfoList()">
+                                    {{ cstatus }}인 과정 보기
+                                </button>
                             </div>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped bg-success" style="width:70%">70%</div>
+                        </div>
+                        <div class="d-flex justify-content-between ms-3 mt-3 mb-2">
+                            <div class="d-flex">
+                                <span class="me-3" style="cursor: pointer;" :style="style1" @click="status1()">
+                                    <b>진행중</b>
+                                </span>
+                                <span class="me-3" style="cursor: pointer;" :style="style2" @click="status2()">
+                                    <b>진행예정</b>
+                                </span>
+                                <span class="me-3" style="cursor: pointer;" :style="style3" @click="status3()">
+                                    <b>진행완료</b>
+                                </span>
                             </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>      
-            
-            <div style="display: flex; justify-content: center;">
-                <div>
-                <button class="btn btn-outline-primary btn-sm me-1" @click="changePageNo(1)">처음</button>
-                <button v-if="infoData.pager.groupNo > 1" class="btn btn-outline-info btn-sm me-1"
-                        @click="changePageNo(infoData.pager.startPageNo - 1)">이전</button>
-                    <button v-for="pageNo in infoData.pager.pageArray" :key="pageNo"
-                            :class="(infoData.pager.pageNo === pageNo) ? 'btn-danger' : 'btn-outline-success'"
-                            class="btn btn-sm me-1" @click="changePageNo(pageNo)">
-                            {{ pageNo }}
-                    </button>
-                    <button v-if="infoData.pager.groupNo < infoData.pager.totalGroupNo"
-                            class="btn btn-outline-info btn-sm me-1"
-                            @click="changePageNo(infoData.pager.endPageNo + 1)">다음</button>
-                <button class="btn btn-outline-info btn-sm me-1"
-                            @click="changePageNo(infoData.pager.totalPageNo)">맨끝</button>
+                        </div>
+                    </div>
+                    <div style="height: 270px;">
+                        <table class="table align-middle" style="width: 95%;">
+                            <!-- 페이징 처리 4개씩 -->
+                            <tr v-for="item in infoData.course" :key="item" class="table align-middle"
+                                style="width: 95%;">
+                                <td style="width: 40%;"><span class="courseInfo-span"> {{ item.cname }}</span></td>
+                                <td style="width: 30%;"><b>{{ item.cstartdate.substring(0, 10) }} ~ {{
+                                    item.cenddate.substring(0, 10) }}</b></td>
+                                <td style="width: 30%;">
+                                    <div class="d-flex flex-row justify-content-between">
+                                        <span style="font-size: 8px;">2024.06.19 기준</span>
+                                        <span style="font-size: 8px;">70% (84 / 105)</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped bg-success" style="width:70%">70%
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div style="display: flex; justify-content: center;">
+                        <div>
+                            <button class="btn btn-outline-primary btn-sm me-1" @click="changePageNo(1)">처음</button>
+                            <button v-if="infoData.pager.groupNo > 1" class="btn btn-outline-info btn-sm me-1"
+                                @click="changePageNo(infoData.pager.startPageNo - 1)">이전</button>
+                            <button v-for="pageNo in infoData.pager.pageArray" :key="pageNo"
+                                :class="(infoData.pager.pageNo === pageNo) ? 'btn-danger' : 'btn-outline-success'"
+                                class="btn btn-sm me-1" @click="changePageNo(pageNo)">
+                                {{ pageNo }}
+                            </button>
+                            <button v-if="infoData.pager.groupNo < infoData.pager.totalGroupNo"
+                                class="btn btn-outline-info btn-sm me-1"
+                                @click="changePageNo(infoData.pager.endPageNo + 1)">다음</button>
+                            <button class="btn btn-outline-info btn-sm me-1"
+                                @click="changePageNo(infoData.pager.totalPageNo)">맨끝</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
-    </div>
 </template>
 
 <script setup>
@@ -146,7 +150,7 @@ function status1() {
     style1.value = "border-bottom: 4px solid #22C55E; color:#22C55E";
     style2.value = ref("color: black");
     style3.value = ref("color: black");
-    
+
 }
 
 function status2() {
@@ -174,12 +178,13 @@ function status3() {
 }
 
 function goCourseInfoList() {
-    router.push({path: "/admin/course/list",
-            query: {
-                ecname: educenter.ecname,
-                cstatus: cstatus.value
-            }
-})
+    router.push({
+        path: "/admin/course/list",
+        query: {
+            ecname: educenter.ecname,
+            cstatus: cstatus.value
+        }
+    })
 }
 
 </script>
@@ -205,4 +210,44 @@ b {
 .courseInfo-span {
     font-weight: 500;
 }
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.box {
+    flex: 1;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-right: 20px;
+}
+
+.box:last-child {
+    margin-right: 0;
+}
+
+.box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.box-header h2 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.box-header button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 </style>

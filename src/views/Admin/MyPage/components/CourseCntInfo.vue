@@ -3,32 +3,36 @@
         <!-- 교육과정 대시보드 -->
         <!-- <div class="row d-flex mb-4" style="border: 1px solid grey; border-radius: 100px;"> -->
         <div class="row d-flex mb-4">
-            <div class="row mb-3">
-                <h4><b style="color:#22C55E">|</b> 교육과정 대시보드</h4>
-            </div>
-
-            <div class="attandance_approve_card" style="display: flex;">
-                <div class="card1">
-                    <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
-                        <span class="card-title" style="color: rgb(115, 68, 227);">진행중인 교육과정</span>
-                        <h5 class="reason-num" style="color: rgb(115, 68, 227);">{{
-                            resultCourseCntInfoData.courseTotalCnt.inprogresscnt }}건</h5>
+            <div class="content">
+                <div class="box">
+                    <div class="row mb-3">
+                        <h4><b style="color:#22C55E">|</b> 교육과정 대시보드</h4>
                     </div>
-                </div>
 
-                <div class="card2 ms-3">
-                    <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
-                        <span class="card-title" style="color: rgb(115, 68, 227);">진행예정인 교육과정</span>
-                        <h5 class="reason-num" style="color: rgb(115, 68, 227);">{{
-                            resultCourseCntInfoData.courseTotalCnt.scheduledcnt }}건</h5>
-                    </div>
-                </div>
+                    <div class="attandance_approve_card" style="display: flex;">
+                        <div class="card1">
+                            <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
+                                <span class="card-title" style="color: rgb(115, 68, 227);">진행중인 교육과정</span>
+                                <h5 class="reason-num" style="color: rgb(115, 68, 227);">{{
+                                    resultCourseCntInfoData.courseTotalCnt.inprogresscnt }}건</h5>
+                            </div>
+                        </div>
 
-                <div class="card3 ms-3">
-                    <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
-                        <span class="card-title" style="color: rgb(233, 25, 39);">종료된 교육과정</span>
-                        <h5 class="reason-num" style="color: rgb(233, 25, 39);">{{
-                            resultCourseCntInfoData.courseTotalCnt.completecnt }}건</h5>
+                        <div class="card2 ms-3">
+                            <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
+                                <span class="card-title" style="color: rgb(115, 68, 227);">진행예정인 교육과정</span>
+                                <h5 class="reason-num" style="color: rgb(115, 68, 227);">{{
+                                    resultCourseCntInfoData.courseTotalCnt.scheduledcnt }}건</h5>
+                            </div>
+                        </div>
+
+                        <div class="card3 ms-3">
+                            <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
+                                <span class="card-title" style="color: rgb(233, 25, 39);">종료된 교육과정</span>
+                                <h5 class="reason-num" style="color: rgb(233, 25, 39);">{{
+                                    resultCourseCntInfoData.courseTotalCnt.completecnt }}건</h5>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -117,7 +121,7 @@ select {
 }
 
 .card1 {
-    width: 250px;
+    width: 33%;
     height: 100px;
     border: 1px solid rgb(115, 68, 227);
     border-radius: 16px;
@@ -126,7 +130,7 @@ select {
 }
 
 .card2 {
-    width: 250px;
+    width: 33%;
     height: 100px;
     border: 1px solid rgb(36, 142, 147);
     border-radius: 16px;
@@ -135,11 +139,50 @@ select {
 }
 
 .card3 {
-    width: 250px;
+    width: 33%;
     height: 100px;
     border: 1px solid rgb(233, 25, 39);
     border-radius: 16px;
     box-sizing: border-box;
     background-color: rgb(254, 239, 238);
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.box {
+    flex: 1;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-right: 10px;
+}
+
+.box:last-child {
+    margin-right: 0;
+}
+
+.box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.box-header h2 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.box-header button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    cursor: pointer;
 }
 </style>

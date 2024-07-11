@@ -1,45 +1,43 @@
 <template>
-    <div>
-        <div class="row">
-            <div class="row mb-3">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h4><b style="color:#22C55E">|</b> 교육과정 출결 현황</h4>
-                    </div>
-                    <div class="me-4">
-                        <RouterLink to="/admin/attendance/list" class="btn btn-outline-info btn-sm">자세히 보기
-                        </RouterLink>
+    <div class="row">
+        <div class="content">
+            <div class="box">
+                <div class="row mb-3">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4><b style="color:#22C55E">|</b> 교육과정 출결 현황</h4>
+                        </div>
+                        <div class="me-4">
+                            <RouterLink to="/admin/attendance/list" class="btn btn-outline-info btn-sm">자세히 보기
+                            </RouterLink>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div style="height: 160px;">
-                <table class="table align-middle" style="width: 95%;">
-                    <!-- 페이징 처리 4개씩. -->
-                    <tr v-for="item in attendance.attendanceInfo" :key="item" class="table align-middle"
-                        style="width: 95%;">
-                        <td style="width: 5%;"><img src="@/assets/dashboardimages/admindashboardimg1.png" alt=""></td>
-                        <td style="width: 30%;">
+                <div class="mb-4" style="height: 160px;">
+                    <table class="table align-middle" style="width: 95%;">
+                        <!-- 페이징 처리 4개씩. -->
+                        <tr v-for="item in attendance.attendanceInfo" :key="item" class="table align-middle"
+                            style="width: 95%;">
+                            <td style="width: 5%;"><img src="@/assets/dashboardimages/admindashboardimg1.png" alt="">
+                            </td>
+                            <td style="width: 30%;">
+                                <span @click="goAttendanceList(item.cname)">
+                                    <span class="courseInfo-span" style="cursor: pointer;">{{ item.cname }}</span>
+                                </span>
+                            </td>
+                            <td style="width: 35%;">
+                                <div class="d-flex flex-row justify-content-end">
+                                    <span class="btn btn-dark btn-sm me-2">입실 : {{ item.totalCheckinCnt }}명</span>
+                                    <span class="btn btn-dark btn-sm me-2">퇴실 : {{ item.totalCheckoutCnt }}명</span>
+                                    <span class="btn btn-dark btn-sm me-2">결석 : {{ item.totalAbsenceCnt }}명</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
 
-                            <!-- <RouterLink :to="`/admin/attendance/list?ecname=${ educenter.ecname }&cname=${ item.cname }`">
-                                <span class="courseInfo-span">{{ item.cname }}</span>
-                            </RouterLink> -->
-                            <button @click="goAttendanceList(item.cname)">
-                                <span class="courseInfo-span">{{ item.cname }}</span>
-                            </button>
-                        </td>
-                        <td style="width: 35%;">
-                            <div class="d-flex flex-row justify-content-end">
-                                <span class="btn btn-dark btn-sm me-2">입실 : {{ item.totalCheckinCnt }}명</span>
-                                <span class="btn btn-dark btn-sm me-2">퇴실 : {{ item.totalCheckoutCnt }}명</span>
-                                <span class="btn btn-dark btn-sm me-2">결석 : {{ item.totalAbsenceCnt }}명</span>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <div style="display: flex; justify-content: center;">
-                <div v-if="attendance.attendanceInfo.length >= 1">
+                <div style="display: flex; justify-content: center;">
+                    <div v-if="attendance.attendanceInfo.length >= 1">
                         <button class="btn btn-outline-primary btn-sm me-1" @click="changePageNo(1)">처음</button>
                         <button v-if="attendance.pager.groupNo > 1" class="btn btn-outline-info btn-sm me-1"
                             @click="changePageNo(attendance.pager.startPageNo - 1)">이전</button>
@@ -53,8 +51,9 @@
                             @click="changePageNo(attendance.pager.endPageNo + 1)">다음</button>
                         <button class="btn btn-outline-info btn-sm me-1"
                             @click="changePageNo(attendance.pager.totalPageNo)">맨끝</button>
+                    </div>
                 </div>
-             </div>
+            </div>
         </div>
     </div>
 </template>
@@ -128,12 +127,13 @@ function changePageNo(argPageNo) {
 }
 
 function goAttendanceList(cname) {
-    router.push({path: '/admin/attendance/list', 
-                query: {
-                    ecname: educenter.ecname,
-                    cname: cname
-                }
-})
+    router.push({
+        path: '/admin/attendance/list',
+        query: {
+            ecname: educenter.ecname,
+            cname: cname
+        }
+    })
 }
 </script>
 
@@ -157,5 +157,44 @@ b {
 
 .courseInfo-span {
     font-weight: 500;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.box {
+    flex: 1;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-right: 10px;
+}
+
+.box:last-child {
+    margin-right: 0;
+}
+
+.box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.box-header h2 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.box-header button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    cursor: pointer;
 }
 </style>

@@ -1,38 +1,28 @@
 <template>
     <div>
         <div class="row mt-3">
-            <table class="table">
-                <thead>
-                    <th colspan="2">
-                        <h4><b style="color:#22C55E">| </b>공지사항</h4>
-                    </th>
-                    <th style="text-align: end;">
+            <div class="content">
+                <div class="box">
+                    <div class="box-header">
+                        <h2><b style="color:#22C55E">| </b>공지사항</h2>
                         <RouterLink to="/admin/notice/list" class="btn btn-outline-info btn-sm">자세히 보기
                         </RouterLink>
-                    </th>
-                </thead>
-                <tbody class="align-middle">
-                    <!-- 테이블의 수는 8개가 적당해보임. 페이징 처리해야함. -->
-                    <tr v-for="item in notice.noticeInfo" :key="item">
-                        <td>
-                            <div style="display: flex;">
+                    </div>
+                    <ul class="list">
+                        <li class="list-item" v-for="item in notice.noticeInfo" :key="item">
+                            <span class="d-flex">
                                 <span class="new_mark2">전체</span>
-                                <span class="new_mark_complete" style="margin-left: 3%;">{{ item.ncategory }}</span>
-                            </div>
-                        </td>
-                        <td>
+                                <span class="new_mark_complete ms-2">{{ item.ncategory }}</span>
+                            </span>
                             <span>
-                                <!-- 페이지네이션도 추가해야함. -->
                                 <RouterLink :to="`/admin/notice/detail?nno=${item.nno}`"
                                     style="text-decoration-line: none; color:black">{{ item.ntitle }}</RouterLink>
                             </span>
-                        </td>
-                        <td style="text-align: end;">
-                            {{ item.ncreatedat.substring(0, 10) }}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                            <span>{{ item.ncreatedat.substring(0, 10) }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -135,5 +125,80 @@ select {
     line-height: 24px;
     text-align: center;
     background-color: #defaf6;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.box {
+    flex: 1;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-right: 10px;
+}
+
+.box:last-child {
+    margin-right: 0;
+}
+
+.box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.box-header h2 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.box-header button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.list-item:last-child {
+    border-bottom: none;
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 0.8em;
+    margin-right: 10px;
+}
+
+.badge.green {
+    background-color: #28a745;
+}
+
+.badge.purple {
+    background-color: #6f42c1;
 }
 </style>

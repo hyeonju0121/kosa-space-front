@@ -52,7 +52,7 @@
                         <!-- <div v-if="ecname !== ''" class="row d-flex"> -->
                         <div class="row d-flex">
                             <!-- 왼쪽 부분 -->
-                            <div class="col-5 d-flex flex-column pe-5" style="height: 900px;">
+                            <div class="col-5 d-flex flex-column pe-3" style="height: 900px;">
                                 <!-- Cnt들어갈부분 -->
                                 <CourseCntInfo :ecname="ecname" ref="$courseCnt" style="height: 200px;" />
                                 <!-- 공지목록 들어갈 부분 -->
@@ -61,7 +61,6 @@
                             <!-- 오른쪽 부분 -->
                             <div class="col-7">
                                 <div class="d-flex flex-column" style="height: 900px;">
-
                                     <!-- 교육과정 진행 현황 -->
                                     <CourseInfo :ecname="ecname" ref="$courseInfo" style="height: 450px;"/>
                                     <!-- 교육과정 출결 현황 -->
