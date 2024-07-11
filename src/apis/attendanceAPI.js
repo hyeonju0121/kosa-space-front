@@ -22,8 +22,14 @@ function userCheckin(attendanceinfo) {
     return axios.post("/attendance/checkin", attendanceinfo);
 }
 
+// 출결 상세 조회
+function getTraineeAttendanceDetail(mid, startdate, enddate) {
+    return axios.get("/attendance/trainee/detail?mid="+mid+"&startdate="+startdate+"&enddate="+enddate);
+}
+
 export default {
     userCheckin,
     getTotalAttendanceList,
-    addClientIPHeader
+    addClientIPHeader,
+    getTraineeAttendanceDetail
 }

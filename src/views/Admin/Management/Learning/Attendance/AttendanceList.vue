@@ -70,8 +70,8 @@
                                                 <span style="font-size: 14px;">{{ item.percentage }}% ({{ item.approvecnt
                                                 }}일 / {{ item.crequireddate }}일)</span>
                                             </div>
-                                            <div class="progress" aria-valuenow="50">
-                                                <div class="progress-bar bg-success" style="width:70%">{{ item.percentage }}%</div>
+                                            <div class="progress" :aria-valuenow="item.percentage">
+                                                <div class="progress-bar progress-bar-striped bg-success" :style="`width:${item.percentage}%`">{{ item.percentage }}%</div>
                                             </div>
                                         </div>
                                     </div>
@@ -80,7 +80,7 @@
                                 <td>{{ item.latenesscnt }}</td>
                                 <td>{{ item.absencecnt }}</td>
                                 <td>
-                                    <router-link to="./trainee/detail" class="btn btn-dark btn-sm">
+                                    <router-link :to="`./trainee/detail?mid=${item.mid}`" class="btn btn-dark btn-sm">
                                         출결현황 보기
                                     </router-link>
                                 </td>
@@ -102,6 +102,7 @@ import courseAPI from '@/apis/courseAPI';
 import educenterAPI from '@/apis/educenterAPI';
 
 const route = useRoute();
+const router = useRouter();
 
 const date = ref();
 
@@ -133,13 +134,18 @@ onMounted(() => {
     
     // 등록된 교육장 불러오기
     listCenterSet();
+
+    // 교육생 출결 리스트 가져오기
+    totalAttendanceList(filter.value.ecname, filter.value.cname, adate);
 })
 
 // 필터 상태 객체 정의
 const filter = ref({
     ecname: route.query.ecname || "송파교육센터",
-    cname: route.query.cname || ""
+    cname: route.query.cname || "MSA 2차 Full Stack 개발자 양성과정"
 });
+
+const adate = "2024-07-10";
 
 // route.query값이 있다면 셀렉트 버튼 활성화 / 비활성화
 let btnEnable = ref("");
@@ -173,15 +179,13 @@ async function progressCourseList(ecname) {
     }
 }
 
-// 교육생 출결 정보에 대한 테이블 리스트 불러오기
+// 3. 교육생 출결 정보에 대한 테이블 리스트 불러오기
 async function totalAttendanceList(ecname, cname, adate) {
     try {
         const response = await attendanceAPI.getTotalAttendanceList(ecname, cname, adate);
         attendance.value = response.data;
         console.log(response.data);
         console.log("출결현황 정보 가져오기 성공");
-
-
     } catch (error) {
         console.log("출결현황 정보 가져오기 실패");
     }
@@ -189,20 +193,6 @@ async function totalAttendanceList(ecname, cname, adate) {
 
 // 교육생 출결 상태 객체 정의
 const attendance = ref([]);
-
-totalAttendanceList(filter.value.ecname, "MSA 2차 Full Stack 개발자 양성과정", "2024-07-10");
-
-// 요청 경로의 변경을 감시
-// watch(route, (newRoute, oldRoute) => {
-//     if(newRoute.query.pageNo) { // 쿼리에 ecname 들어있으면 해당 페이지로 요청
-//         getBoardList(newRoute.query.pageNo);
-//         pageNo.value =newRoute.query.pageNo;
-//     } else { // 안들어왔으면 1페이지 그대로
-//          getBoardList(1);
-//          pageNo.value = 1;
-//     }
-// });
-
 
 watch(
     () => filter.value.ecname,
@@ -213,14 +203,21 @@ watch(
     }
 )
 
-watch(route, (newRoute, oldRoute) => {
-    if(newRoute.query.ecname) { // 쿼리에 ecname 들어있으면 해당 페이지로 요청
-        console.log("newRoute.query.ecname = " + newRoute.query.ecname);
-        //totalAttendanceList(newRoute.query.ecname, newRoute.query.cname, "2024-07-10");
-        //filter.value.ecname =newRoute.query.ecname;
-        //filter.value.cname =newRoute.query.cname;
-    } 
-});
+watch(
+    () => filter.value.cname,
+    (newCname, oldCname) => {
+        console.log("ecname 값 변경 oldCname = " + oldCname);
+        console.log("ecname 값 변경 newCname = " + newCname);
+        totalAttendanceList(filter.value.ecname, newCname, adate);
+    }
+)
+
+// watch(route, (newRoute, oldRoute) => {
+//     if(newRoute.query.ecname) { // 쿼리에 ecname 들어있으면 해당 페이지로 요청
+//         console.log("newRoute.query.ecname = " + newRoute.query.ecname);
+//         
+//     } 
+// });
 
 
 </script>
