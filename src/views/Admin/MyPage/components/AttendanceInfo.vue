@@ -74,7 +74,7 @@ defineExpose({ totalAttendanceInfo, submit })
 
 const educenter = defineProps(["ecname"]);
 
-const aPageNo = ref(route.query.pPageNo || 1);
+const aPageNo = ref(route.query.aPageNo || 1);
 
 onBeforeMount(() => {
     console.group("AttendanceInfo 컴포넌트 마운트 직전");

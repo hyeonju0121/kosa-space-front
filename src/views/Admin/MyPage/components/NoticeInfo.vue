@@ -8,19 +8,42 @@
                         <RouterLink to="/admin/notice/list" class="btn btn-outline-info btn-sm">자세히 보기
                         </RouterLink>
                     </div>
+                    
+
+                        
                     <ul class="list">
                         <li class="list-item" v-for="item in notice.noticeInfo" :key="item">
                             <span class="d-flex">
-                                <span class="new_mark2">전체</span>
+                                <span class="new_mark2">{{ item.ecname.substring(0,2) }}</span>
                                 <span class="new_mark_complete ms-2">{{ item.ncategory }}</span>
                             </span>
                             <span>
-                                <RouterLink :to="`/admin/notice/detail?nno=${item.nno}`"
-                                    style="text-decoration-line: none; color:black">{{ item.ntitle }}</RouterLink>
+                                <span @click="goNoticeDetail(item.nno)"
+                                    style="text-decoration-line: none; color:black; cursor: pointer;">{{ item.ntitle }}</span>
                             </span>
                             <span>{{ item.ncreatedat.substring(0, 10) }}</span>
                         </li>
                     </ul>
+
+
+
+                    <div class="mt-2" style="display: flex; justify-content: center;">
+                        <div>
+                            <button class="btn btn-outline-primary btn-sm me-1" @click="changePageNo(1)">처음</button>
+                            <button v-if="notice.pager.groupNo > 1" class="btn btn-outline-info btn-sm me-1"
+                                @click="changePageNo(notice.pager.startPageNo - 1)">이전</button>
+                            <button v-for="pageNo in notice.pager.pageArray" :key="pageNo"
+                                :class="(notice.pager.pageNo === pageNo) ? 'btn-danger' : 'btn-outline-success'"
+                                class="btn btn-sm me-1" @click="changePageNo(pageNo)">
+                                {{ pageNo }}
+                            </button>
+                            <button v-if="notice.pager.groupNo < notice.pager.totalGroupNo"
+                                class="btn btn-outline-info btn-sm me-1"
+                                @click="changePageNo(notice.pager.endPageNo + 1)">다음</button>
+                            <button class="btn btn-outline-info btn-sm me-1"
+                                @click="changePageNo(notice.pager.totalPageNo)">맨끝</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -28,12 +51,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { defineProps, defineEmits } from "vue";
 import noticeAPI from '@/apis/noticeAPI';
 import { useRoute } from 'vue-router';
 
 import { defineExpose, onBeforeMount } from 'vue';
+import router from '@/router';
 
 const route = useRoute();
 
@@ -65,6 +89,7 @@ async function totalNoticeInfo(ecname, pageNo) {
         notice.value = response.data;
         console.log("교육과정 공지사항 정보(페이지) 리스트 가져오기 성공");
         console.log("notice.value.noticeInfo =" + JSON.stringify(notice.value.noticeInfo));
+        console.log("notice.value.pager =" + JSON.stringify(notice.value.pager));
     } catch (error) {
         console.log("교육과정 공지사항 정보(페이지) 리스트 가져오기 실패");
         console.log(error);
@@ -78,9 +103,29 @@ function submit() {
 
 // -- 페이징 처리 --
 function changePageNo(argPageNo) {
-    // router.push(`/admin/dashboard/BoardList?pageNo=${argPageNo}`);
+    console.log("changePageNo 함수 실행");
+    console.log("argPageNo = " + argPageNo);
+    nPageNo.value = argPageNo;
     totalNoticeInfo(educenter.ecname, argPageNo);
 }
+
+function goNoticeDetail(nno) {
+    router.push({
+        path: "/admin/notice/detail",
+        query: {
+            nno: nno
+        }
+    })
+}
+
+watch(
+    () => nPageNo.value, 
+    (nv, ov) => {
+        console.log("nPageNo 값 변경 nPageNo.value nv = " + nv);
+        console.log("nPageNo 값 변경 nPageNo.value ov = " + ov);
+        nPageNo.value = nv;
+        totalNoticeInfo(educenter.ecname, nPageNo.value);
+})
 </script>
 
 <style scoped>

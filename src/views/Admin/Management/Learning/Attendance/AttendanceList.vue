@@ -70,9 +70,8 @@
                                                 <span style="font-size: 14px;">{{ item.percentage }}% ({{ item.approvecnt
                                                 }}일 / {{ item.crequireddate }}일)</span>
                                             </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-success" style="width:70%">{{ item.percentage
-                                                }}%</div>
+                                            <div class="progress" aria-valuenow="50">
+                                                <div class="progress-bar bg-success" style="width:70%">{{ item.percentage }}%</div>
                                             </div>
                                         </div>
                                     </div>
