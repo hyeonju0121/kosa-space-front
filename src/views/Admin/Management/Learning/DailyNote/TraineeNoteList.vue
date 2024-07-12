@@ -9,33 +9,29 @@
             <div class="title">
                 <h1 id="itemTitle">데일리 과제 현황 조회</h1>
             </div>
+        </div>
+
+        <form @submit.prevent="handleSubmitFilter1">
+            <div class="align" style="display: flex;">
+                <div class="InpBox">
+                    <select id="educenter" title="교육장 선택" v-model="filter.ecname" :class="btnEnable">
+                        <option selected disabled :value="''">교육장 선택</option>
+                        <option v-for="item in ecnames" :key="item" :value="item">{{ item }}</option>
+                    </select>
+                </div>
+                <div class="InpBox" style="margin-left: 1%; width: 370px;">
+                    <select id="course" title="교육과정 선택" v-model="filter.cname" :class="btnEnable">
+                        <option selected disabled :value="''">교육과정 선택</option>
+                        <option v-for="item in cnames" :key="item" :value="item">{{ item }}</option>
+                    </select>
+                </div>
+
+            </div>
+        </form>
 
             <div class="container mt-3">
                 <div class="d-flex align-content-center mb-4">
-                    <!-- 
-                educenter의 ecname 값과 매칭
-                이 값이 none이라면 모든 교육장의 학생 리스트를 보여줄지 회의
-            -->
-                    <select class="form-control text-center p-3 me-3" id="ecname" name="ecname" style="width: 150px;">
-                        <option value="none" selected>교육장 선택</option>
-                        <option value="all">전체</option>
-                        <option value="송파">송파</option>
-                        <option value="혜화">혜화</option>
-                        <option value="가산">가산</option>
-                    </select>
-                    <!-- 
-                course의 cname 값과 매칭 
-                위의 교육장 값에 따른 교육과정이 옵션값으로 나와야한다.
-            -->
-                    <select class="form-control text-center p-3 me-3" id="cname" name="cname" style="width: 150px;">
-                        <option value="none" selected>교육과정 선택</option>
-                        <option value="all">전체</option>
-                        <option value="MSA 1차">MSA 1차</option>
-                        <option value="MSA 2차">MSA 2차</option>
-                        <option value="Cloud 1차">Cloud 1차</option>
-                    </select>
-                    <!-- 위의 select값들이 선택되어야 보이게끔할지 선택 -->
-                    <button class="btn btn-outline-secondary btn-sm" style="height: 45px;">교육생 조회</button>
+
                 </div>
                 <div class="select-course-contents ms-3 mb-4">
                     <h5 class="course-name">MSA 기반 Full Stack 개발 전문가 양성과정 2차</h5>
@@ -87,26 +83,83 @@
                                 </td>
                             </tr>
                         </tbody>
-                        <tfoot>
-                            <td colspan="4" class="text-center">
-                                <b class="text-danger">페이지네이션 추가</b>
-                            </td>
-                        </tfoot>
                     </table>
                 </div>
             </div>
-            <div>
-                <BaseButtonUpdate class="mt-3" @click="handleDailyNoteBtn">과제 상세 보기</BaseButtonUpdate>
-            </div>
-        </div>
+        
     </div>
 </template>
 
 <script setup>
+import { ref, onMounted, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import courseAPI from '@/apis/courseAPI';
+import educenterAPI from '@/apis/educenterAPI';
 import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
-import { useRouter } from 'vue-router';
 
 const router = useRouter();
+
+let ecnames = ref();
+let cnames = ref();
+
+onMounted(() => {
+    console.group("진행중인 교육과정 확인");
+    progressCourseList(filter.value.ecname);
+
+    // 등록된 교육장 불러오기
+    listCenterSet();
+})
+
+// 필터 상태 객체 정의
+const filter = ref({
+    ecname: "송파교육센터",
+    cname: "MSA 2차 Full Stack 개발자 양성과정"
+});
+
+// 1. 교육장 목록 가져오기
+async function listCenterSet() {
+    try {
+        const response = await educenterAPI.educenterNameList();
+        ecnames.value = response.data.splice(1);
+        console.log("center 리스트 가져오기 성공");
+    } catch (error) {
+        console.log("center 리스트 가져오기 실패");
+    }
+}
+
+// 2. 진행중인 교육과정 목록 가져오기
+async function progressCourseList(ecname) {
+    // getInprogressCourseList
+    try {
+        const response = await courseAPI.getInprogressCourseList(ecname);
+        cnames.value = response.data;
+        console.log("cnames.value = " + cnames.value);
+        console.log("진행중인 교육과정 정보 가져오기 성공");
+    } catch (error) {
+        console.log(error);
+        console.log("진행중인 교육과정 정보 가져오기 실패");
+    }
+}
+
+watch(
+    () => filter.value.ecname,
+    (newEcname, oldEcname) => {
+        console.log("ecname 값 변경 oldEcname = " + oldEcname);
+        console.log("ecname 값 변경 newEcname = " + newEcname);
+        progressCourseList(newEcname);
+    }
+)
+
+watch(
+    () => filter.value.cname,
+    (newCname, oldCname) => {
+        console.log("ecname 값 변경 oldCname = " + oldCname);
+        console.log("ecname 값 변경 newCname = " + newCname);
+        // totalAttendanceList(filter.value.ecname, newCname, adate);
+    }
+)
+
+
 
 function handleDailyNoteBtn() {
     router.push('/admin/dailynote/trainee/note/list');
@@ -134,5 +187,48 @@ p, span, small, textarea, select {
 #itemTitle {
     font-weight: 700;
     font-size: 1.6rem;
+}
+
+/* select option css */
+.InpBox {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.InpBox select {
+    padding: 0 28px 0 12px;
+    width: 100%;
+    height: 40px;
+    border: 1px solid #232323;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: #232323;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    vertical-align: top;
+    background-color: #dbdbdb0e;
+    cursor: pointer;
+}
+
+.BtnType {
+    display: block;
+    margin-bottom: 8px;
+    width: 150px;
+    position: relative;
+    border: 1px solid black;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: white;
+    text-align: center;
+    background-color: #22C55E;
+    cursor: pointer;
+}
+
+.SizeM {
+    padding: 6px 11px;
+    height: 40px;
+    font-size: 14px;
+    line-height: 24px;
 }
 </style>
