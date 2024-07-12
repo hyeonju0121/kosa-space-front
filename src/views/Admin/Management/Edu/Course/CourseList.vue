@@ -28,9 +28,9 @@
                 </select>
             </div>
             <div class="InpBox" style="margin-left: 1%;">
-                <select id="professor" title="강사진" @change="handleFilterChange">
+                <select id="professor" title="강사진" @change="handleFilterChange" v-model="filter.cprofessor">
                     <option value="" selected>강사진</option>
-                    <option value="전체">전체</option>
+                    <option value="all">전체</option>
                     <option value="신용권">신용권</option>
                     <option value="마성일">마성일</option>
                     <option value="조효석">조효석</option>
@@ -44,9 +44,12 @@
         <!-- 교육과정 목록 부분 -->
         <div>
             <ul class="self_exam_list">
-                <li v-for="course in courseData" :key="course.cno" class="personality_test">
-                    <div v-for="(url, index) in course.attachments" :key="index" class="course-img">
+                <li v-for="course in courseData.courseInfo" :key="course.cno" class="personality_test">
+                    <div class="course-img">
+                        <div v-for="(url, index) in course.attachments" :key="index" class="course-img">
                         <img :src="course.attachments[0]" class="course-img-detail" style="width: 150px; height: 140px;">
+                    </div>
+
                     </div>
                     <h5 class="tit">{{ course.cname }}
                         <div style="display: flex;">
@@ -78,6 +81,24 @@
                     </div>
                 </li>
             </ul>
+
+                <div class="mt-2" style="display: flex; justify-content: center;">
+                    <div>
+                        <button class="btn btn-outline-primary btn-sm me-1" @click="changePageNo(1)">처음</button>
+                        <button v-if="courseData.pager.groupNo > 1" class="btn btn-outline-info btn-sm me-1"
+                            @click="changePageNo(courseData.pager.startPageNo - 1)">이전</button>
+                        <button v-for="pageNo in courseData.pager.pageArray" :key="pageNo"
+                            :class="(courseData.pager.pageNo === pageNo) ? 'btn-danger' : 'btn-outline-success'"
+                            class="btn btn-sm me-1" @click="changePageNo(pageNo)">
+                            {{ pageNo }}
+                        </button>
+                        <button v-if="courseData.pager.groupNo < courseData.pager.totalGroupNo" class="btn btn-outline-info btn-sm me-1"
+                            @click="changePageNo(courseData.pager.endPageNo + 1)">다음</button>
+                        <button class="btn btn-outline-info btn-sm me-1"
+                            @click="changePageNo(courseData.pager.totalPageNo)">맨끝</button>
+                    </div>
+                </div>
+
         </div>
     </div>
 </template>
@@ -87,6 +108,7 @@ import { useRouter, useRoute } from 'vue-router';
 import courseAPI from '@/apis/courseAPI';
 import { onMounted, ref, computed } from 'vue';
 import educenterAPI from '@/apis/educenterAPI';
+import axios from 'axios';
 
 const router = useRouter();
 const route = useRoute();
@@ -101,7 +123,7 @@ onMounted(() => {
         filter.value.ecname = "송파교육센터";
         btnEnable.value = "";
     }
-    getCourseData(filter.value.ecname, filter.value.cstatus);
+    getCourseData(filter.value.ecname, filter.value.cstatus, filter.value.cprofessor, cPageNo.value);
 });
 
 function handleCreateBtn() {
@@ -115,7 +137,8 @@ function handleUpdateBtn() {
 // 필터 상태 객체 정의
 const filter = ref({
     ecname: route.query.ecname || "교육장 선택",
-    cstatus: route.query.cstatus || ""
+    cstatus: route.query.cstatus || "",
+    cprofessor: "all"
 });
 
 // route.query값이 있다면 셀렉트 버튼 활성화 / 비활성화
@@ -135,17 +158,24 @@ async function educenterNameList() {
 }
 
 // 교육과정 목록을 가져오는 메소드
-const courseData = ref();
+const courseData = ref({
+    courseInfo: "",
+    pager: ""
+});
 
-async function getCourseData(ecname, cstatus) {
+
+
+async function getCourseData(ecname, cstatus, cprofessor, pageNo) {
     try {
         console.log("getCourseData 실행");
-        const response = await courseAPI.getCourseList(ecname, cstatus);
+        const response = await courseAPI.getCourseList(ecname, cstatus, cprofessor, pageNo);
         courseData.value = response.data;
         console.log("courseData = " + courseData.value);
 
+
+
         //각 교육과정 첨부파일 URL 가져오기
-        for (const course of courseData.value) {
+        for (const course of courseData.value.courseInfo) {
             if (course.eanoList && course.eanoList.length > 0) {
                 course.attachments = [];
                 for (const eano of course.eanoList) {
@@ -172,9 +202,18 @@ async function getAttach(eano) {
 }
 
 function handleFilterChange() {
-    getCourseData(filter.value.ecname, filter.value.cstatus);
+    getCourseData(filter.value.ecname, filter.value.cstatus, filter.value.cprofessor, cPageNo.value);
 }
 
+const cPageNo = ref(route.query.cPageNo || 1);
+
+// -- 페이징 처리 --
+function changePageNo(argPageNo) {
+    console.log("changePageNo 함수 실행");
+    console.log("argPageNo = " + argPageNo);
+    cPageNo.value = argPageNo;
+    getCourseData(filter.value.ecname, filter.value.cstatus, filter.value.cprofessor, cPageNo.value);
+}
 
 
 </script>
