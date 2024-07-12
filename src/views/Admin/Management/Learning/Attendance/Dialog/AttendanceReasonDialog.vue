@@ -26,14 +26,34 @@
 <script setup>
 import Dialog from '@/components/UIComponents/Dialog.vue';
 import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
-import { ref } from 'vue';
+import { ref, defineProps, onMounted } from 'vue';
+import attendanceAPI from '@/apis/attendanceAPI';
+
+const midAdate = defineProps(["mid", "adate"]);
+
+onMounted(() => {
+    console.log()
+    console.log()
+    personalAttendanceReason(midAdate.mid, midAdate.adate);
+})
 
 const reasonInfo = ref({
-    ancategory: "결석",
-    anreason: "새벽부터 몸이 좋지 않아서 오늘 아침에 병원을 갔다와야 할 것 같습니다.",
-    anattach: null
+    // ancategory: "결석",
+    // anreason: "새벽부터 몸이 좋지 않아서 오늘 아침에 병원을 갔다와야 할 것 같습니다.",
+    // anattach: null
 });
 
+// 교육생 사유 가져오기
+async function personalAttendanceReason(mid, adate) {
+    try {
+        const response = await attendanceAPI.getTraineeAttedanceReason(mid, adate);
+        reasonInfo.value = response.data;
+        console.log(response.data);
+        console.log("개인 출결 현황 정보 가져오기 성공");
+    } catch (error) {
+        console.log("개인 출결 현황 정보 가져오기 실패");
+    }
+}
 
 </script>
 

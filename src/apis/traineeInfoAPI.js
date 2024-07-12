@@ -36,10 +36,17 @@ function getTraineeAttach(mid) {
     return axios.get("/edu/download/traineeattach/" + mid, {responseType:"blob"});
 }
 
+// 교육생 프로필 헤더 정보 가져오기
+function getTraineeProfileHeader(mid) {
+    console.log("getTraineeProfileHeader 실행 mid = " + mid);
+    return axios.get("/edu/trainee/profile/header?mid=" + mid);
+}
+
 
 export default {
     traineeRegister,
     traineeInfo,
     getTraineeList,
-    getTraineeAttach
+    getTraineeAttach,
+    getTraineeProfileHeader
 }

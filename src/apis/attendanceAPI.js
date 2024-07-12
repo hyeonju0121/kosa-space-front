@@ -27,9 +27,15 @@ function getTraineeAttendanceDetail(mid, startdate, enddate) {
     return axios.get("/attendance/trainee/detail?mid="+mid+"&startdate="+startdate+"&enddate="+enddate);
 }
 
+// 개인 상세 출결 사유 조회
+function getTraineeAttedanceReason(mid, adate) {
+    return axios.get("/attendance/reason/detail?mid=" + mid + "&adate=" + adate);
+}
+
 export default {
     userCheckin,
     getTotalAttendanceList,
     addClientIPHeader,
-    getTraineeAttendanceDetail
+    getTraineeAttendanceDetail,
+    getTraineeAttedanceReason
 }

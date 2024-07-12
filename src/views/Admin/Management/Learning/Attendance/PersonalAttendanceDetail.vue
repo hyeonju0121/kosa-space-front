@@ -1,5 +1,5 @@
 <template>
-    <div class="main p-3" style="margin-left: 25px;">
+    <div class="main p-3" style="margin-left: 25px; width: 1200px;">
         <div class="item-section mt-2 mb-2" style="font-size: 12px">
             <span>학습관리 > 출결 관리 > 개인별 출결 현황 조회</span>
         </div>
@@ -14,70 +14,163 @@
             <div>
                 <!-- 해당 교육생 프로필 헤더 -->
                 <div class="mb-3">
-                    <PersonalProfileHeader />
+                    <div class="acc_cont">
+                        <div class="img-td">
+                            <div class="profile_wrap">
+                                <div class="profile profile_attach">
+                                    <div class="user-img">
+                                        <img :src="`${axios.defaults.baseURL}/edu/download/traineeattach/${headerInfo.mid}`"
+                                            class="user-img-detail" />
+                                    </div>
+                                    <div class="profile_info">
+                                        <h6 class="user-name">{{ headerInfo.mname }} ({{ headerInfo.mid }})</h6>
+                                        <div class="profile-info-contents">
+                                            <h5 class="user-course">{{ headerInfo.cname }}</h5>
+                                            <span class="user-course-requireddate">({{ headerInfo.cstartdate }} ~ {{
+                                                headerInfo.cenddate }})</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 출결 날짜별 조회 -->
                 <div class="mb-3">
-                    <VueDatePicker v-model="date" range/>
+                    <VueDatePicker range v-model="date" :enable-time-picker="false" @update:model-value="handleDate"
+                        @closed="alertFn" />
                 </div>
 
                 <!-- 개인별 출결조회 테이블 -->
                 <div class="container">
-                    <table class="table table-hover" style="text-align:center">
-                        <thead>
-                            <tr>
-                                <th>날짜</th>
-                                <th>입실 시간</th>
-                                <th>퇴실 시간</th>
-                                <th>상태</th>
-                                <th>비고</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <!-- <td>{{ personalAttendance.date }}</td>
-                                <td>{{ personalAttendance.starttime }}</td>
-                                <td>{{ personalAttendance.endtime }}</td>
-                                <td>{{ personalAttendance.state }}</td> -->
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>2024.06.18</td>
-                                <td>08:45</td>
-                                <td>17:58</td>
-                                <td>결석</td>
-                                <!-- 사유보기 버튼은 상태가 지각,외출,결석등 일때 나타난다.(현재 사유작성 모달페이지 작성이 안됨 링크 달기x)-->
-                                <td><router-link to="" class="btn btn-info btn-sm">사유</router-link></td>
-                            </tr>
-                            <tr>
-                                <td>2024.06.19</td>
-                                <td>08:45</td>
-                                <td>17:58</td>
-                                <td>결석</td>
-                                <td><router-link class="btn btn-info btn-sm">사유</router-link></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div>
+                        <table class="table table-hover" style="text-align:center">
+                            <thead>
+                                <tr>
+                                    <th>날짜</th>
+                                    <th>입실 시간</th>
+                                    <th>퇴실 시간</th>
+                                    <th>상태</th>
+                                    <th>비고</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in personalAttendance" :key="item">
+                                    <td>{{ item.adate }}</td>
+                                    <td>{{ item.acheckin }}</td>
+                                    <td>{{ item.acheckout }}</td>
+                                    <td>{{ item.astatus }}</td>
+                                    <!-- 사유보기 버튼은 상태가 지각,외출,결석등 일때 나타난다.(현재 사유작성 모달페이지 작성이 안됨 링크 달기x)-->
+                                    <td><button class="btn btn-info btn-sm" @click="handlerReasonBtn(item.adate)">사유</button></td>
+                                    <AttendanceReasonDialog :id="`attendanceReasonDialog${item.adate}`" :mid="mid" :adate="item.adate"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 </template>
 
 <script setup>
-import PersonalProfileHeader from '@/components/UIComponents/PersonalProfileHeader.vue'
-import { ref, onMounted, watch } from 'vue';
+import traineeInfoAPI from '@/apis/traineeInfoAPI';
+import { ref, onMounted, watch, defineEmits } from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import { useRoute, useRouter } from 'vue-router';
 import attendanceAPI from '@/apis/attendanceAPI';
 import { PhStrategy } from '@phosphor-icons/vue';
+import axios from 'axios';
+import { Modal } from "bootstrap"; // 사유 모달
+import AttendanceReasonDialog from './Dialog/AttendanceReasonDialog.vue'; // 사유 컴포넌트
 
 const route = useRoute();
 const router = useRouter();
+
+// 화면 마운트
+onMounted(() => {
+    // 웹 사이트를 이용하는 기준의 날짜를 초기값으로 주고, DatePicker
+    const startDate = new Date();
+    const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
+    date.value = [startDate, endDate];
+    traineeHeader(mid.value);
+});
+
+// 교육생 Header 정보 받아오기
+let mid = ref(route.query.mid || "");
+let headerInfo = ref({});
+
+async function traineeHeader(mid) {
+    try {
+        const response = await traineeInfoAPI.getTraineeProfileHeader(mid);
+        headerInfo.value = response.data;
+        console.log("헤더 정보 받아오기 : " + headerInfo.value);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+// 교육생 출결 상세 리스트
+const date = ref();
+
+let selectDates = ref();
+
+const handleDate = (modelData) => {
+    if (modelData) {
+        let days = "";
+
+        for (let rangeDate of modelData) {
+            const date = new Date(rangeDate);
+
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, "0");
+            const day = date.getDate().toString().padStart(2, "0");
+            const formattedDate = `${year}-${month}-${day}`;
+
+            days = days += `-${formattedDate}`;
+        }
+
+        // 데이트 피커에 보여줄 날짜
+        date.value = modelData;
+
+        console.log("selectDates 시작일자 = " + selectDates.value.substring(0, 10));
+        console.log("selectDates 종료일자 = " + selectDates.value.substring(13, 23));
+        console.log("mid = " + mid.value);
+    }
+};
+
+// 날짜에 대한 데이터 포멧
+const dateRangeFormat = (value) => {
+    console.log("데이터 범위 포매터 실행, value = " + value);
+    try {
+        const startDate = value[0];
+        const endDate = value[1];
+
+        if (startDate && endDate) {
+            const startYear = startDate.getFullYear();
+            const startMonth = (startDate.getMonth() + 1).toString().padStart(2, "0");
+            const startDay = startDate.getDate().toString().padStart(2, "0");
+
+            const endYear = endDate.getFullYear();
+            const endMonth = (endDate.getMonth() + 1).toString().padStart(2, "0");
+            const endDay = endDate.getDate().toString().padStart(2, "0");
+
+            selectDates.value = `${startYear}-${startMonth}-${startDay} ~ ${endYear}-${endMonth}-${endDay}`;
+            console.log("Date 포멧된 데이터" + selectDates.value);
+            return `${startYear}-${startMonth}-${startDay} ~ ${endYear}-${endMonth}-${endDay}`;
+        }
+    } catch (error) {
+        console.log(error);
+        return "날짜 범위를 선택해주세요.";
+    }
+};
+
+// 데이트 피커 close
+const alertFn = () => {
+
+}
 
 // 교육생 출결 정보 변수
 let personalAttendance = ref(
@@ -88,46 +181,6 @@ let personalAttendance = ref(
     // "aconfirm": true,    // 출결 승인 여부
     // "anconfirm": false   // 출결 - 결석 및 조퇴 사유 신청 승인여부
 )
-
-const date = ref({
-    year: "",
-    month: "",
-    day: "",
-    formattedDate: ""
-});
-
-const startDate = new Date();
-const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
-
-onMounted(() => {
-    // 날짜 date To String
-    // startDate
-    date.value.year = startDate.getFullYear();
-    date.value.month = startDate.getMonth() + 1;
-    date.value.day = startDate.getDate();
-
-    // 날짜와 시간을 문자열로 포맷팅
-    date.value.formattedDate = `${date.value.year}-${String(date.value.month).padStart(2, '0')}-${String(date.value.day).padStart(2, '0')}`;
-    start.value = date.value.formattedDate;
-    // 확인
-    console.log("start.value = " + start.value);
-
-    // endDate
-    date.value.year = endDate.getFullYear();
-    date.value.month = endDate.getMonth() + 1;
-    date.value.day = endDate.getDate();
-
-    // 날짜와 시간을 문자열로 포맷팅
-    date.value.formattedDate = `${date.value.year}-${String(date.value.month).padStart(2, '0')}-${String(date.value.day).padStart(2, '0')}`;
-    end.value = date.value.formattedDate;
-    // 확인
-    console.log("end.value = " + end.value);
-
-})
-
-let start = ref();
-let end = ref();
-
 
 // 교육생 출결 정보 가져오기
 async function personalAttendanceInfo(mid, startdate, enddate) {
@@ -141,42 +194,24 @@ async function personalAttendanceInfo(mid, startdate, enddate) {
     }
 }
 
-
-// startdate, enddate
-// watch([() => start.value, () => end.value],
-//     (nv, ov) => {
-//         console.log("start.value & end.value ov = " + ov);
-//         console.log("start.value & end.value nv = " + nv);
-//     }
-// )
-
+// 데이트 피커의 값이 변한다면 그에 따른 리스트 불러오
 watch(
-    () => start.value,
+    () => date.value,
     (nv, ov) => {
-        console.log("start 값 변경 nv = " + nv);
-        console.log("start 값 변경 ov = " + ov);
-        // // startDate
-        // date.value.year = startDate.getFullYear();
-        // date.value.month = startDate.getMonth() + 1;
-        // date.value.day = startDate.getDate();
-
-        // // 날짜와 시간을 문자열로 포맷팅
-        // date.value.formattedDate = `${date.value.year}-${String(date.value.month).padStart(2, '0')}-${String(date.value.day).padStart(2, '0')}`;
-        // start.value = date.value.formattedDate;
-        // // 확인
-        // console.log("start.value = " + start.value);
+        dateRangeFormat(nv);
+        personalAttendance.value = personalAttendanceInfo(mid.value, selectDates.value.substring(0, 10), selectDates.value.substring(13, 23));
     }
 )
 
-// watch(
-//     () => filter.value.cname,
-//     (newCname, oldCname) => {
-//         console.log("ecname 값 변경 oldCname = " + oldCname);
-//         console.log("ecname 값 변경 newCname = " + newCname);
-//         totalAttendanceList(filter.value.ecname, newCname, adate);
-//     }
-// )
+// 사유 모달
+let attendanceReasonDialog = null;
 
+// 사유 보기 버튼 클릭시, 교육생이 제출한 사유에 대한 모달 활성화
+function handlerReasonBtn(adate) {
+    // modal 객체 생성
+    attendanceReasonDialog = new Modal(document.querySelector("#attendanceReasonDialog"+adate));
+    attendanceReasonDialog.show();
+}
 
 </script>
 
@@ -212,5 +247,96 @@ select {
 #itemTitle {
     font-weight: 700;
     font-size: 1.6rem;
+}
+
+/* img ------------*/
+.profile_wrap {
+    border-collapse: collapse;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+    padding: 0;
+    background: white;
+}
+
+.profile_attach {
+    line-height: normal;
+    border-collapse: collapse;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.profile_info {
+    line-height: normal;
+    font-weight: 500;
+    border-collapse: collapse;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    margin-left: 30px;
+}
+
+/*사용자 이미지 틀 (원형)*/
+.user-img {
+    width: 90px;
+    height: 90px;
+    border-radius: 25px;
+    margin-left: 10px;
+    overflow: hidden;
+}
+
+/*사용자 이미지 사이즈 조정*/
+.user-img img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.user-name {
+    line-height: normal;
+    font-size: 15px;
+    font-weight: 500;
+    border-collapse: collapse;
+    box-sizing: border-box;
+    margin-top: 10px;
+    padding: 0;
+}
+
+.user-course {
+    line-height: normal;
+    font-weight: 500;
+    border-collapse: collapse;
+    box-sizing: border-box;
+    margin-top: 10px;
+    color: #3d3d3d;
+}
+
+.profile_info {
+    padding-right: 20px;
+}
+
+.profile-info-contents h5,
+profile-info-contents span {
+    display: inline;
+    color: #3d3d3d;
+}
+
+.profile-info-contents span {
+    margin-left: 10px;
+    color: #919191;
+}
+
+.img-td {
+    color: var(--txt-color);
+    border-collapse: collapse;
+    box-sizing: border-box;
+    display: table-cell;
+    flex: 1;
+    margin: 0;
+    margin-left: 30px;
 }
 </style>
