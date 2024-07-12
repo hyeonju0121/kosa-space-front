@@ -62,7 +62,11 @@
                                     <td>{{ item.acheckout }}</td>
                                     <td>{{ item.astatus }}</td>
                                     <!-- 사유보기 버튼은 상태가 지각,외출,결석등 일때 나타난다.(현재 사유작성 모달페이지 작성이 안됨 링크 달기x)-->
-                                    <td><button class="btn btn-info btn-sm" @click="handlerReasonBtn(item.adate)">사유</button></td>
+                                    <td>
+                                        <div v-if="item.anconfirm">
+                                            <button class="btn btn-outline-secondary btn-sm" @click="handlerReasonBtn(item.adate)">사유 조회</button>
+                                        </div>
+                                    </td>
                                     <AttendanceReasonDialog :id="`attendanceReasonDialog${item.adate}`" :mid="mid" :adate="item.adate"/>
                                 </tr>
                             </tbody>
@@ -92,8 +96,9 @@ const router = useRouter();
 // 화면 마운트
 onMounted(() => {
     // 웹 사이트를 이용하는 기준의 날짜를 초기값으로 주고, DatePicker
-    const startDate = new Date();
-    const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
+    const startDate = new Date('2024/02/26');
+    const endDate = new Date('2024/07/26');
+    // const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
     date.value = [startDate, endDate];
     traineeHeader(mid.value);
 });

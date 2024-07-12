@@ -11,11 +11,7 @@
             </div>
 
             <PersonalProfileHeader class="mt-2 mb-3" />
-            <div class="d-flex mb-4">
-                <input class="me-3" type="date" id="" name="" min="" value="">
-                <span class="me-3">~</span>
-                <input type="date" id="" name="" min="" value="">
-            </div>
+
             <div class="table">
                 <table class="" style="width: 1000px;">
                     <thead class="text-center align-middle" style="height: 70px;">
