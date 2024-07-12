@@ -65,9 +65,9 @@
                                     <td>
                                         <div v-if="item.anconfirm">
                                             <button class="btn btn-outline-secondary btn-sm" @click="handlerReasonBtn(item.adate)">사유 조회</button>
+                                            <AttendanceReasonDialog :id="`attendanceReasonDialog${item.adate}`" :mid="mid" :adate="item.adate"/>
                                         </div>
                                     </td>
-                                    <AttendanceReasonDialog :id="`attendanceReasonDialog${item.adate}`" :mid="mid" :adate="item.adate"/>
                                 </tr>
                             </tbody>
                         </table>

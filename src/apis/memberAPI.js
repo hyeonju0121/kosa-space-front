@@ -30,10 +30,8 @@ function findId(member) {
 
 // (운영진) 회원정보수정
 
-
 export default {
     signup,
     login,
-    findId
-
+    findId,
 }

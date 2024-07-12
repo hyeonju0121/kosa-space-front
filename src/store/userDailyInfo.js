@@ -1,3 +1,5 @@
+import attendanceAPI from '@/apis/attendanceAPI';
+
 export default {
     namespaced: true,
 
@@ -19,7 +21,7 @@ export default {
         },
         getUserCheckOutStatus(state, getters, rootState, rootGetters) {
             return state.userCheckOutStatus;
-        }
+        },
     },
 
     mutations: {
@@ -31,7 +33,7 @@ export default {
         },
         setUserCheckOutStatus(state, payload) {
             state.userCheckOutStatus = payload;
-        }
+        },
     },
 
     actions: {
@@ -93,6 +95,6 @@ export default {
             .catch((error) => {
                 console.log("퇴실 실패");
             })
-        }
+        },
     }
 };

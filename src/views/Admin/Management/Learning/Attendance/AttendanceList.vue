@@ -150,10 +150,6 @@ const adate = "2024-07-10";
 // route.query값이 있다면 셀렉트 버튼 활성화 / 비활성화
 let btnEnable = ref("");
 
-// 교육장 이름 전체 목록을 가져오는 메소드
-const nameList = ref([]);
-
-
 // 1. 교육장 목록 가져오기
 async function listCenterSet() {
     try {

@@ -51,9 +51,11 @@ async function personalAttendanceReason(mid, adate) {
         console.log(response.data);
         console.log("개인 출결 현황 정보 가져오기 성공");
     } catch (error) {
+        console.log(error);
         console.log("개인 출결 현황 정보 가져오기 실패");
     }
 }
+
 
 </script>
 

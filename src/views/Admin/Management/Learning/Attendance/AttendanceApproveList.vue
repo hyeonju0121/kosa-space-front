@@ -17,62 +17,37 @@
                     <select id="educenter" title="교육장 선택" v-model="filter.ecname">
                         <option selected disabled value="">교육장 선택</option>
                         <option value="전체">전체</option>
-                        <option value="송파교육센터">송파교육센터</option>
-                        <option value="가산교육센터">가산교육센터</option>
-                        <option value="혜화교육센터">혜화교육센터</option>
+                        <option v-for="ecname in ecnames" :key="ecname" :value="ecname"> {{ ecname }}</option>
                     </select>
                 </div>
                 <div class="InpBox" style="margin-left: 1%; width: 370px;">
                     <select id="course" title="교육과정 선택" v-model="filter.cname">
                         <option selected disabled value="">교육과정 선택</option>
-                        <option value="2024M2">MSA 기반 Full Stack 개발 전문가 양성과정 2차</option>
-                        <option value="2024C1">클라우드 솔루션즈 아키텍트 양성과정 1차</option>
+                        <option v-for="item in cnames" :key="item" :value="item">{{ item }}</option>
                     </select>
                 </div>
-                <button type="button" class="BtnType SizeM" @click="handleSubmitFilter1" style="margin-left: 1%;">
-                    승인 조회
-                </button>
             </div>
         </form>
 
-        <div class="attandance_approve_card" style="display: flex;" v-if="!submitStatus">
+        <div class="attandance_approve_card" style="display: flex; margin-top: 3%;">
             <div class="card1">
                 <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
                     <span class="card-title" style="color: rgb(115, 68, 227);">오늘 제출된 출결 사유</span>
-                    <h5 class="reason-num" style="color: rgb(115, 68, 227);">{{ reasonDashboard.allnum }}건</h5>
+                    <h5 class="reason-num" style="color: rgb(115, 68, 227);">{{ attendanceDashBoardDate.todayReasonCnt }}건
+                    </h5>
                 </div>
             </div>
             <div class="card2" style="margin-left: 1%;">
                 <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
                     <span class="card-title" style="color: rgb(36, 142, 147);">승인</span>
-                    <h5 class="reason-num" style="color: rgb(36, 142, 147);">{{ reasonDashboard.approvenum }}건</h5>
+                    <h5 class="reason-num" style="color: rgb(36, 142, 147);">{{ attendanceDashBoardDate.approveCnt }}건</h5>
                 </div>
             </div>
             <div class="card3" style="margin-left: 1%;">
                 <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
                     <span class="card-title" style="color: rgb(233, 25, 39);">미승인</span>
-                    <h5 class="reason-num" style="color: rgb(233, 25, 39);">{{ reasonDashboard.notapprovednum }}건</h5>
-                </div>
-            </div>
-        </div>
-
-        <div class="attandance_approve_card" style="display: flex;" v-if="submitStatus">
-            <div class="card1">
-                <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
-                    <span class="card-title" style="color: rgb(115, 68, 227);">오늘 제출된 출결 사유</span>
-                    <h5 class="reason-num" style="color: rgb(115, 68, 227);">{{ reasonDashboardsongpa.allnum }}건</h5>
-                </div>
-            </div>
-            <div class="card2" style="margin-left: 1%;">
-                <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
-                    <span class="card-title" style="color: rgb(36, 142, 147);">승인</span>
-                    <h5 class="reason-num" style="color: rgb(36, 142, 147);">{{ reasonDashboardsongpa.approvenum }}건</h5>
-                </div>
-            </div>
-            <div class="card3" style="margin-left: 1%;">
-                <div class="card-contents" style="margin-top: 5%; margin-left: 7%;">
-                    <span class="card-title" style="color: rgb(233, 25, 39);">미승인</span>
-                    <h5 class="reason-num" style="color: rgb(233, 25, 39);">{{ reasonDashboardsongpa.notapprovednum }}건</h5>
+                    <h5 class="reason-num" style="color: rgb(233, 25, 39);">{{ attendanceDashBoardDate.notApprovedCnt }}건
+                    </h5>
                 </div>
             </div>
         </div>
@@ -82,46 +57,28 @@
 
             <!-- 필터 -->
             <div class="search_interview">
-                    <div class="InpBox search_order">
-                        <!-- 승인여부 -->
-                        <select id="search_status" title="출결 승인 여부" v-model="filter.approve" style="width: 150px;">
-                            <option selected disabled value="">사유 작성 여부</option>
-                            <option value="0">전체</option>
-                            <option value="1">작성</option>
-                            <option value="2">미작성</option>
-                            <option value="3">해당없음</option>
-                        </select>
-                    </div>
-                    <div class="InpBox search_order">
-                        <!-- 승인여부 -->
-                        <select id="search_status" title="출결 승인 여부" v-model="filter.approve" style="width: 150px; margin-left: 3%;">
-                            <option selected disabled value="">출결 승인 여부</option>
-                            <option value="0">전체</option>
-                            <option value="1">승인</option>
-                            <option value="2">미승인</option>
-                        </select>
-                    </div>
-                    <div class="TypoBox search_area" style="margin-left: 2%;">
-                        <input type="text" class="Typo search" id="search_keyword" v-model="filter.mname" value="" placeholder="교육생 입력">
-                        <button type="button" id="keyword_search">
-                            <PhMagnifyingGlass color="#838181"  style="width: 24px; height: 24px;"/>
-                        </button>
-                    </div>
+                <div class="TypoBox search_area" style="margin-left: 2%;">
+                    <input type="text" class="Typo search" id="search_keyword" v-model="filter.mname" value=""
+                        placeholder="교육생 입력">
+                    <button type="button" id="keyword_search">
+                        <PhMagnifyingGlass color="#838181" style="width: 24px; height: 24px;" />
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- 조회 안했을 때 ---------------------------------------------------------->    
-        <div class="interview_list" v-if="!submitStatus">
-            <!-- 면접 요청 리스트 없을 경우 -->
-            <div class="empty_data">
+        <!-- 조회 안했을 때 ---------------------------------------------------------->
+        <!-- <div class="interview_list" v-if="!submitStatus"> -->
+        <!-- 면접 요청 리스트 없을 경우 -->
+        <!-- <div class="empty_data">
                 <img src="//www.saraminimage.co.kr/sri/person/resume/img_empty_announce.png">
                 <strong class="tit">교육과정이 선택되지 않았습니다.</strong>
                 <div class="txt">교육장과 교육과정을 선택하고 승인 조회를 눌러주세요!</div>
             </div>
-        </div>
-        
+        </div> -->
+
         <!-- 조회 했을 때------------------------------------------------------------->
-        <div v-if="submitStatus">
+        <div>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -133,63 +90,45 @@
                         <th>출결 유형</th>
                         <th>사유</th>
                         <th>승인처리</th>
-                        <th>알림</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>유현주</td>
-                        <td>2024M2001</td>
-                        <td>08:50</td>
-                        <td>17:55</td>
-                        <td>정상 출결</td>
+                    <tr v-for="item in traineeData" :key="item">
+                        <td>{{ item.rnum }}</td>
+                        <td>{{ item.mname }}</td>
+                        <td>{{ item.mid }}</td>
+                        <td>{{ item.acheckin }}</td>
+                        <td>{{ item.acheckout }}</td>
+                        <td>{{ item.astatus }}</td>
                         <td>
-                            <button class="btn btn-dark btn-sm" disabled>해당없음</button>
+                            <div v-if="item.anconfirm === false">
+                                <button class="btn btn-dark btn-sm" disabled>해당없음</button>
+                            </div>
+                            <div v-if="item.anconfirm === true">
+                                <button class="btn btn-danger btn-sm" @click="handlerReasonBtn(item.mid)">사유보기</button>
+                                <!-- adate는 현재 2024-07-02 고정값 -->
+                                <AttendanceReasonDialog :id="`attendanceReasonDialog${item.mid}`" :mid="item.mid" :adate="adate"/>
+                            </div>
                         </td>
                         <td>
-                            <button class="btn btn-danger btn-sm" @click="handlerApproveBtn">미승인</button>
+                            <div v-if="item.aconfirm === false">
+                                <!-- adate는 현재 2024-07-02 고정값 -->
+                                <button class="btn btn-primary btn-sm" disabled>승인완료</button>
+                            </div>
+                            <div v-if="item.aconfirm === true">
+                                <button class="btn btn-danger btn-sm" @click="handlerApproveBtn(item.mid)">미승인</button>
+                                <ApproveDialog :id="`approveDialog${item.mid}`" :mid="item.mid" :adate="adate"/>
+                            </div>
                         </td>
-                        <td><button class="btn btn-warning btn-sm">알림 전송</button></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>이경섭</td>
-                        <td>2024M2002</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>결석</td>
-                        <td>
-                            <button class="btn btn-dark btn-sm" @click="handlerReasonBtn">사유 보기</button>
-                        </td>
-                        <td>
-                            <button class="btn btn-primary btn-sm" disabled>승인</button>
-                        </td>
-                        <td><button class="btn btn-warning btn-sm">알림 전송</button></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>김성민</td>
-                        <td>2024M2003</td>
-                        <td>08:55</td>
-                        <td>-</td>
-                        <td>조퇴</td>
-                        <td>
-                            <button class="btn btn-dark btn-sm" @click="handlerReasonBtn">사유 보기</button>
-                        </td>
-                        <td>
-                            <button class="btn btn-danger btn-sm" @click="handlerApproveBtn">미승인</button>
-                        </td>
-                        <td><button class="btn btn-warning btn-sm">알림 전송</button></td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        
+
     </div>
-    <AttendanceReasonDialog id="attendanceReasonDialog"/>
-    <ApproveDialog id="approveDialog"/>
+    <!-- <AttendanceReasonDialog id="attendanceReasonDialog" />
+    <ApproveDialog id="approveDialog" /> -->
 </template>
 
 <script setup>
@@ -197,9 +136,27 @@
 import AttendanceReasonDialog from './Dialog/AttendanceReasonDialog.vue';
 import ApproveDialog from './Dialog/ApproveDialog.vue';
 import { Modal } from "bootstrap";
+import courseAPI from '@/apis/courseAPI';
+import educenterAPI from '@/apis/educenterAPI';
+import attendanceAPI from '@/apis/attendanceAPI';
 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 
+onMounted(() => {
+
+    // 등록된 교육장 불러오기
+    listCenterSet();
+
+    // modal 객체 생성
+    // attendanceReasonDialog = new Modal(document.querySelector("#attendanceReasonDialog"));
+    // approveDialog = new Modal(document.querySelector("#approveDialog"));
+})
+
+let ecnames = ref();
+
+let cnames = ref();
+
+let mid = ref();
 
 // 필터 상태 객체 정의
 const filter = ref({
@@ -207,45 +164,127 @@ const filter = ref({
     cname: "",
     approve: "",
     mname: "",
- });
+});
 
- // 출결 사유 현황 상태 객체 정의
- const reasonDashboard = ref({
+// 1. 교육장 목록 가져오기
+async function listCenterSet() {
+    try {
+        const response = await educenterAPI.educenterNameList();
+        ecnames.value = response.data.splice(1);
+        console.log("center 리스트 가져오기 성공");
+    } catch (error) {
+        console.log("center 리스트 가져오기 실패");
+    }
+}
+
+// 2. 진행중인 교육과정 목록 가져오기
+async function progressCourseList(ecname) {
+    // getInprogressCourseList
+    try {
+        const response = await courseAPI.getInprogressCourseList(ecname);
+        cnames.value = response.data;
+        console.log("cnames.value = " + cnames.value);
+        console.log("진행중인 교육과정 정보 가져오기 성공");
+    } catch (error) {
+        console.log(error);
+        console.log("진행중인 교육과정 정보 가져오기 실패");
+    }
+}
+
+// 출결 카운트 값을 받아올 변수
+const attendanceDashBoardDate = ref({
+    todayReasonCnt: 0,
+    approveCnt: 0,
+    notApprovedCnt: 0
+});
+
+// adate는 임시 고정 값
+const adate = ref("2024-07-02")
+// 3. 진행중인 교육과정의 출결 사유 제출 건수 가져오기
+async function progressAttendanceCntInfo(ecname, cname, adate) {
+    try {
+        const response = await attendanceAPI.getTraineeAttendaceReasonCnt(ecname, cname, adate);
+        attendanceDashBoardDate.value = response.data;
+        console.log("attendanceDashBoardDate.value = " + attendanceDashBoardDate.value);
+        console.log("진행중인 교육과정의 출결 사유 제출 건수 가져오기 성공");
+    } catch (error) {
+        console.log(error);
+        console.log("진행중인 교육과정의 출결 사유 제출 건수 가져오기 실패");
+    }
+}
+
+// 교육생 리스트 정보를 받을 변수
+const traineeData = ref(
+    // "rnum": 1,
+    // "mname": "유현주",
+    // "mid": "2024M2001",
+    // "acheckin": "09:05",
+    // "acheckout": "17:58",
+    // "astatus": "정상출결",
+    // "aconfirm": true,
+    // "anconfirm": false
+)
+
+// 4. 교육생 승인 페이지 출결 목록 불러오기
+async function approveAttendanceInfo(ecname, cname, adate) {
+    try {
+        const response = await attendanceAPI.getTraineeAttendanceApproveList(ecname, cname, adate);
+        traineeData.value = response.data;
+        console.log("traineeData.value = " + traineeData.value);
+        console.log("교육생 승인 페이지 출결 목록 가져오기 성공");
+    } catch (error) {
+        console.log(error);
+        console.log("교육생 승인 페이지 출결 목록 가져오기 실패");
+    }
+}
+
+watch(() => filter.value.ecname,
+    (nv, ov) => {
+        progressCourseList(nv);
+    }
+)
+
+watch(() => filter.value.cname,
+    (nv, ov) => {
+        progressAttendanceCntInfo(filter.value.ecname, nv, adate.value);
+        approveAttendanceInfo(filter.value.ecname, nv, adate.value);
+    }
+)
+
+// 출결 사유 현황 상태 객체 정의
+const reasonDashboard = ref({
     allnum: 58,
     approvenum: 20,
     notapprovednum: 38,
- });
+});
 
- const reasonDashboardsongpa = ref({
+const reasonDashboardsongpa = ref({
     allnum: 8,
     approvenum: 5,
     notapprovednum: 3
- });
+});
 
-let submitStatus = ref(false);
-
-// 교육장, 교육과정 필터 선택하고, 승인 조회 버튼 클릭 시 
-function handleSubmitFilter1() {
-    submitStatus.value = !submitStatus.value;
-    console.log(filter.value); 
-}
-
+// 사유 모달
 let attendanceReasonDialog = null;
-let approveDialog = null;
-
-onMounted(() => {
-    // modal 객체 생성
-    attendanceReasonDialog = new Modal(document.querySelector("#attendanceReasonDialog"));
-    approveDialog = new Modal(document.querySelector("#approveDialog"));
-})
 
 // 사유 보기 버튼 클릭시, 교육생이 제출한 사유에 대한 모달 활성화
-function handlerReasonBtn() {
+function handlerReasonBtn(e) {
+    mid.value = e;
+    console.log("handlerReasonBtn   e = "  + e);
+    console.log("handlerReasonBtn   mid.value = "  + mid.value);
+    // modal 객체 생성
+    attendanceReasonDialog = new Modal(document.querySelector("#attendanceReasonDialog"+e));
     attendanceReasonDialog.show();
 }
 
+// 승인 모달
+let approveDialog = null;
+
 // 미승인 버튼 클릭시, 출결 승인 처리 모달 활성화
-function handlerApproveBtn() {
+function handlerApproveBtn(e) {
+    mid.value = e;
+    // modal 객체 생성
+    approveDialog = new Modal(document.querySelector("#approveDialog"+e));
     approveDialog.show();
 }
 
@@ -266,7 +305,9 @@ p,
 span,
 small,
 textarea,
-select, th, td {
+select,
+th,
+td {
     font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -422,7 +463,7 @@ table {
 
 .TypoBox .text {
     padding-right: 36px;
-    width:100%;
+    width: 100%;
     padding-block: 1px;
     padding-inline: 2px;
 }
@@ -478,5 +519,4 @@ table {
     font-size: 14px;
     line-height: 24px;
 }
-
 </style>

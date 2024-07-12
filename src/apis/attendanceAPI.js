@@ -32,10 +32,23 @@ function getTraineeAttedanceReason(mid, adate) {
     return axios.get("/attendance/reason/detail?mid=" + mid + "&adate=" + adate);
 }
 
+// 교육생 출결 승인 페이지 대시보드 건수 조회 (진행중)
+function getTraineeAttendaceReasonCnt(ecname, cname, adate) {
+    return axios.get("/attendance/reason/dashboard?ecname=" + ecname + "&cname="+ cname + "&adate=" + adate);
+}
+
+// 교육생 승인 페이지 출결 목록 조회
+function getTraineeAttendanceApproveList(ecname, cname, adate) {
+    return axios.get("/attendance/approve/list?ecname=" + ecname + "&cname=" + cname + "&adate=" + adate)
+}
+
+
 export default {
     userCheckin,
     getTotalAttendanceList,
     addClientIPHeader,
     getTraineeAttendanceDetail,
-    getTraineeAttedanceReason
+    getTraineeAttedanceReason,
+    getTraineeAttendaceReasonCnt,
+    getTraineeAttendanceApproveList
 }
