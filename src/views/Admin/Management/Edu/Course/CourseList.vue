@@ -150,7 +150,7 @@ const nameList = ref();
 async function educenterNameList() {
     try {
         const response = await educenterAPI.educenterNameList();
-        nameList.value = response.data;
+        nameList.value = response.data.splice(1); // 인덱스 0번째 요소 '전체'를 뺌
 
     } catch (error) {
         console.log(error);
