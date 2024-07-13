@@ -106,7 +106,7 @@
         </form>
 
         <div class="interview_list_header">
-            <div class="total_interviews">총 0건</div>
+            <div class="total_interviews">총 2건</div>
         </div>
 
         <div>
