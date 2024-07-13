@@ -8,10 +8,10 @@
         <div class="headingArea">
             <div class="title">
                 <h1 id="itemTitle">교육장 목록</h1>
-            </div>
-            <div>
-                <BaseButtonCreate class="mt-3" @click="handleCreateBtn">교육장 등록</BaseButtonCreate>
-            </div>
+            </div>                           
+            <button class="register-btn mt-3"  @click="handleCreateBtn">
+                교육장 등록
+            </button>            
         </div>
         <div class="container mt-3" style="margin-left: %;">
             <div class="educenter-wrap row">
@@ -22,7 +22,7 @@
                         <div class="carousel-inner">
                             <div v-for="(url, index) in educenter.attachments" :key="index" class="carousel-item active"
                                 data-bs-interval="1000000">
-                                <img :src="url" class="d-block w-100" alt="..." style="width: 150px; height: 200px;">
+                                <img :src="url" class="d-block w-100 mt-3" alt="..." style="width: 150px; height: 200px;">
                             </div>
                         </div>
                         <button class="carousel-control-prev" type="button"
@@ -48,7 +48,7 @@
                         <div class="educenter-createdat">[등록일시] {{ educenter.eccreatedat }}</div>
                         <div v-if="educenter.ecupdatedat" class="educneter-updatedat">[수정일시] {{ educenter.ecupdatedat }}
                         </div>
-                        <div class="btn-wrap" style="margin-left: 12px;">
+                        <div class="btn-wrap mt-3" style="text-align:center">
                             <RouterLink :to="`/admin/educenter/update?ecno=${educenter.ecno}`"><div class="btn btn-dark btn-sm me-2">수정</div></RouterLink>
                             <div @click="confirmRemove(educenter.ecno)" class="btn btn-danger btn-sm">삭제</div>
                         </div>
@@ -180,8 +180,27 @@ textarea,
 select {
     font-family: 'Noto Sans KR', sans-serif;
 }
-
-
+.register-btn{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-weight: 500;
+    vertical-align: middle;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    height: 52px;
+    line-height: 50px;
+    text-align: center;
+    border-radius: 3px;
+    width: 200px;
+    flex: 0 0 200px;
+    color: white;
+    background-color: #22C55E;
+    border: 1px solid white;
+    margin-left: 10px;      
+    border-radius: 9px;  
+}
 
 
 .educenter-wrap {
