@@ -43,13 +43,8 @@
                         </div>
                         <div class="td">
                             <div class="center_wrap">
-                                <div class="center_attach">
-                                    <div class="img_box d-flex">
-                                        <div id="defaultImg">
-                                            <PhImage :size="32" color="#636462" weight="duotone" />
-                                        </div>
-                                    </div>                                                                       
-                                        <input type="file" @change="addImage" multiple ref="ecattach"/>                                    
+                                <div class="center_attach">                                                                                                           
+                                    <input type="file" @change="addImage" multiple ref="ecattach"/>                                    
                                 </div>
                             </div>
                             <div>
