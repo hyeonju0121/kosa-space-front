@@ -19,12 +19,7 @@
                     </div>
                     <div class="td">
                         <div class="course_wrap">
-                            <div class="course_attach">
-                                <div class="img_box d-flex">
-                                    <div id="defaultImg">
-                                        <PhImage :size="32" color="#636462" weight="duotone" />
-                                    </div>
-                                </div>
+                            <div class="course_attach">                                
                                 <div class="center_edit">
                                     <p class="tit">교육과정 이미지를 등록해주세요.</p>
                                     <div class="attach_wrap">
@@ -134,10 +129,11 @@
                     </div>
                 </div>
                 <div class="btn_big_wrap">
+                    <BaseButtonSubmit type="submit" class="me-3">완료</BaseButtonSubmit>
                     <RouterLink to="/admin/course/list">
                         <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
                     </RouterLink>
-                    <BaseButtonSubmit type="submit">완료</BaseButtonSubmit>
+                    
                 </div>
             </form>
         </div>
