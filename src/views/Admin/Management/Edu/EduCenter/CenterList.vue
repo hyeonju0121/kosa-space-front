@@ -49,8 +49,8 @@
                         <div v-if="educenter.ecupdatedat" class="educneter-updatedat">[수정일시] {{ educenter.ecupdatedat }}
                         </div>
                         <div class="btn-wrap" style="margin-left: 12px;">
-                            <RouterLink :to="`/admin/educenter/update?ecno=${educenter.ecno}`">수정</RouterLink>
-                            <button type="button" class="deletebtn" @click="confirmRemove(educenter.ecno)">삭제</button>
+                            <RouterLink :to="`/admin/educenter/update?ecno=${educenter.ecno}`"><div class="btn btn-dark btn-sm me-2">수정</div></RouterLink>
+                            <div @click="confirmRemove(educenter.ecno)" class="btn btn-danger btn-sm">삭제</div>
                         </div>
                     </div>
                 </div>
