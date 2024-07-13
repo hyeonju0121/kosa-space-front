@@ -12,18 +12,13 @@
         </div>
         <div class="form_table no_line">
             <form @submit.prevent="handleSubmit">
-                <div class="tr">
+                <div class="tr align-items-center">
                     <div class="th">
-                        <p class="form_label required">교육과정 이미지 </p>
+                        <p class="form_label required">교육과정 이미지</p>
                     </div>
                     <div class="td">
                         <div class="course_wrap">
-                            <div class="course_attach">
-                                <div class="img_box d-flex">
-                                    <div id="defaultImg">
-                                        <PhImage :size="32" color="#636462" weight="duotone" />
-                                    </div>
-                                </div>
+                            <div class="course_attach">                                
                                 <input type="file" @change="addImage" multiple ref="cattach" />
                             </div>
                         </div>
