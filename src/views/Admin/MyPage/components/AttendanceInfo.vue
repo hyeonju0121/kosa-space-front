@@ -35,8 +35,7 @@
                         </tr>
                     </table>
                 </div>
-
-                <div style="display: flex; justify-content: center;">
+                <div style="display: flex; justify-content: center; padding-top: 60px">
                     <div v-if="attendance.attendanceInfo.length >= 1">
                         <button class="btn btn-outline-primary btn-sm me-1" @click="changePageNo(1)">처음</button>
                         <button v-if="attendance.pager.groupNo > 1" class="btn btn-outline-info btn-sm me-1"
