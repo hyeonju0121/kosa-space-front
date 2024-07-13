@@ -55,7 +55,7 @@
                             placeholder="교육과정 명을 입력해주세요." maxlength="50">
                     </div>
                 </div>
-                <div class="tr">
+                <div class="tr align-items-center" >
                     <div class="th">
                         <p class="form_label required">교육과정 번호</p>
                     </div>
@@ -146,10 +146,11 @@
                     </div>
                 </div>
                 <div class="btn_big_wrap">
+                    <BaseButtonSubmit @click="handleSubmit" class="me-3">완료</BaseButtonSubmit>
                     <RouterLink to="/admin/course/list">
                         <BaseButtonCancle>취소</BaseButtonCancle>
                     </RouterLink>
-                    <BaseButtonSubmit @click="handleSubmit">완료</BaseButtonSubmit>
+                    
                 </div>
             </form>
         </div>
