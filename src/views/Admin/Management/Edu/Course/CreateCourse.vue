@@ -1,139 +1,89 @@
 <template>
     <div class="main p-3" style="margin-left: 25px;">
         <div class="item-section mt-2 mb-2" style="font-size: 12px">
-            <span>교육관리 > 교육과정 관리 > 교육과정 등록</span>
+            <span>교육관리 > 강의실 관리 > 강의실 등록</span>
         </div>
 
         <!-- contents -->
         <div class="headingArea">
             <div class="title">
-                <h1 id="itemTitle">교육과정 등록</h1>
+                <h1 id="itemTitle">강의실 등록</h1>
             </div>
         </div>
 
         <div class="form_table no_line">
             <form @submit.prevent="handleSubmit">
-                <div class="tr align-items-center">
-                    <div class="th">
-                        <p class="form_label required">교육과정 이미지 </p>
+                <div class="tr">
+                    <div class="th" style="width: 20%;">
+                        <p class="form_label">교육장 명</p>
                     </div>
                     <div class="td">
-                        <div class="course_wrap">
-                            <div class="course_attach">                                
-                                <div class="center_edit">
-                                    <p class="tit">교육과정 이미지를 등록해주세요.</p>
-                                    <div class="attach_wrap">
-                                        <p class="guide_txt">파일 1개당 10MB까지 첨부 가능합니다. (JPG, JPEG, PNG, GIF만 첨부 가능)</p>
-                                        <div>
-                                            <input id="cattach" type="file" class="form-control-file mt-3" ref="cattach" />
-                                        </div>
-                                    </div>
-                                </div>
+                        <select @click="checkSelectedEcname" title="교육장 선택" v-model="trainingroom.ecname" id="room"
+                            style="margin-top: 10px;">
+                            <option value="none" selected disabled>교육장 선택</option>
+                            <option v-for="educenter in educenterList" :value="educenter" :key="educenter.ecno">{{ educenter }}</option>
+                            
+                            
+                        </select>
+                        <p v-show="!isSelected" style="color: rgb(247, 78, 27); margin-top: 2%;">교육장을 선택해주세요.</p>
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="th">
+                        <p class="form_label">강의실 명 </p>
+                    </div>
+                    <div class="textarea_group_title sm">
+                        <textarea v-model="trainingroom.trname" id="tname" title="강의실 명 입력" placeholder="강의실 명을 입력해주세요."
+                            maxlength="10"></textarea>
+                        <p class="form_bytes"><span class="byte">0</span>/10</p>
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="th">
+                        <p class="form_label">수용 가능 인원</p>
+                    </div>
+                    <div class="textarea_group_title sm">
+                        <textarea v-model="trainingroom.trcapacity" id="tcapacity" title="수용 가능 인원 입력"
+                            placeholder="수용 가능 인원을 입력해주세요." maxlength="10"></textarea>
+                        <p class="form_bytes"><span class="byte">0</span>/10</p>
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="th" style="width:30%">
+                        <p class="form_label">사용 가능 여부 </p>
+                    </div>
+                    <div style="width: 200px; display: flex;">
+                        <input type="radio" id="tenable1" value="0" v-model="trainingroom.trenable" />
+                        <label for="tenable1" style="margin-top: 17%; margin-left: 5%; margin-right: 5%;">
+                            <p>가능</p>
+                        </label>
+
+                        <input type="radio" id="tenable2" value="1" v-model="trainingroom.trenable" />
+                        <label for="tenable2" style="margin-top: 17%; margin-left: 5%;">
+                            <p>불가능</p>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="tr">
+                    <div class="th">
+                        <p class="form_label required">강의실 사진 </p>
+                    </div>
+                    <div class="td">
+                        <div class="center_wrap">
+                            <div class="center_attach">                                
+                                <input type="file" @change="addImage" multiple ref="trattach" />
                             </div>
-                        </div>
+                        </div>                        
+                        <img v-for="(item, index) in src" :key="index" :src="item" width="80px" height="80px" />                        
                     </div>
                 </div>
-                <div class="tr">
-                    <div class="th">
-                        <p class="form_label required">교육장 명</p>
-                    </div>
-                    <div class="td">
-                        <input @input="checkECname" v-model="courseInfo.ecname" id="ecname" type="text" 
-                            title="교육장 명 입력" placeholder="교육장 명을 입력해주세요." maxlength="50">
-                        <p v-show="!isEcname" style="color: rgb(247, 78, 27);">한글만 입력해주세요.</p>
-                    </div>
-                </div>
-                <div class="tr">
-                    <div class="th">
-                        <p class="form_label required">강의실 명</p>
-                    </div>
-                    <div class="td">
-                        <input v-model="courseInfo.trno" id="trno" type="text" 
-                            title="강의실 명 입력" placeholder="사용할 강의실을 입력해주세요." maxlength="50">
-                    </div>
-                </div>
-                <div class="tr">
-                    <div class="th">
-                        <p class="form_label required">교육과정 명</p>
-                    </div>
-                    <div class="td">
-                        <input v-model="courseInfo.cname" id="cname" type="text" title="교육과정 명 입력" 
-                            placeholder="교육과정 명을 입력해주세요." maxlength="50" style="width:300px;">
-                    </div>
-                </div>
-                <div class="tr align-items-center">
-                    <div class="th">
-                        <p class="form_label required">교육과정 번호</p>
-                    </div>
-                    <div class="td">
-                        <input @input="checkCcode" v-model="courseInfo.ccode" id="ccode" type="text" title="교육과정 번호 입력" placeholder="교육과정 번호를 입력해주세요." maxlength="50">
-                        <p style="margin-top: 1%;">해당연도 + 교육과정 코드 로 입력해주세요. </p>
-                        <p>[예시] 해당연도(2024) + 교육과정 코드(M2) : 2024M2</p>
-                        <p v-show="!isCcode" style="color: rgb(247, 78, 27);">앞에 숫자 4글자와 대문자 1자, 숫자 1자로 작성해주세요.</p>
-                    </div>
-                </div>
-                <div class="tr">
-                    <div class="th">
-                        <p class="form_label required">교육과정 기간</p>
-                    </div>
-                    <VueDatePicker class="mt-4" style="width:50%; margin-left: 20px" v-model="date" range/>
-                </div>
-                <div class="tr">
-                    <div class="th">
-                        <p class="form_label required">훈련일수</p>
-                    </div>
-                    <div class="td">
-                        <input v-model="courseInfo.crequireddate" id="crequireddate" type="text" title="훈련일수 입력" placeholder="훈련일수를 입력해주세요." maxlength="50">
-                    </div>
-                </div>
-                <div class="tr">
-                    <div class="th">
-                        <p class="form_label required">훈련날짜</p>
-                    </div>
-                    <div class="td">
-                        <input v-model="courseInfo.ctrainingdate" id="ctrainingdate" type="text" title="훈련날짜 입력" placeholder="훈련날짜를 입력해주세요." maxlength="50">
-                    </div>
-                </div>
-                <div class="tr">
-                    <div class="th">
-                        <p class="form_label required">훈련시간</p>
-                    </div>
-                    <div class="td">
-                        <input v-model="courseInfo.ctrainingtime" id="ctrainingtime" type="text" title="훈련시간 입력" placeholder="훈련시간을 입력해주세요." maxlength="50">
-                    </div>
-                </div>
-                <div class="tr">
-                    <div class="th">
-                        <p class="form_label required">총 수강인원</p>
-                    </div>
-                    <div class="td">
-                        <input v-model="courseInfo.ctotalnum" id="ctotalnum" type="text" title="총 수강인원" placeholder="총 수강인원을 입력해주세요." maxlength="50">
-                    </div>
-                </div>
-                <div class="tr">
-                    <div class="th">
-                        <p class="form_label required">담당 운영진</p>
-                    </div>
-                    <div class="td">
-                        <input @input="checkCmanager" v-model="courseInfo.cmanager" id="cmanager" type="text" title="담당 운영진" placeholder="담당 운영진을 입력해주세요." maxlength="50">
-                        <p v-show="!isCmanager" style="color: rgb(247, 78, 27);">한글 2자 이상 4자 이하로만 입력해주세요. </p>
-                    </div>
-                </div>
-                <div class="tr">
-                    <div class="th">
-                        <p class="form_label required">담당 강사진</p>
-                    </div>
-                    <div class="td">
-                        <input @input="checkCprofessor" v-model="courseInfo.cprofessor" id="cprofessor" type="text" title="담당 강사진" placeholder="담당 강사진을 입력해주세요." maxlength="50">
-                        <p v-show="!isCprofessor" style="color: rgb(247, 78, 27);">한글 2자 이상 4자 이하로만 입력해주세요. </p>
-                    </div>
-                </div>
+
                 <div class="btn_big_wrap">
-                    <BaseButtonSubmit type="submit" class="me-3">완료</BaseButtonSubmit>
-                    <RouterLink to="/admin/course/list">
-                        <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
+                    <RouterLink to="/admin/room/list">
+                        <BaseButtonCancle>취소</BaseButtonCancle>
                     </RouterLink>
-                    
+                    <BaseButtonSubmit @click="handleSubmit">완료</BaseButtonSubmit>
                 </div>
             </form>
         </div>
@@ -143,136 +93,105 @@
 <script setup>
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { ref, onMounted, watch } from 'vue';
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css';
-import courseAPI from "@/apis/courseAPI";
+import trainingroomAPI from '@/apis/trainingroomAPI';
+import educenterAPI from '@/apis/educenterAPI';
 
-const date = ref();
+const trattach = ref(null);
 
-//시작일 종료일 세팅
-onMounted(() => {
-  const startDate = new Date();
-  const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
-  date.value = [startDate, endDate];
-})
-
-const courseInfo = ref({   
+// 강의실 상태 정의
+const trainingroom = ref({
     ecname: "",
-    cname: "",
-    ccode: "",
-    cstartdate: "",
-    cenddate: "",
-    crequireddate: "",
-    ctotalnum: "",
-    cmanager: "",
-    cprofessor: "",
-    ctrainingdate: "",
-    ctrainingtime: "",
-    trno: ""
+    trname: "",
+    trcapacity: "",
+    trenable: ""
 })
+
+
+
+//교육장 이름 전체 목록 가져오는 메소드
+const educenterList = ref([]);
+
+async function educenterNameList() {
+    try{
+        const response = await educenterAPI.educenterNameList();
+        educenterList.value = response.data;
+    } catch(error) {
+        console.log(error)
+    }
+
+}
+
+onMounted(()=>{
+    educenterNameList();
+})
+
+
+//교육장이 선택 안됐을 경우 문구가 나오는 부분
+let isSelected = ref(true);
+
+function checkSelectedEcname() {
+    if (trainingroom.value.ecname === 'none') {
+        isSelected.value = false;
+    } else {
+        isSelected.value = true;
+    }
+}
 
 const router = useRouter();
 
-let isEcname = ref(true);
-let isCcode = ref(true);
-let isCmanager = ref(true);
-let isCprofessor = ref(true);
-
-const cattach = ref(null);
-
-function handleCancle() {
-    router.push('/admin/course/list');
-}
-//등록 버튼 누를때 실행
+//완료 버튼을 눌렀을때
 async function handleSubmit() {
-    courseInfo.value.cstartdate = date.value[0];
-    courseInfo.value.cenddate = date.value[1];
+    console.log(JSON.parse(JSON.stringify(trainingroom)));
 
-    console.log(JSON.parse(JSON.stringify(courseInfo)));
-
-    //form data 객체 생성
+    //전송폼데이타 만들기
     const formData = new FormData();
 
     //문자 파트 넣기
-    formData.append("ecname", courseInfo.value.ecname);
-    formData.append("cname", courseInfo.value.cname);
-    formData.append("ccode", courseInfo.value.ccode);
-    formData.append("cstartdate", courseInfo.value.cstartdate);
-    formData.append("cenddate", courseInfo.value.cenddate);
-    formData.append("crequireddate", courseInfo.value.crequireddate);
-    formData.append("ctotalnum", courseInfo.value.ctotalnum);
-    formData.append("cmanager", courseInfo.value.cmanager);
-    formData.append("cprofessor", courseInfo.value.cprofessor);
-    formData.append("ctrainingdate", courseInfo.value.ctrainingdate);
-    formData.append("ctrainingtime", courseInfo.value.ctrainingtime);
-    formData.append("trno", courseInfo.value.trno);
+    formData.append("ecname", trainingroom.value.ecname);
+    formData.append("trname", trainingroom.value.trname);
+    formData.append("trcapacity", trainingroom.value.trcapacity);
+    formData.append("trenable", trainingroom.value.trenable);
 
     //파일 파트 넣기
-    let elCattach = cattach.value;
+    let elTrattach = trattach.value;
 
-    if(elCattach.files.length != 0) {
-        formData.append("cattachdata", elCattach.files[0]);
+    if (elTrattach.files.length != 0) {
+        for (let i = 0; i < elTrattach.files.length; i++) {
+            formData.append("trattachdata", elTrattach.files[i]);
+        }
     }
 
-    //교육과정 등록 요청
+    //강의실 등록 요청
     try{
-        await courseAPI.create(formData);
-        router.push('/admin/course/list');
-    } catch(error) {
+        const response = await trainingroomAPI.create(formData);
+        router.push('/admin/room/list');
+    } catch(error){
         console.log(error);
     }    
-    
 }
 
-// 교육장 유효성 검증 (한글만 입력)
-function checkECname() {
-    var ecnamePattern = /^[가-힣]*$/;
-    var checkEcname = ecnamePattern.test(courseInfo.value.ecname);
-    
-    if(!checkEcname) {
-        isEcname.value = false;
-    } else {
-        isEcname.value = true;
+//멀티파일 사진 미리보기
+const src = ref([]);
+
+function addImage(e) {
+    const file = (e.target).files;
+    const fileLength= file.length;
+    let newList = [];
+    for(let i=0; i< fileLength; i++) {
+        newList.push(URL.createObjectURL(file[i]));
     }
+    src.value= newList
 }
 
-// 교육과정 유효성 검증
-function checkCcode() {
-    var ccodePattern = /^\d{4}[A-Z]\d$/;
-    var checkCcode = ccodePattern.test(courseInfo.value.ccode);
 
-    if(!checkCcode) {
-        isCcode.value = false;
-    } else {
-        isCcode.value = true;
-    }
-}
 
-// 운영진 이름 유효성 검증
-function checkCmanager() {
-    var namePattern = /^[ㄱ-ㅎ가-힣]{2,4}$/;
-    var checkManager = namePattern.test(courseInfo.value.cmanager);
 
-    if(!checkManager) {
-        isCmanager.value = false;
-    } else {
-        isCmanager.value = true;
-    }
-}
 
-// 강사진 이름 유효성 검증
-function checkCprofessor() {
-    var namePattern = /^[ㄱ-ㅎ가-힣]{2,4}$/;
-    var checkProfessor = namePattern.test(courseInfo.value.cprofessor);
 
-    if(!checkProfessor) {
-        isCprofessor.value = false;
-    } else {
-        isCprofessor.value = true;
-    }
-}
+
+
 
 </script>
 
@@ -294,6 +213,7 @@ textarea,
 select {
     font-family: 'Noto Sans KR', sans-serif;
 }
+
 
 .headingArea {
     position: relative;
@@ -424,6 +344,30 @@ select {
     min-height: 42px;
 }
 
+.form_bytes {
+    line-height: normal;
+    font-weight: 500;
+    border-collapse: collapse;
+    box-sizing: border-box;
+    margin: 0;
+    width: 100%;
+    text-align: right;
+    font-size: 12px;
+    color: #cccccc;
+    margin-top: 10px;
+    padding: 0px 5px;
+}
+
+.form_bytes .byte {
+    line-height: normal;
+    font-weight: 500;
+    border-collapse: collapse;
+    text-align: right;
+    font-size: 12px;
+    color: #cccccc;
+    box-sizing: border-box;
+}
+
 .btn_big_wrap {
     box-sizing: border-box;
     margin: 0;
@@ -432,96 +376,4 @@ select {
     justify-content: center;
     padding: 0;
     margin-top: 60px;
-}
-
-
-/* course image -------------------------*/
-.course_wrap {
-    border-collapse: collapse;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    background: white;
-    min-height: 120px;
-}
-
-.course_attach {
-    line-height: normal;
-    font-size: 14px;
-    font-weight: 500;
-    border-collapse: collapse;
-    box-sizing: border-box;
-
-    display: flex;
-    align-items: center;
-}
-
-.img_box {
-    line-height: normal;
-    border-collapse: collapse;
-    box-sizing: border-box;
-    text-decoration: none;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100px;
-    height: 100px;
-    padding-bottom: 0;
-    /* border-radius: 50%; */
-    background: #F2F2F2;
-    color: #b1b1b1;
-    font-size: 32px;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-
-.center_edit {
-    line-height: normal;
-    font-weight: 500;
-    border-collapse: collapse;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    margin-left: 30px;
-}
-
-.tit {
-    line-height: normal;
-    font-size: 14px;
-    font-weight: 500;
-    border-collapse: collapse;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-/* product img */
-.attach_wrap {
-    line-height: normal;
-    font-size: 14px;
-    font-weight: 500;
-    border-collapse: collapse;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-.guide_txt {
-    line-height: normal;
-    font-weight: 500;
-    border-collapse: collapse;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    margin-left: 5px;
-    padding-top: 2px;
-    font-size: 12px;
-    color: #999999;
-}
-
-
-</style>
+}</style>
