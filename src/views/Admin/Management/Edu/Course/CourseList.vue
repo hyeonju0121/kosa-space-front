@@ -59,7 +59,7 @@
                         </div>
                         <div style="margin-top: 2%;">
                             <RouterLink :to="`/admin/course/update?cno=${course.cno}`">
-                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                <button type="button" class="btn btn-outline-dark btn-sm"
                                     @click="handleUpdateBtn">수정</button>
                             </RouterLink>
 
