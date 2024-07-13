@@ -64,10 +64,11 @@
                     </div>
 
                     <div class="btn_big_wrap">
+                        <BaseButtonSubmit type="submit" class="me-3">완료</BaseButtonSubmit>
                         <RouterLink to="/admin/room/list">
                             <BaseButtonCancle>취소</BaseButtonCancle>
                         </RouterLink>
-                        <BaseButtonSubmit type="submit">완료</BaseButtonSubmit>
+                        
                     </div>
                 </form>
             </div>
