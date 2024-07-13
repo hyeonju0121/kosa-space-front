@@ -13,7 +13,7 @@
 
         <div class="form_table no_line">
             <form @submit.prevent="handleSubmit">
-                <div class="tr">
+                <div class="tr align-items-center">
                     <div class="th">
                         <p class="form_label required">교육과정 이미지 </p>
                     </div>
@@ -61,7 +61,7 @@
                             placeholder="교육과정 명을 입력해주세요." maxlength="50" style="width:300px;">
                     </div>
                 </div>
-                <div class="tr">
+                <div class="tr align-items-center">
                     <div class="th">
                         <p class="form_label required">교육과정 번호</p>
                     </div>
