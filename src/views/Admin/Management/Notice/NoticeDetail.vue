@@ -13,89 +13,119 @@
 
             <div class="container mt-5" style="text-align: left;">
                 <div class="detail-board-box">
-				<input type="hidden" id="boardSeq">
-				<div class="title-group">
-					<div class="lpart">
-						<span class="hidden-txt">제목</span>
-						<div class="title" id="title">{{ notice.ntitle }}</div>
-					</div>
-					<div class="rpart">
-						<div class="board-date">
-							<span class="hidden-txt">작성일</span> <span class="text" id="regDate">2022-07-07</span>
-						</div>
-					</div>
-				</div>
+                    <input type="hidden" id="boardSeq">
+                    <div class="title-group">
+                        <div class="lpart">
+                            <span class="hidden-txt">제목</span>
+                            <div class="title" id="title">{{ notice.ntitle }}</div>
+                        </div>
+                        <div class="rpart">
+                            <div class="board-date">
+                                <span class="hidden-txt">작성일</span> <span class="text" id="regDate">{{
+                                    notice.ncreatedat }}</span>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="category" style="display: flex;">
-                    <div class="educenter">
-                        <p class="category-title">교육장</p>
-                        <h5 class="category-sub">송파교육센터</h5>
+                    <div class="category" style="display: flex;">
+                        <div class="educenter">
+                            <p class="category-title">교육장</p>
+                            <h5 class="category-sub">{{ ecname }}</h5>
+                        </div>
+                        <div class="course" style="margin-left: 6%;">
+                            <p class="category-title2">교육과정</p>
+                            <h5 class="category-sub">{{ cname }}</h5>
+                        </div>
+                        <div class="type" style="margin-left: 6%;">
+                            <p class="category-title">유형</p>
+                            <h5 class="category-sub">{{ notice.ncategory }}</h5>
+                        </div>
+                        <div class="writer" style="margin-left: 6%;">
+                            <p class="category-title3">작성자</p>
+                            <h5 class="category-sub">{{ notice.mid }}</h5>
+                        </div>
                     </div>
-                    <div class="course" style="margin-left: 6%;">
-                        <p class="category-title2">교육과정</p>
-                        <h5 class="category-sub">MSA 2차 Full Stack 개발자 양성과정</h5>
-                    </div>
-                    <div class="type" style="margin-left: 6%;">
-                        <p class="category-title">유형</p>
-                        <h5 class="category-sub">취업</h5>
-                    </div>
-                    <div class="writer" style="margin-left: 6%;">
-                        <p class="category-title3">작성자</p>
-                        <h5 class="category-sub">kosaSB</h5>
+
+
+                    <div class="conts-group" id="boardCtt">
+                        <p style="line-height: 1.8;">
+                            {{ notice.ncontent }}
+                            <!-- 금융결제원 CA 인증서 만료일 도래에 따라 CA인증서가 갱신되었음을&nbsp;안내드리오니 아래를 참고하시어 갱신된&nbsp;운영&nbsp;CA인증서를 적용하여 주시기
+                            바랍니다.
+                            <br><br>
+                            <strong>1.&nbsp;갱신된&nbsp;운영 CA인증서<br></strong> -->
+                        </p>
+                        <!-- <table class="__se_tbl" style="border: 1px solid rgb(199, 199, 199); border-image: none;"
+                            border="0" cellspacing="0" cellpadding="0" _se2_tbl_template="4">
+                            <tbody>
+                                <tr>
+                                    <td
+                                        style="padding: 3px 4px 2px; width: 137px; height: 17px; text-align: left; color: rgb(102, 102, 102); font-weight: normal; border-right-color: rgb(231, 231, 231); border-right-width: 1px; border-right-style: solid; background-color: rgb(243, 243, 243);">
+                                        <p align="center" style="line-height: 1.8;">&nbsp;구분</p>
+                                    </td>
+                                    <td
+                                        style="padding: 3px 4px 2px; width: 266px; height: 17px; text-align: left; color: rgb(102, 102, 102); font-weight: normal; border-right-color: rgb(231, 231, 231); border-right-width: 1px; border-right-style: solid; background-color: rgb(243, 243, 243);">
+                                        <p align="center" style="line-height: 1.8;">운영</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td
+                                        style="padding: 3px 4px 2px; width: 137px; height: 18px; color: rgb(102, 102, 102); border-top-color: rgb(231, 231, 231); border-right-color: rgb(231, 231, 231); border-top-width: 1px; border-right-width: 1px; border-top-style: solid; border-right-style: solid; background-color: rgb(255, 255, 255);">
+                                        <p align="center" style="line-height: 1.8;">&nbsp;CN</p>
+                                    </td>
+                                    <td
+                                        style="padding: 3px 4px 2px; width: 266px; height: 18px; color: rgb(102, 102, 102); border-top-color: rgb(231, 231, 231); border-right-color: rgb(231, 231, 231); border-top-width: 1px; border-right-width: 1px; border-top-style: solid; border-right-style: solid; background-color: rgb(255, 255, 255);">
+                                        <p align="center" style="line-height: 1.8;">&nbsp;yessignCA Class 3</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td
+                                        style="padding: 3px 4px 2px; width: 137px; height: 18px; color: rgb(102, 102, 102); border-top-color: rgb(231, 231, 231); border-right-color: rgb(231, 231, 231); border-top-width: 1px; border-right-width: 1px; border-top-style: solid; border-right-style: solid; background-color: rgb(255, 255, 255);">
+                                        <p align="center" style="line-height: 1.8;">&nbsp;유효기간</p>
+                                    </td>
+                                    <td
+                                        style="padding: 3px 4px 2px; width: 266px; height: 18px; color: rgb(102, 102, 102); border-top-color: rgb(231, 231, 231); border-right-color: rgb(231, 231, 231); border-top-width: 1px; border-right-width: 1px; border-top-style: solid; border-right-style: solid; background-color: rgb(255, 255, 255);">
+                                        <p align="center" style="line-height: 1.8;">2020-05-15 ~ 2030-05-15</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td
+                                        style="padding: 3px 4px 2px; width: 137px; height: 18px; color: rgb(102, 102, 102); border-top-color: rgb(231, 231, 231); border-right-color: rgb(231, 231, 231); border-top-width: 1px; border-right-width: 1px; border-top-style: solid; border-right-style: solid; background-color: rgb(255, 255, 255);">
+                                        <p align="center" style="line-height: 1.8;">&nbsp;<strong>갱신일</strong></p>
+                                    </td>
+                                    <td
+                                        style="padding: 3px 4px 2px; width: 266px; height: 18px; color: rgb(102, 102, 102); border-top-color: rgb(231, 231, 231); border-right-color: rgb(231, 231, 231); border-top-width: 1px; border-right-width: 1px; border-top-style: solid; border-right-style: solid; background-color: rgb(255, 255, 255);">
+                                        <p align="center" style="text-align: center; line-height: 1.8;"><strong>2022년 8월
+                                                7일</strong></p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="line-height: 1.8;"><br><strong>2. 조치사항<br></strong>&nbsp;&nbsp;① 인증서 프로그램(가입자설비,
+                            RA시스템, PKI 검증서버 등)에 갱신된 인증서* 적용<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * 인증서 DN 및 일련번호
+                            변경됨<br>&nbsp;&nbsp;② 인증서가 갱신되었을 때 디렉토리 서버에서 자동 다운로드 받을 수 있도록 가입자설비 수정<br><strong><span
+                                    style="color: rgb(58, 50, 195);">&nbsp; </span><span
+                                    style="color: rgb(58, 50, 195);">※ 상기 조치 사항은 전문보안업체에 문의하여
+                                    조치</span></strong><br><br><strong>3. 미조치시 발생가능한 오류 (예시)</strong><br>&nbsp;- ';인증서
+                            검증에 실패했습니다. 디렉토리 주소가 없습니다';<br>&nbsp;- ';허용되지 않은 CA로부터 발급된 인증서입니다';<br>&nbsp;- ';전자서명 인증서
+                            유효성 검사 중 오류가 발생했습니다'; <br>-&nbsp;&nbsp;인증서 로그인시 인증서가 보이지 않는 현상 등 <br><br><strong>4. 문의처 :
+                                yeskeycert@kftc.or.kr</strong>&nbsp;<br><br>감사합니다.&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </p> -->
+
+                        <div v-if="notice.nattachdata" class="info-file">
+                            <div class="title">첨부파일(<span class="file-num">1</span>건)</div>
+                            <div class="list">
+                                <ul>
+                                    <li><a href="#" class="btn btn-txt-file" addfileseq="101206">금융결제원 운영
+                                            CA인증서(yessignCA Class 3).zip</a></li>NaN
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-
-				<div class="conts-group" id="boardCtt">
-                    <p style="line-height: 1.8;">
-                        금융결제원 CA 인증서 만료일 도래에 따라 CA인증서가 갱신되었음을&nbsp;안내드리오니 아래를 참고하시어 갱신된&nbsp;운영&nbsp;CA인증서를 적용하여 주시기 바랍니다.
-                        <br><br>
-                        <strong>1.&nbsp;갱신된&nbsp;운영 CA인증서<br></strong>
-                    </p>
-                    <table class="__se_tbl" style="border: 1px solid rgb(199, 199, 199); border-image: none;" border="0" cellspacing="0" cellpadding="0" _se2_tbl_template="4"><tbody><tr><td style="padding: 3px 4px 2px; width: 137px; height: 17px; text-align: left; color: rgb(102, 102, 102); font-weight: normal; border-right-color: rgb(231, 231, 231); border-right-width: 1px; border-right-style: solid; background-color: rgb(243, 243, 243);"><p align="center" style="line-height: 1.8;">&nbsp;구분</p></td><td style="padding: 3px 4px 2px; width: 266px; height: 17px; text-align: left; color: rgb(102, 102, 102); font-weight: normal; border-right-color: rgb(231, 231, 231); border-right-width: 1px; border-right-style: solid; background-color: rgb(243, 243, 243);"><p align="center" style="line-height: 1.8;">운영</p></td></tr><tr><td style="padding: 3px 4px 2px; width: 137px; height: 18px; color: rgb(102, 102, 102); border-top-color: rgb(231, 231, 231); border-right-color: rgb(231, 231, 231); border-top-width: 1px; border-right-width: 1px; border-top-style: solid; border-right-style: solid; background-color: rgb(255, 255, 255);"><p align="center" style="line-height: 1.8;">&nbsp;CN</p></td><td style="padding: 3px 4px 2px; width: 266px; height: 18px; color: rgb(102, 102, 102); border-top-color: rgb(231, 231, 231); border-right-color: rgb(231, 231, 231); border-top-width: 1px; border-right-width: 1px; border-top-style: solid; border-right-style: solid; background-color: rgb(255, 255, 255);"><p align="center" style="line-height: 1.8;">&nbsp;yessignCA Class 3</p></td></tr><tr><td style="padding: 3px 4px 2px; width: 137px; height: 18px; color: rgb(102, 102, 102); border-top-color: rgb(231, 231, 231); border-right-color: rgb(231, 231, 231); border-top-width: 1px; border-right-width: 1px; border-top-style: solid; border-right-style: solid; background-color: rgb(255, 255, 255);"><p align="center" style="line-height: 1.8;">&nbsp;유효기간</p></td><td style="padding: 3px 4px 2px; width: 266px; height: 18px; color: rgb(102, 102, 102); border-top-color: rgb(231, 231, 231); border-right-color: rgb(231, 231, 231); border-top-width: 1px; border-right-width: 1px; border-top-style: solid; border-right-style: solid; background-color: rgb(255, 255, 255);"><p align="center" style="line-height: 1.8;">2020-05-15 ~ 2030-05-15</p></td></tr><tr><td style="padding: 3px 4px 2px; width: 137px; height: 18px; color: rgb(102, 102, 102); border-top-color: rgb(231, 231, 231); border-right-color: rgb(231, 231, 231); border-top-width: 1px; border-right-width: 1px; border-top-style: solid; border-right-style: solid; background-color: rgb(255, 255, 255);"><p align="center" style="line-height: 1.8;">&nbsp;<strong>갱신일</strong></p></td><td style="padding: 3px 4px 2px; width: 266px; height: 18px; color: rgb(102, 102, 102); border-top-color: rgb(231, 231, 231); border-right-color: rgb(231, 231, 231); border-top-width: 1px; border-right-width: 1px; border-top-style: solid; border-right-style: solid; background-color: rgb(255, 255, 255);"><p align="center" style="text-align: center; line-height: 1.8;"><strong>2022년 8월 7일</strong></p></td></tr></tbody></table><p style="line-height: 1.8;"><br><strong>2. 조치사항<br></strong>&nbsp;&nbsp;① 인증서 프로그램(가입자설비, RA시스템, PKI 검증서버 등)에 갱신된 인증서* 적용<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * 인증서 DN 및 일련번호 변경됨<br>&nbsp;&nbsp;② 인증서가 갱신되었을 때 디렉토리 서버에서 자동 다운로드 받을 수 있도록 가입자설비 수정<br><strong><span style="color: rgb(58, 50, 195);">&nbsp; </span><span style="color: rgb(58, 50, 195);">※ 상기 조치 사항은 전문보안업체에 문의하여 조치</span></strong><br><br><strong>3. 미조치시 발생가능한 오류 (예시)</strong><br>&nbsp;- ';인증서 검증에 실패했습니다. 디렉토리 주소가 없습니다';<br>&nbsp;- ';허용되지 않은 CA로부터 발급된 인증서입니다';<br>&nbsp;- ';전자서명 인증서 유효성 검사 중 오류가 발생했습니다'; <br>-&nbsp;&nbsp;인증서 로그인시 인증서가 보이지 않는 현상 등 <br><br><strong>4. 문의처 : yeskeycert@kftc.or.kr</strong>&nbsp;<br><br>감사합니다.&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><div class="info-file"><div class="title">첨부파일(<span class="file-num">1</span>건)</div><div class="list"><ul><li><a href="#" class="btn btn-txt-file" addfileseq="101206">금융결제원 운영 CA인증서(yessignCA Class 3).zip</a></li>NaN</ul></div></div></div>
-			</div>   
-                
-                <!--
-                <div class="mb-3">
-                    <span
-                        style="font-size: 2rem; border-bottom: 4px solid #22C55E; padding-bottom: 3px; font-weight: 500;">{{
-                            notice.ntitle }}</span>
-                </div>
-                 -->
-
-                <!--
-                <div class="d-flex justify-content-between mb-1">
-                    <div class="d-flex ms-2">
-                        <span class="caregory">{{ notice.ncategory }}</span>
-                        <span class="center ms-2">{{ notice.ecname }}</span>
-                        <span class="center ms-2">{{ notice.cname }}</span>
-                    </div>
-                    <div class="me-3">
-                        <span class="text-end">{{ notice.ncreatedat }}</span>
-                    </div>
-                </div>
-                -->
-
-                <!--<div class="p-2 mb-3" style="border-bottom: 1px solid #22C55E;">-->
-                    <!-- <input ref="nattach" type="file"> -->
-                <!--</div>-->
-
-                <!--
-                <div class="d-flex flex-column p-3 mb-3"
-                    style="width: 100%; min-height: 460px; border: 1px solid #22C55E">
-                    <span>
-                        <img class="p-3" src="//www.saraminimage.co.kr/sri/person/resume/img_empty_announce.png">
-                        <img :src="`${axios.defaults.baseURL}/edu/download/traineeattach/${notice.mid}`" width="110"
-                            height="150">
-                    </span>
-                    <span class="p-3" style="font-size: 1.3rem">
-                        {{ notice.ncontent }}
-                    </span>
-                </div>
-                <div class="d-flex justify-content-end">
-                    <button class="btn btn-outline-secondary me-3" @click="handleList()" value="목록">목록으로</button>
-                </div>
-            -->
+            </div>
+            <div class="d-flex justify-content-start mt-3 ms-3">
+                <button class="btn btn-outline-secondary" @click="goNoticeList()">목록으로</button>
             </div>
         </div>
     </div>
@@ -104,38 +134,78 @@
 
 
 <script setup>
-import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import communityAPI from '@/apis/communityAPI';
+
+import { useRouter, useRoute } from 'vue-router';
+import { onMounted, ref } from 'vue';
 import axios from "axios";
 // import { useStore } from "vuex";
 
-//라우터 객체 얻기
 const router = useRouter();
+const route = useRoute();
+
+// 만약 쿼리를 통해 들어오지 않는다면??? --> 예외처리 생각해야함
+const nPageNo = ref(route.query.nPageNo || 1);
+const nno = ref(route.query.nno);
+const ecname = ref(route.query.ecname);
+const cname = ref(route.query.cname);
+const mid = ref(route.query.mid);
+
+
+
+onMounted(() => {
+    getNoticelInfo(nno.value);
+})
+
 
 //상태 정의
 let notice = ref({
-    nno: "",
-    ecno: "",
-    cno: "",
-    writer: "관리자",
-    mid: "2024M2003",
-    ncategory: "강의장",
-    ntitle: "강의장 청결 관련",
-    ncontent: "강의장 깔끔하게 사용해주세요!",
-    nhitcount: "",
-    nattach: "",
-    nattachoname: "",
-    nattachtype: "",
-    ncreatedat: "2024-06-25",
-    nupdatedat: "",
-    ecname: "송파 교육장",
-    cname: "MSA 1차"
+    // "nno": 65,
+    // "ecno": 0,
+    // "cno": 0,
+    // "mid": "kosaSB",
+    // "ncategory": "강의실",
+    // "ntitle": "휴일 공지 안내",
+    // "ncontent": "8월 15일 휴일입니다. 다들 착오 없으시길 바랍니다.",
+    // "nhitcount": 0,
+    // "nattachdata": null,
+    // "nattachoname": null,
+    // "nattachtype": null,
+    // "nattach": null,
+    // "ncreatedat": "2024-08-14 09:58:53.226367",
+    // "nupdatedat": null
 });
 
 
-function handleList() {
-    router.push('./list');
+// 공지사항 상세정보 가져오기 getNoticelInfo
+async function getNoticelInfo(nno) {
+    try {
+        console.group("getNoticelInfo 실행");
+        console.log("nno = " + nno);
+
+        const response = await communityAPI.getNoticeDetail(nno);
+
+        notice.value = response.data;
+        console.log("공지사항 상세정보 가져오기 성공");
+        console.log("notice.value = " + notice.value);
+        console.groupEnd();
+    } catch (error) {
+        console.log(error);
+        console.log("공지사항 상세정보 가져오기 실패");
+    }
 }
+
+function goNoticeList() {
+    router.push({
+        path: "/admin/notice/list",
+        query: {
+            ecname: ecname.value,
+            cname: cname.value,
+            nPageNo: nPageNo.value
+        }
+    })
+}
+
 
 function handleUpdate() {
 
@@ -409,5 +479,4 @@ button {
     font-size: 1.2rem;
     color: #333232;
 }
-
 </style>

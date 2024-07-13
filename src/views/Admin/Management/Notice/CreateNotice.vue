@@ -13,7 +13,7 @@
             <div class="ms-3">
                 <div>
                     <!-- 테이블 -->
-                    <div class="container" style="text-align: left;">                        
+                    <div class="container" style="text-align: left;">
                         <form @submit.prevent="handleSubmit">
                             <table class="table">
                                 <tbody>
@@ -84,9 +84,9 @@
                                     <tr>
                                         <td>공지사항 내용</td>
                                         <td colspan="3">
-                                            <textarea maxlength="1000" @input="checkContentLength" v-model="notice.ncontent"
-                                                required name="ncontent" cols="90" rows="20" style="resize: none;"
-                                                placeholder="공지사항 내용을 입력해주세요.(1000자 이내)">
+                                            <textarea maxlength="1000" @input="checkContentLength"
+                                                v-model="notice.ncontent" required name="ncontent" cols="90" rows="20"
+                                                style="resize: none;" placeholder="공지사항 내용을 입력해주세요.(1000자 이내)">
                                             </textarea>
                                             <p>{{ notice.ncontent.length }}/1000</p>
                                             <div>
@@ -131,8 +131,10 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
-import { ref } from "vue";
+import communityAPI from '@/apis/communityAPI';
+
+import { useRouter, useRoute } from 'vue-router';
+import { onMounted, ref } from "vue";
 // import noticeAPI from "@/apis/noticeAPI";
 
 // 유효성 검사 상태를 추적하는 변수
@@ -319,4 +321,5 @@ select {
     width: 100%;
     height: 6.25em;
     resize: none;
-}</style>
+}
+</style>

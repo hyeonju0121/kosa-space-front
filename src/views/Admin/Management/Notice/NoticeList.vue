@@ -1,10 +1,10 @@
 <template>
     <div class="main p-3" style="margin-left: 25px; width: 1200px;">
-      <div class="item-section mt-2 mb-2" style="font-size: 12px">
-        <span>공지사항 관리 > 공지사항 목록</span>
-      </div>
-  
-      <!-- 
+        <div class="item-section mt-2 mb-2" style="font-size: 12px">
+            <span>공지사항 관리 > 공지사항 목록</span>
+        </div>
+
+        <!-- 
       <article class="key_visual_area visual_customer">
 					<div class="txt_area">
 						<h2>공지사항</h2>
@@ -15,30 +15,32 @@
           </figure>
 			</article>
     -->
-  
-    <!-- contents -->
-    <div class="headingArea">
-        <div class="title">
-            <h1 id="itemTitle">공지사항</h1>
-        </div>
-    </div>
 
-      <form @submit.prevent="handleSubmitFilter1">
-        <div class="align" style="display: flex; margin-bottom: 5%;">
-          <div class="InpBox">
-            <select title="교육장 선택" v-model="filter.ecname" :class="btnEnable">
-              <option selected disabled :value="''">교육장 선택</option>
-              <option v-for="item in ecnames" :key="item" :value="item">{{ item }}</option>
-            </select>
-          </div>
-          <div class="InpBox" style="margin-left: 1%; width: 370px;">
-            <select title="교육과정 선택" v-model="filter.cname" :class="btnEnable">
-              <option selected disabled :value="''">교육과정 선택</option>
-              <option v-for="item in cnames" :key="item" :value="item">{{ item }}</option>
-            </select>
-          </div>
-  
-          <!--
+        <!-- contents -->
+        <div class="headingArea">
+            <div class="title">
+                <h1 id="itemTitle">공지사항</h1>
+            </div>
+        </div>
+
+        <form @submit.prevent="handleSubmitFilter1">
+            <div class="align" style="display: flex; margin-bottom: 5%;">
+                <div class="InpBox">
+                    <select title="교육장 선택" v-model="filter.ecname" :class="btnEnable">
+                        <!-- <option selected disabled :value="''">교육장 선택</option> -->
+                        <option selected :value="filter.ecname">{{ filter.ecname }}</option>
+                        <option v-for="item in ecnames" :key="item" :value="item">{{ item }}</option>
+                    </select>
+                </div>
+                <div class="InpBox" style="margin-left: 1%; width: 370px;">
+                    <select title="교육과정 선택" v-model="filter.cname" :class="btnEnable">
+                        <!-- <option selected disabled :value="''">교육과정 선택</option> -->
+                        <option selected :value="filter.cname">{{ filter.cname }}</option>
+                        <option v-for="item in cnames" :key="item" :value="item">{{ item }}</option>
+                    </select>
+                </div>
+
+                <!--
           <div class="InpBox" style="margin-left: 1%; width: 150px;">
             <select title="카테고리 선택" v-model="filter.ncategory" :class="btnEnable">
               <option selected disabled :value="''">카테고리 선택</option>
@@ -51,138 +53,281 @@
             </select>
           </div>
         -->
-        </div>
-      </form>
+            </div>
+        </form>
 
-      <div class="search-head-sec">
-          <div class="search-title" id="listCnt"><p><b>총 <span class="search-num">{{ notices.length }}</span>개</b>의 글이 등록되어 있습니다</p></div>
-              <div class="search-input-box">
-                  <div class="search-input-group">
-                      <div class="lpart">
-                          <select id="columnName" class="dsgn-select" title="검색 구분 선택">
-                              <option value="">카테고리 선택</option>
-                              <option value="all">전체</option>
-                              <option value="출결">출결</option>
-                              <option value="수업">수업</option>
-                              <option value="강의실">강의실</option>
-                              <option value="취업">취업</option>
-                              <option value="행사">행사</option>
-                          </select>
-                      </div>
-                      <div class="rpart">
-                          <div class="input-box">
-                              <input type="text" id="columnValue" class="dsgn-input" placeholder="검색어를 입력하세요" value="" title="검색어 입력">
-                              <button type="button" class="btn btn-txtclear"><span class="icon-txtclear"><span class="hidden-txt">문구삭제</span></span></button>
-                          </div>
-                          <button type="button" id="searchBtn" class="btn btn-sub bg-main btn-search">검색</button>
-                          <button type="button" id="searchBtn" class="btn btn-sub bg-main btn-search" @click="handleCreateBtn">공지사항 등록</button>  
-                      </div>
-                  </div>
-              </div>
-          </div>
-  
-      <div class="mt-3">
-        <table class="notice-table">
-          <tbody>
-            <tr v-for="notice in notices" :key="notice.id" :class="{'highlight': notice.highlight}">
-              <td class="label">{{ notice.nno }}</td>
-              <td class="label">
-                <span class="d-flex">
-                  <span class="new_mark2">전체</span>
-                  <span class="new_mark_complete ms-2">취업</span>
-                </span>
-              </td>
-              <td class="title">{{ notice.title }}</td>
-              <td class="date">{{ notice.date }}</td>
-              <td class="views">{{ notice.views }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <div class="search-head-sec">
+            <div class="search-title" id="listCnt">
+                <!-- <p><b>총 <span class="search-num">{{ notices.length }}</span>개</b>의 글이 등록되어 있습니다</p> -->
+            </div>
+            <div class="search-input-box">
+                <div class="search-input-group">
+                    <div class="lpart">
+                        <select id="columnName" class="dsgn-select" title="검색 구분 선택">
+                            <!-- <option value="">카테고리 선택</option> -->
+                            <option :value="filter.ncategory">{{ filter.ncategory }}</option>
+                            <option value="all">전체</option>
+                            <option value="출결">출결</option>
+                            <option value="수업">수업</option>
+                            <option value="강의실">강의실</option>
+                            <option value="취업">취업</option>
+                            <option value="행사">행사</option>
+                        </select>
+                    </div>
+                    <div class="rpart">
+                        <div class="input-box">
+                            <input type="text" id="columnValue" class="dsgn-input" placeholder="검색어를 입력하세요" value=""
+                                title="검색어 입력">
+                            <button type="button" class="btn btn-txtclear"><span class="icon-txtclear"><span
+                                        class="hidden-txt">문구삭제</span></span></button>
+                        </div>
+                        <button type="button" id="searchBtn" class="btn btn-sub bg-main btn-search">검색</button>
+                        <button type="button" id="searchBtn" class="btn btn-sub bg-main btn-search"
+                            @click="handleCreateBtn">공지사항 등록</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <table class="notice-table">
+                <tbody>
+                    <!-- <tr v-for="item in noticeList.notice" :key="item" :class="{ 'highlight': notice.highlight }"> -->
+                    <tr v-for="item in noticeList.notice" :key="item">
+                        <td class="label">{{ item.nno }}</td>
+                        <td class="label">
+                            <span class="d-flex">
+                                <span class="new_mark2">전체</span>
+                                <span class="new_mark_complete ms-2">{{ item.ncategory }}</span>
+                            </span>
+                        </td>
+                        <td class="title"><span @click="goNoticeDetail(item.nno)" style="cursor: pointer;">{{
+                            item.ntitle }}</span></td>
+                        <td class="date">{{ item.ncreatedat.substring(0, 10) }}</td>
+                        <td class="views">{{ item.nhitcount }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div v-if="noticeList.notice.length > 1">
+            <div class="mt-2" style="display: flex; justify-content: center;">
+                <div>
+                    <button class="btn btn-outline-primary btn-sm me-1" @click="changePageNo(1)">처음</button>
+                    <button v-if="noticeList.pager.groupNo > 1" class="btn btn-outline-info btn-sm me-1"
+                        @click="changePageNo(noticeList.pager.startPageNo - 1)">이전</button>
+                    <button v-for="pageNo in noticeList.pager.pageArray" :key="pageNo"
+                        :class="(noticeList.pager.pageNo === pageNo) ? 'btn-danger' : 'btn-outline-success'"
+                        class="btn btn-sm me-1" @click="changePageNo(pageNo)">
+                        {{ pageNo }}
+                    </button>
+                    <button v-if="noticeList.pager.groupNo < noticeList.pager.totalGroupNo"
+                        class="btn btn-outline-info btn-sm me-1"
+                        @click="changePageNo(noticeList.pager.endPageNo + 1)">다음</button>
+                    <button class="btn btn-outline-info btn-sm me-1"
+                        @click="changePageNo(noticeList.pager.totalPageNo)">맨끝</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue';
-  
-  // Sample data for ecnames, cnames, and notices
-  const ecnames = ref(['교육장1', '교육장2', '교육장3']);
-  const cnames = ref(['과정1', '과정2', '과정3']);
-  const notices = ref([
-    { id: 1, nno: 1, title: '금융데이터거래소 이용약관 개정 안내', date: '2020-12-21', views: 31, highlight: true },
-    { id: 2, nno: 2, title: '금융권 데이터 유통 가이드(2020.10 개정)', date: '2020-10-29', views: 237, highlight: true },
-    { id: 3, nno: 3, title: '금융데이터거래소 및 데이터전문기관(금융보안원) 소개자료', date: '2020-09-15', views: 355, highlight: true },
-    { id: 4, nno: 4, title: '금융데이터거래소 이용약관 개정 안내', date: '2020-12-21', views: 31, highlight: false },
-    { id: 5, nno: 5, title: '금융권 데이터 유통 가이드(2020.10 개정)', date: '2020-10-29', views: 237, highlight: false },
-    { id: 6, nno: 6, title: '금융데이터거래소 및 데이터전문기관(금융보안원) 소개자료', date: '2020-09-15', views: 355, highlight: false },
-    { id: 7, nno: 7, title: '개인정보 처리방침 개정 안내', date: '2020-08-19', views: 137, highlight: false },
-    { id: 8, nno: 8, title: '금융데이터거래소 이용약관 변경 안내', date: '2020-08-05', views: 194, highlight: false },
-    { id: 9, nno: 9, title: '2020년 하반기 데이터바우처(AI데이터 가공 바우처) 사업 안내', date: '2020-07-16', views: 298, highlight: false },
-  ]);
-  
-  const filter = ref({
-    ecname: '',
-    cname: '',
-    ncategory: ''
-  });
-  
-  function handleSubmitFilter1() {
+</template>
+
+<script setup>
+import communityAPI from '@/apis/communityAPI';
+import educenterAPI from '@/apis/educenterAPI';
+import courseAPI from '@/apis/courseAPI';
+
+import { ref, onMounted, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+
+const router = useRouter();
+const route = useRoute();
+
+const nPageNo = ref(route.query.nPageNo || 1);
+
+const ecnames = ref();
+const cnames = ref();
+
+const noticeList = ref({
+    notice: "",
+    pager: ""
+});
+
+let filter = ref({
+    ecname: route.query.ecname || "송파교육센터",
+    cname: route.query.cname || "MSA 2차 Full Stack 개발자 양성과정",
+    ncategory: route.query.ncategory || "전체"
+});
+
+const btnEnable = ref("");
+
+onMounted(() => {
+    console.group("공지사항 목록 화면 랜더링 완료");
+    // 교육장 목록 (필터)
+    listCenterSet();
+    // 진행중인 교육과정 가져오기 (필터)
+    progressCourseList(filter.value.ecname);
+    // 교육장과 교육과정에 따른 공지 목록 가져오기
+    getNoticeList(filter.value.ecname, filter.value.cname, filter.value.ncategory, nPageNo.value);
+
+
+    console.groupEnd();
+});
+
+
+// 1. 교육장 목록 가져오기 ( O )
+async function listCenterSet() {
+    try {
+        const response = await educenterAPI.educenterNameList();
+        ecnames.value = response.data.splice(1);
+        console.log("center 리스트 가져오기 성공");
+    } catch (error) {
+        console.log("center 리스트 가져오기 실패");
+    }
+}
+
+// 2. 진행중인 교육과정 목록 가져오기 ( O )
+async function progressCourseList(ecname) {
+    // getInprogressCourseList
+    try {
+        const response = await courseAPI.getInprogressCourseList(ecname);
+        cnames.value = response.data;
+        console.log("cnames.value = " + cnames.value);
+        console.log("진행중인 교육과정 정보 가져오기 성공");
+    } catch (error) {
+        console.log(error);
+        console.log("진행중인 교육과정 정보 가져오기 실패");
+    }
+}
+
+// 3. 교육장과 교육과정에 따른 공지사항 목록 리스트 가져오기
+async function getNoticeList(ecname, cname, ncategory, pageNo) {
+    try {
+        console.group("getNoticeList 실행");
+        console.log("ecname = " + ecname);
+        console.log("cname = " + cname);
+        console.log("ncategory = " + ncategory);
+        console.log("pageNo = " + pageNo);
+
+        if (ncategory === "전체") ncategory = 'all';
+
+        const response = await communityAPI.getNoticeList(ecname, cname, ncategory, pageNo);
+        noticeList.value.notice = response.data.notice;
+        noticeList.value.pager = response.data.pager;
+        // test.value = response.data;
+        console.log("공지사항 목록 가져오기 성공");
+        console.log("noticeList.value.notice = " + noticeList.value.notice);
+        console.log("noticeList.value.pager = " + noticeList.value.pager);
+        // console.log("test.value = " + JSON.stringify(test.value));
+        console.groupEnd();
+    } catch (error) {
+        console.log(error);
+        console.log("공지사항 목록 가져오기 실패");
+    }
+}
+
+watch(
+    () => filter.value.ecname,
+    (nv, ov) => {
+        console.log("filter.value.ecname 변경 전 = " + nv);
+        console.log("filter.value.ecname 변경 후 = " + ov);
+        filter.value.cname = "교육과정 선택";
+        getNoticeList(nv, filter.value.cname, filter.value.ncategory, nPageNo.value);
+        progressCourseList(nv);
+    }
+)
+
+watch(
+    () => filter.value.cname,
+    (nv, ov) => {
+        console.log("filter.value.cname 변경 전 = " + nv);
+        console.log("filter.value.cname 변경 후 = " + ov);
+        getNoticeList(filter.value.ecname, nv, filter.value.ncategory, nPageNo.value);
+    }
+)
+
+// 공지사항 단건 조회
+function goNoticeDetail(nno) {
+    router.push({
+        path: "/admin/notice/detail",
+        query: {
+            nno: nno,
+            nPageNo: nPageNo.value,
+            ecname: filter.value.ecname,
+            cname: filter.value.cname,
+            ncategory: filter.value.ncategory,
+            mid: noticeList.value.notice.mid
+        }
+    })
+}
+
+
+
+function handleSubmitFilter1() {
     // Filtering logic here
-  }
-  
-  function handleCreateBtn() {
+}
+
+function handleCreateBtn() {
     // Logic to handle the create button click
-  }
-  </script>
-  
-  <style scoped>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
-  
-  a {
+}
+
+// -- 페이징 처리 --
+function changePageNo(argPageNo) {
+    console.log("changePageNo 함수 실행");
+    console.log("argPageNo = " + argPageNo);
+    nPageNo.value = argPageNo;
+    getNoticeList(filter.value.ecname, filter.value.cname, filter.value.ncategory, argPageNo);
+}
+</script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+
+a {
     text-decoration: none;
-  }
-  
-  body,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  input,
-  p,
-  span,
-  small,
-  textarea,
-  select,
-  strong,
-  th,
-  td,
-  button {
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+p,
+span,
+small,
+textarea,
+select,
+strong,
+th,
+td,
+button {
     font-family: 'Noto Sans KR', sans-serif;
-  }
-  
-  .headingArea {
+}
+
+.headingArea {
     position: relative;
     padding: 22px 0 0;
     margin: 0 0 20px;
-  }
-  
-  .headingArea .title {
+}
+
+.headingArea .title {
     border-bottom: 2px solid #2a3954;
-  }
-  
-  #itemTitle {
+}
+
+#itemTitle {
     font-weight: 700;
     font-size: 1.6rem;
-  }
-  
-  .InpBox {
+}
+
+.InpBox {
     display: inline-block;
     vertical-align: top;
-  }
-  
-  .InpBox select {
+}
+
+.InpBox select {
     padding: 0 28px 0 12px;
     width: 100%;
     height: 40px;
@@ -196,92 +341,92 @@
     vertical-align: top;
     background-color: #dbdbdb0e;
     cursor: pointer;
-  }
-  
-  .mt-3 {
+}
+
+.mt-3 {
     margin-top: 1rem;
-  }
-  
-  .notice-summary {
+}
+
+.notice-summary {
     font-size: 1rem;
     margin-bottom: 1rem;
-  }
-  
-  .search-box {
+}
+
+.search-box {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     margin-bottom: 1rem;
-  }
-  
-  .search-box input {
+}
+
+.search-box input {
     width: 200px;
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 4px 0 0 4px;
-  }
-  
-  .search-box button {
+}
+
+.search-box button {
     background-color: #ccc;
     border: 1px solid #ccc;
     border-left: none;
     padding: 0.5rem 1rem;
     border-radius: 0 4px 4px 0;
     cursor: pointer;
-  }
-  
-  .notice-table {
+}
+
+.notice-table {
     width: 100%;
     border-collapse: collapse;
     border-top: 1px solid #37c375;
-  }
-  
-  .notice-table tr {
+}
+
+.notice-table tr {
     border-bottom: 1px solid #ccc;
-  }
-  
-  .notice-table tr.highlight {
+}
+
+.notice-table tr.highlight {
     background-color: #f2fdf7;
-  }
-  
-  .notice-table td {
+}
+
+.notice-table td {
     padding: 0.75rem;
-  }
-  
-  .notice-table .label {
+}
+
+.notice-table .label {
     width: 5%;
     text-align: center;
     font-weight: bold;
     color: #37c375;
-  }
-  
-  .notice-table .title {
+}
+
+.notice-table .title {
     width: 70%;
     text-align: left;
-  }
-  
-  .notice-table .date {
+}
+
+.notice-table .date {
     width: 15%;
     text-align: center;
-  }
-  
-  .notice-table .views {
+}
+
+.notice-table .views {
     width: 10%;
     text-align: center;
-  }
-  
-  .btn-dark {
+}
+
+.btn-dark {
     background-color: #343a40;
     border-color: #343a40;
     color: #fff;
-  }
-  
-  .btn-sm {
+}
+
+.btn-sm {
     padding: 5px 10px;
     font-size: 12px;
-  }
+}
 
-  .key_visual_area {
+.key_visual_area {
     width: 1260px;
     height: 170px;
     border-radius: 10px;
@@ -307,6 +452,7 @@
     margin-top: 10px;
     line-height: 1.3;
 }
+
 .key_visual_area.visual_customer .img {
     width: 180px;
     height: 133px;
@@ -474,5 +620,4 @@
     text-align: center;
     background-color: #defaf6;
 }
-  </style>
-  
+</style>

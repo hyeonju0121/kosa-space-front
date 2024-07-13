@@ -12,27 +12,27 @@
 
             <!-- 해당 교육생 프로필 헤더 -->
             <div class="mb-3">
-                    <div class="acc_cont">
-                        <div class="img-td">
-                            <div class="profile_wrap">
-                                <div class="profile profile_attach">
-                                    <div class="user-img">
-                                        <img :src="`${axios.defaults.baseURL}/edu/download/traineeattach/${headerInfo.mid}`"
-                                            class="user-img-detail" />
-                                    </div>
-                                    <div class="profile_info">
-                                        <h6 class="user-name">{{ headerInfo.mname }} ({{ headerInfo.mid }})</h6>
-                                        <div class="profile-info-contents">
-                                            <h5 class="user-course">{{ headerInfo.cname }}</h5>
-                                            <span class="user-course-requireddate">({{ headerInfo.cstartdate }} ~ {{
-                                                headerInfo.cenddate }})</span>
-                                        </div>
+                <div class="acc_cont">
+                    <div class="img-td">
+                        <div class="profile_wrap">
+                            <div class="profile profile_attach">
+                                <div class="user-img">
+                                    <img :src="`${axios.defaults.baseURL}/edu/download/traineeattach/${headerInfo.mid}`"
+                                        class="user-img-detail" />
+                                </div>
+                                <div class="profile_info">
+                                    <h6 class="user-name">{{ headerInfo.mname }} ({{ headerInfo.mid }})</h6>
+                                    <div class="profile-info-contents">
+                                        <h5 class="user-course">{{ headerInfo.cname }}</h5>
+                                        <span class="user-course-requireddate">({{ headerInfo.cstartdate }} ~ {{
+                                            headerInfo.cenddate }})</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
             <div class="table">
                 <table class="" style="width: 1000px; vertical-align: middle;">
@@ -45,13 +45,16 @@
                     </thead>
                     <tbody class="text-center align-middle">
                         <tr v-for="item in traineeData.result" :key="item"
-                        style="border-bottom:1px solid #dcdcdc; height: 50px; vertical-align: middle;">
+                            style="border-bottom:1px solid #dcdcdc; height: 50px; vertical-align: middle;">
                             <td>{{ item.mname }}</td>
                             <td>{{ item.mid }}</td>
-                            <td><div class="btn btn-dark" style="padding: 6px 20px;">{{ item.submitstatus }}</div></td>
+                            <td>
+                                <div class="btn btn-dark" style="padding: 6px 20px;">{{ item.submitstatus }}</div>
+                            </td>
                             <td style="vertical-align: middle;">
                                 <!-- <button class="detail-btn" style="margin-top: 10px; margin-bottom: 10px;" @click="handleDailyNoteBtn"> -->
-                                <button @click="goPersonalNoteDetail(item.mid, item.refweek, rPageNo)" class="detail-btn" style="margin-top: 10px; margin-bottom: 10px;">
+                                <button @click="goPersonalNoteDetail(item.mid, item.refweek, rPageNo)"
+                                    class="detail-btn" style="margin-top: 10px; margin-bottom: 10px;">
                                     과제 상세 보기
                                 </button>
                             </td>
@@ -69,23 +72,23 @@
                 </table>
 
                 <div class="mt-2" style="display: flex; justify-content: center;">
-                        <div>
-                            <button class="btn btn-outline-primary btn-sm me-1" @click="changePageNo(1)">처음</button>
-                            <button v-if="traineeData.pager.groupNo > 1" class="btn btn-outline-info btn-sm me-1"
-                                @click="changePageNo(traineeData.pager.startPageNo - 1)">이전</button>
-                            <button v-for="pageNo in traineeData.pager.pageArray" :key="pageNo"
-                                :class="(traineeData.pager.pageNo === pageNo) ? 'btn-danger' : 'btn-outline-success'"
-                                class="btn btn-sm me-1" @click="changePageNo(pageNo)">
-                                {{ pageNo }}
-                            </button>
-                            <button v-if="traineeData.pager.groupNo < traineeData.pager.totalGroupNo"
-                                class="btn btn-outline-info btn-sm me-1"
-                                @click="changePageNo(traineeData.pager.endPageNo + 1)">다음</button>
-                            <button class="btn btn-outline-info btn-sm me-1"
-                                @click="changePageNo(traineeData.pager.totalPageNo)">맨끝</button>
-                        </div>
+                    <div>
+                        <button class="btn btn-outline-primary btn-sm me-1" @click="changePageNo(1)">처음</button>
+                        <button v-if="traineeData.pager.groupNo > 1" class="btn btn-outline-info btn-sm me-1"
+                            @click="changePageNo(traineeData.pager.startPageNo - 1)">이전</button>
+                        <button v-for="pageNo in traineeData.pager.pageArray" :key="pageNo"
+                            :class="(traineeData.pager.pageNo === pageNo) ? 'btn-danger' : 'btn-outline-success'"
+                            class="btn btn-sm me-1" @click="changePageNo(pageNo)">
+                            {{ pageNo }}
+                        </button>
+                        <button v-if="traineeData.pager.groupNo < traineeData.pager.totalGroupNo"
+                            class="btn btn-outline-info btn-sm me-1"
+                            @click="changePageNo(traineeData.pager.endPageNo + 1)">다음</button>
+                        <button class="btn btn-outline-info btn-sm me-1"
+                            @click="changePageNo(traineeData.pager.totalPageNo)">맨끝</button>
                     </div>
-            </div>            
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -93,7 +96,7 @@
 <script setup>
 import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
 import { useRouter, useRoute } from 'vue-router';
-import { watch, ref, onMounted} from 'vue';
+import { watch, ref, onMounted } from 'vue';
 import PersonalProfileHeader from '@/components/UIComponents/PersonalProfileHeader.vue'
 import referenceDataAPI from '@/apis/referenceDataAPI';
 import traineeInfoAPI from '@/apis/traineeInfoAPI';
@@ -139,7 +142,7 @@ async function traineeList(mid, adate, pageNo) {
     try {
         const response = await referenceDataAPI.personalDailySubmitList(mid, adate, pageNo);
         traineeData.value = response.data;
-        
+
         console.log("traineeData.value = " + traineeData.value);
     } catch (error) {
         console.log("traineeList 메소드 실패");
@@ -178,7 +181,7 @@ function changePageNo(argPageNo) {
 
 // 요청 경로의 변경을 감시
 watch(route, (newRoute, oldRoute) => {
-    if(newRoute.query.rPageNo) { // 쿼리에 pageNo가 들어있으면 해당 페이지로 요청
+    if (newRoute.query.rPageNo) { // 쿼리에 pageNo가 들어있으면 해당 페이지로 요청
         traineeList(traineeData.value.result.mid, traineeData.value.result.refweek, newRoute.query.pageNo);
         rPageNo.value = newRoute.query.pageNo;
     } else { // 안들어왔으면 1페이지 그대로
@@ -196,12 +199,23 @@ watch(route, (newRoute, oldRoute) => {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
-body, h1, h2, h3, h4, h5, h6, input,
-p, span, small, textarea, select {
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+p,
+span,
+small,
+textarea,
+select {
     font-family: 'Noto Sans KR', sans-serif;
 }
 
-.detail-btn{
+.detail-btn {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -219,8 +233,8 @@ p, span, small, textarea, select {
     color: white;
     background-color: #22C55E;
     border: 1px solid white;
-    margin-left: 10px;      
-    border-radius: 9px;  
+    margin-left: 10px;
+    border-radius: 9px;
 }
 
 .headingArea {
