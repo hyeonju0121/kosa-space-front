@@ -11,7 +11,7 @@
         <template v-slot:footer>
             <div class="footer" style="display: flex; margin-left: 3%;">
                 <BaseButtonUpdate type="button" data-bs-dismiss="modal" style="margin-right: 1%;">닫기</BaseButtonUpdate>
-                <BaseButtonUpdate type="button" data-bs-dismiss="modal">승인</BaseButtonUpdate>
+                <BaseButtonUpdate type="button" data-bs-dismiss="modal" @click="aconfirmCheck()">승인</BaseButtonUpdate>
             </div>
         </template>
 
@@ -21,6 +21,40 @@
 <script setup>
 import Dialog from '@/components/UIComponents/Dialog.vue';
 import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
+import { ref, defineProps, defineExpose, defineEmits } from 'vue';
+import attendanceAPI from '@/apis/attendanceAPI';
+
+
+const midAdate = defineProps(["mid", "adate"]);
+
+
+let aconfirmCheckResult = ref(false);
+
+// 출결 승인 처리
+async function personalAttendanceApprove(mid, adate) {
+    try {
+        console.log("mid: " + mid);
+        await attendanceAPI.getTraineeAttendanceApproveConfirm(mid, adate);
+        console.log("출결 승인 성공");
+
+        // 승인 성공 시 aconfirmResult -> true 로 변경
+        aconfirmCheckResult.value = true;
+
+        // 자식 컴포넌트 -> 부모 컴포넌트로 출결 승인 결과 데이터 보내기
+        emit('result', aconfirmCheckResult);
+
+    } catch (error) {
+        console.log(error);
+        console.log("출결 승인 실패");
+    }
+}
+
+const emit = defineEmits(["result"]);
+
+function aconfirmCheck() {
+    personalAttendanceApprove(midAdate.mid, midAdate.adate);
+}
+
 
 </script>
 

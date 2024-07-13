@@ -42,6 +42,17 @@ function getTraineeAttendanceApproveList(ecname, cname, adate) {
     return axios.get("/attendance/approve/list?ecname=" + ecname + "&cname=" + cname + "&adate=" + adate)
 }
 
+// (운영진) 교육생 출결에 관한 사유 승인 처리
+function getTraineeAttendaceReasonApproveConfirm(mid, adate) {
+   return axios.get("/attendance/reason/approve?mid=" + mid + "&adate=" + adate);
+}
+
+// (운영진) 교육생 출결 사유 승인 처리에 따른 출결 처리 승인 / 미승인
+function getTraineeAttendanceApproveConfirm(mid, adate) {
+    return axios.get("/attendance/approve?mid=" + mid + "&adate=" + adate);
+}
+
+
 
 export default {
     userCheckin,
@@ -50,5 +61,7 @@ export default {
     getTraineeAttendanceDetail,
     getTraineeAttedanceReason,
     getTraineeAttendaceReasonCnt,
-    getTraineeAttendanceApproveList
+    getTraineeAttendanceApproveList,
+    getTraineeAttendaceReasonApproveConfirm,
+    getTraineeAttendanceApproveConfirm
 }

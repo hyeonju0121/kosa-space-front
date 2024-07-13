@@ -14,9 +14,9 @@
         </template>
 
         <template v-slot:footer>
-            <div class="footer" style="display: flex; margin-left: 3%;">
+            <div class="footer" style="display: flex; margin-left: 3%; justify-content: center;">
                 <BaseButtonUpdate type="button" data-bs-dismiss="modal" style="margin-right: 1%;">닫기</BaseButtonUpdate>
-                <BaseButtonUpdate type="button" data-bs-dismiss="modal">승인</BaseButtonUpdate>
+                <BaseButtonUpdate v-if="midAdate.anconfirm === false" type="button" data-bs-dismiss="modal" @click="anconfirmCheck()">승인</BaseButtonUpdate>
             </div>
         </template>
 
@@ -26,10 +26,11 @@
 <script setup>
 import Dialog from '@/components/UIComponents/Dialog.vue';
 import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
-import { ref, defineProps, onMounted } from 'vue';
+import { ref, defineProps, defineExpose, onMounted } from 'vue';
 import attendanceAPI from '@/apis/attendanceAPI';
 
-const midAdate = defineProps(["mid", "adate"]);
+
+const midAdate = defineProps(["mid", "adate", "anconfirm"]);
 
 onMounted(() => {
     console.log()
@@ -56,6 +57,54 @@ async function personalAttendanceReason(mid, adate) {
     }
 }
 
+//let anconfirmResult1 = ref(false);
+//let anconfirmResult2 = ref(false);
+
+
+const anconfirmResult = ref({
+    mid: midAdate.mid,
+    result1: false,
+    result2: false
+});
+
+
+
+// 사유 승인 처리
+async function personalAttendanceReasonApprove(mid, adate) {
+    try {
+        await attendanceAPI.getTraineeAttendaceReasonApproveConfirm(mid, adate);
+        console.log("출결 사유에 대한 승인 성공");
+
+        // 승인 성공 시 anconfirmResult -> true 로 변경
+
+        anconfirmResult.value.result1 = true;
+        anconfirmResult.value.result2 = true;
+
+        //console.log("anconfirmResult.value : " + anconfirmResult1.value);
+        // 자식 컴포넌트 -> 부모 컴포넌트로 사유 승인 결과 데이터 보내기
+        emit('anconfirmResult', anconfirmResult);
+
+    } catch (error) {
+        console.log(error);
+        console.log("출결 사유에 대한 승인 실패");
+    }
+}
+
+const emit = defineEmits(["anconfirmResult"]);
+
+function anconfirmCheck() {
+    personalAttendanceReasonApprove(midAdate.mid, midAdate.adate);
+    // // 자식 컴포넌트 -> 부모 컴포넌트로 사유 승인 결과 데이터 보내기
+    // console.log("결과: (anconfirmResult.value)" + anconfirmResult.value);
+    // emit('anconfirmResult', anconfirmResult);
+}
+
+
+/*
+function result() {
+    return anconfirmResult.value;
+}
+*/
 
 </script>
 
