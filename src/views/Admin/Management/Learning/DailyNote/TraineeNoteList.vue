@@ -14,13 +14,13 @@
         <form @submit.prevent="handleSubmitFilter1">
             <div class="align" style="display: flex;">
                 <div class="InpBox">
-                    <select id="educenter" title="교육장 선택" v-model="filter.ecname" :class="btnEnable">
+                    <select id="educenter" title="교육장 선택" v-model="filter.ecname" class="btnEnable">
                         <option selected disabled :value="''">교육장 선택</option>
                         <option v-for="item in ecnames" :key="item" :value="item">{{ item }}</option>
                     </select>
                 </div>
                 <div class="InpBox" style="margin-left: 1%; width: 370px;">
-                    <select id="course" title="교육과정 선택" v-model="filter.cname" :class="btnEnable">
+                    <select id="course" title="교육과정 선택" v-model="filter.cname" class="btnEnable">
                         <option selected disabled :value="''">교육과정 선택</option>
                         <option v-for="item in cnames" :key="item" :value="item">{{ item }}</option>
                     </select>
@@ -37,9 +37,9 @@
                     <h5 class="course-name">MSA 기반 Full Stack 개발 전문가 양성과정 2차</h5>
                     <span class="course-requireddate">(2024.02.26 ~ 2024.07.26)</span>
                 </div>
-                <div class="table">
+                <div class="dailynote-table">
                     <table class="table" style="width: 1000px">
-                        <thead class="text-center align-middle" style="height: 70px;">
+                        <thead class="table-header text-center align-middle" style="border-bottom:1px solid #ccc; height: 70px;">
                             <th style="width: 15%">프로필</th>
                             <th style="width: 15%">이름</th>
                             <th style="width: 30%">교육생 번호</th>
@@ -51,11 +51,14 @@
                                     <img src="@/assets/hyeonju.jpg" class="rounded-circle"
                                         style="width: 80px; height: 80px;">
                                 </td>
-                                <td>유팀장</td>
+                                <td>유현주</td>
                                 <td>M2001</td>
                                 <td>
-                                    <RouterLink to="/admin/dailynote/trainee/note/list" class="btn btn-outline-dark btn-sm">
-                                        과정 상세보기</RouterLink>
+                                    <RouterLink to="/admin/dailynote/trainee/note/list">
+                                        <button type="button" id="detailBtn" class="btn bg-main">
+                                            과정 상세보기
+                                        </button>
+                                    </RouterLink>
                                 </td>
                             </tr>
                             <tr style="border-bottom:1px solid #dcdcdc;">
@@ -66,8 +69,11 @@
                                 <td>김성민</td>
                                 <td>M2002</td>
                                 <td>
-                                    <RouterLink to="/admin/dailynote/trainee/note/list" class="btn btn-outline-dark btn-sm">
-                                        과정 상세보기</RouterLink>
+                                    <RouterLink to="/admin/dailynote/trainee/note/list">
+                                        <button type="button" class="btn bg-main">
+                                            과정 상세보기
+                                        </button>        
+                                    </RouterLink>
                                 </td>
                             </tr>
                             <tr style="border-bottom:1px solid #dcdcdc;">
@@ -75,11 +81,14 @@
                                     <img src="@/assets/kyungseob.jpg" class="rounded-circle"
                                         style="width: 80px; height: 80px;">
                                 </td>
-                                <td>홍경섭</td>
+                                <td>이경섭</td>
                                 <td>M2003</td>
                                 <td>
-                                    <RouterLink to="/admin/dailynote/trainee/note/list" class="btn btn-outline-dark btn-sm">
-                                        과정 상세보기</RouterLink>
+                                    <RouterLink to="/admin/dailynote/trainee/note/list">
+                                        <button type="button" class="btn bg-main">
+                                            과정 상세보기
+                                        </button> 
+                                    </RouterLink>
                                 </td>
                             </tr>
                         </tbody>
@@ -95,7 +104,7 @@ import { ref, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import courseAPI from '@/apis/courseAPI';
 import educenterAPI from '@/apis/educenterAPI';
-import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
+
 
 const router = useRouter();
 
@@ -172,6 +181,33 @@ function handleDailyNoteBtn() {
 body, h1, h2, h3, h4, h5, h6, input,
 p, span, small, textarea, select {
     font-family: 'Noto Sans KR', sans-serif;
+}
+
+
+ .btn.bg-main {
+  color: #ffffff;
+  border: 1px solid #22C55E;
+  background: #22C55E;
+}
+
+
+.btnEnable {
+    width: 400px;
+    height: 54px;
+    font-size: 16px;
+    color: #303030;
+    border-radius: 9px;
+    background: #8a8a91 
+
+}
+
+.dailynote-table {
+    border-top: 1px solid #37c375;
+    
+}
+
+.th {
+    border-bottom: 1px solid #ccc;
 }
 
 .headingArea {
