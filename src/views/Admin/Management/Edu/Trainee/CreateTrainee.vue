@@ -24,7 +24,7 @@
                                 <td colspan="3">
                                     <div style="text-align:left">
                                         <!-- 교육생 이미지 (필수) -->
-                                        <img :src="src" width="110" height="150" class="ms-5">
+                                        <img :src="src" width="110" height="150" class="ms-5" alt="이미지가 없습니다.">
                                         <!-- <input ref="trainee.tprofileimg" type="file" class="form-control p-3 mt-2"
                                             name="tprofileimg" id="tprofileimg" accept="image/*" onchange=""
                                             style="width: 300px;" required> -->
@@ -63,7 +63,7 @@
                                     </select>
 
                                     <!-- 고등학교를 선택했을 시 -->
-                                    <div class="form-floating mt-2" style="width: 150px">
+                                    <div class="form-floating mt-2" style="width: 300px">
                                         <input v-model.trim="request.tschoolname" type="text" class="form-control"
                                             @input="schCheck()" name="tschoolname" placeholder="" style="width: 150px;">
                                         <label for="tschoolname" class="form-label">학교명</label>
