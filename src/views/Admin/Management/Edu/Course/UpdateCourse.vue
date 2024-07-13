@@ -139,7 +139,7 @@
                             <option value="진행중">진행중</option>
                             <option value="진행완료">진행완료</option>
                         </select>
-                        <span>{{ courseInfo.cstatus }}</span>
+                        <!-- <span>{{ courseInfo.cstatus }}</span> -->
                         <!-- <input v-model="courseInfo.cstatus" id="cstatus" type="text"
                             title="교육과정 상태" placeholder="담당 강사진을 입력해주세요." maxlength="50"> -->
                        
@@ -391,6 +391,10 @@ small,
 textarea,
 select {
     font-family: 'Noto Sans KR', sans-serif;
+}
+
+.tr {
+    align-items: center;
 }
 
 .headingArea {
