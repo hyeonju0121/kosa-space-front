@@ -51,7 +51,7 @@
                         <tr style="border-bottom:1px solid #dcdcdc; height: 50px">
                             <td>유팀장</td>
                             <td>M2001</td>
-                            <td><span class="btn btn-dark">미제출</span></td>
+                            <td><span class="btn btn-danger">미제출</span></td>
                             <td style="vertical-align: middle;">
                                 <button class="detail-btn" style="margin-top: 10px; margin-bottom: 10px;" @click="handleDailyNoteBtn">
                                     과제 상세 보기
