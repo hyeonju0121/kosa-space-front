@@ -71,24 +71,20 @@
                     </div>
                     <div class="td">
                         <div class="center_wrap">
-                            <div class="center_attach">
-                                <div class="img_box d-flex">
-                                    <div id="defaultImg">
-                                        <PhImage :size="32" color="#636462" weight="duotone" />
-                                    </div>
-                                </div>
+                            <div class="center_attach">                                
                                 <input type="file" @change="addImage" multiple ref="trattach" />
                             </div>
-                        </div>
-                        <img v-for="(item, index) in src" :key="index" :src="item" width="80px" height="80px" />
+                        </div>                        
+                        <img v-for="(item, index) in src" :key="index" :src="item" width="80px" height="80px" />                        
                     </div>
                 </div>
 
                 <div class="btn_big_wrap">
+                    <BaseButtonSubmit @click="handleSubmit" class="me-3">완료</BaseButtonSubmit>
                     <RouterLink to="/admin/room/list">
                         <BaseButtonCancle>취소</BaseButtonCancle>
                     </RouterLink>
-                    <BaseButtonSubmit @click="handleSubmit">완료</BaseButtonSubmit>
+                    
                 </div>
             </form>
         </div>
