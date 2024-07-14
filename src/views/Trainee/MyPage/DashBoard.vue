@@ -1,13 +1,13 @@
 <template>
     <div class="main p-4" style="margin-left: 20px; width: 1400px">
         <div>
-            <div class="dashboard" style="background-color:rgba(215, 240, 220, 0.575);">
+            <div class="dashboard" style="background-color:rgba(215, 240, 220, 0.575); width:1400px; height:830px;">
                 <div class="row">
                     <div class="profile-wrap col-md-4">
                         <div class="profile-background">
                             <img src="@/assets/dashboard/dashboard_myinfo.jpg" style="width:400px;">
                         </div>
-                        <div class="profile-contents" style="width:430px; height:620px; background-color: rgb(255, 255, 255);">
+                        <div class="profile-contents" style="width:430px; height:680px; background-color: rgb(255, 255, 255);">
                             <div class="user-info" style="padding-left: 10%;">
                                 <div style="margin-top: 60px;">
                                     <h5 class="contents-title">{{ headerInfo.mname }}
@@ -78,11 +78,11 @@
                                     <div class="attendance-box" style="width: 120%; height: 80px;">
                                         <div style="width: 340px; margin-top: 5%; margin-left: 10px;">
                                             <div class="d-flex flex-row justify-content-between">
-                                                <span style="font-size: 14px;">2024.06.19 기준</span>
-                                                <span style="font-size: 14px;">70% (84일 / 105일)</span>
+                                                <span style="font-size: 14px;">2024.07-15 기준</span>
+                                                <span style="font-size: 14px;">{{ userDashboardAttendanceInfo.percentage }}% ({{userDashboardAttendanceInfo.approvecnt}}일 / {{userDashboardAttendanceInfo.crequireddate}}일)</span>
                                             </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-success" style="width:70%">70%</div>
+                                            <div class="progress" :aria-valuenow="`${userDashboardAttendanceInfo.percentage}`">
+                                                <div class="progress-bar bg-success" :style="`width:${userDashboardAttendanceInfo.percentage}%`">{{userDashboardAttendanceInfo.percentage}}%</div>
                                             </div>
                                         </div>
                                     </div>
@@ -253,6 +253,7 @@ onMounted(() => {
     checkInDialog = new Modal(document.querySelector("#checkInSubmitDialog"));
 
     traineeHeader(mid);
+    traineeAttendanceInfo(mid, adate);
 
     userAttendanceInfoData(mid, adate);
     
@@ -271,6 +272,18 @@ async function traineeHeader(mid) {
     }
 }
 
+
+let userDashboardAttendanceInfo = ref({});
+async function traineeAttendanceInfo(mid, adate) {
+    try {
+        const response = await attendanceAPI.getDashboardTraineeAttendanceInfo(mid, adate);
+        userDashboardAttendanceInfo.value = response.data;
+        console.log("대시보드 사용자 출결 정보 가져오기 성공");
+    } catch (error) {
+        console.log(error);
+        console.log("대시보드 사용자 출결 정보 가져오기 실패");
+    }
+}
 
 // 사용자 IP 정보 조회 -------------------------------------------------
 // const userClientInfo = ref([]);
@@ -728,8 +741,8 @@ select {
 
 .profile-contents {
     position: absolute;
-    top: 60%;
-    left: 44.7%;
+    top: 70%;
+    left: 41.7%;
     width: 100%;
     transform: translate(-50%, -50%);
 }
@@ -737,7 +750,7 @@ select {
 /*사용자 이미지 틀 (원형)*/
 .user-img {
     position: absolute;
-    top: 15%;
+    top: 20%;
     left: 18%;
     transform: translate(-50%, -50%);
     width: 110px;

@@ -65,6 +65,12 @@ function createAttendanceCreate(request) {
     axios.post("/attendance/reason/create", request);
 }
 
+// (교육생) 교육생 대시보드 출결 상세 정보 조회
+function getDashboardTraineeAttendanceInfo(mid, adate) {
+    return axios.get("/attendance/trainee/attendance/dashboard/detail?mid=" + mid + "&adate=" + adate);
+}
+
+
 export default {
     getUserAttendanceInfoData,
     userCheckin,
@@ -77,5 +83,6 @@ export default {
     getTraineeAttendanceApproveList,
     getTraineeAttendaceReasonApproveConfirm,
     getTraineeAttendanceApproveConfirm,
-    createAttendanceCreate
+    createAttendanceCreate,
+    getDashboardTraineeAttendanceInfo
 }
