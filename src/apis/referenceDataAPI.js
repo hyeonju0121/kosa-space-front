@@ -14,7 +14,13 @@ function personalDailySubmitDetail(mid, refweek) {
     return axios.get("/dailynote/detail?mid=" + mid + "&refweek=" + refweek);
 }
 
+// 교육생 과제 제출 
+function userReferenceDataSubmit(referenceDataInfo) {
+    return axios.post("/dailynote/create", referenceDataInfo);
+}
+
 export default {
     personalDailySubmitList,
-    personalDailySubmitDetail
+    personalDailySubmitDetail,
+    userReferenceDataSubmit
 }

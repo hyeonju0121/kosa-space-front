@@ -98,11 +98,12 @@
 
     <div class="user">
       <div class="user-img">
-        <img src="@/assets/hyeonju.jpg" alt="" class="user-img-detail">
+        <img :src="`${axios.defaults.baseURL}/edu/download/traineeattach/${headerInfo.mid}`"
+                                            class="user-img-detail" />
       </div>
       <div class="user-details">
         <p class="title">{{ mid }}</p>
-        <p class="name">유현주</p>
+        <p class="name">{{ headerInfo.mname }}</p>
       </div>
     </div>
  </aside>
@@ -110,21 +111,22 @@
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, ref } from 'vue';
+import traineeInfoAPI from '@/apis/traineeInfoAPI';
 import jQuery from 'jquery';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
 
 const store = useStore();
 const router = useRouter();
 
 const $ = jQuery;
 
-
 const mid = store.state.mid;
 
-
-
+// 교육생 Header 정보 받아오기
+let headerInfo = ref({});
 
 
 onMounted(() => {
@@ -144,7 +146,22 @@ $(this).siblings().find("ul").find("li").removeClass("active");
 $(".menu-btn").click(function() {
 $(".sidebar").toggleClass("active");
 })
+
+traineeHeader(mid);
+
 });
+
+async function traineeHeader(mid) {
+    try {
+        const response = await traineeInfoAPI.traineeInfo(mid);
+        headerInfo.value = response.data;
+        console.log("헤더 정보 받아오기 : " + headerInfo.value);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
 
 function handleLogOut() {
   console.log("로그아웃");

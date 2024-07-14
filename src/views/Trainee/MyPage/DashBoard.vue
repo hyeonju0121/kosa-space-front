@@ -10,11 +10,11 @@
                         <div class="profile-contents" style="width:430px; height:620px; background-color: white;">
                             <div class="user-info" style="padding-left: 10%;">
                                 <div style="margin-top: 60px;">
-                                    <h5 class="contents-title">유현주
-                                        <span class="user-id">(M2001)</span>
+                                    <h5 class="contents-title">{{ headerInfo.mname }}
+                                        <span class="user-id">({{ mid }})</span>
                                     </h5>
-                                    <span class="user-course">MSA 기반 Full Stack 개발 전문가 양성과정 2차</span>
-                                    <span class="user-course-requireddate">(2024.02.26 ~ 2024.07.26)</span>
+                                    <span class="user-course">{{ headerInfo.cname }}</span>
+                                    <p class="user-course-requireddate">({{ headerInfo.cstartdate }} ~ {{ headerInfo.cenddate }})</p>
                                 </div>
                             </div>
 
@@ -90,7 +90,8 @@
                             </div>
                         </div>
                         <div class="user-img">
-                            <img src="@/assets/hyeonju.jpg" class="user-img-detail" />
+                            <img :src="`${axios.defaults.baseURL}/edu/download/traineeattach/${headerInfo.mid}`"
+                                            class="user-img-detail" />
                         </div>
                     </div>
                     <div class="col-md-auto">
@@ -199,6 +200,7 @@ import memberAPI from '@/apis/memberAPI';
 import attendanceAPI from '@/apis/attendanceAPI';
 import axios from 'axios';
 import traineeInfoAPI from '@/apis/traineeInfoAPI';
+import referenceDataAPI from '@/apis/referenceDataAPI';
 
 
 // store 객체 얻기
@@ -223,13 +225,11 @@ console.log("입실 시간: ", userCheckInTime);
 // IP 주소 일치 여부
 let isIPstatus = ref(true);
 // 입실 여부
-// let isCheckIn = ref(userCheckInStatus);
 let isCheckIn = ref(false);
 // 퇴실 여부
-// let isCheckOut = ref(userCheckOutStatus);
 let isCheckOut = ref(false);
 // 데일리 과제 제출 여부 
-let isDailyNote = ref(userDailyNoteStatus);
+let isDailyNote = ref(false);
 // 외출 버튼 활성화 여부 
 let btnShow = ref("disabled");
 
@@ -252,10 +252,25 @@ onMounted(() => {
     checkOutDialog = new Modal(document.querySelector("#checkOutSubmitDialog"));
     checkInDialog = new Modal(document.querySelector("#checkInSubmitDialog"));
 
+    traineeHeader(mid);
+
     userAttendanceInfoData(mid, adate);
     
     testCheckIn();
 })
+
+// 교육생 정보 가져오기
+let headerInfo = ref({});
+async function traineeHeader(mid) {
+    try {
+        const response = await traineeInfoAPI.getTraineeProfileHeader(mid);
+        headerInfo.value = response.data;
+        console.log("헤더 정보 받아오기 : " + headerInfo.value);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 // 사용자 IP 정보 조회 -------------------------------------------------
 // const userClientInfo = ref([]);
@@ -289,6 +304,7 @@ function showCheckInDialog() {
     // 입실하기 버튼 클릭시, 입실하기 모달 활성화
     checkInDialog.show();
 }
+
 
 /*
 function reasonbtn() {
@@ -326,7 +342,7 @@ const checkOutData = ref({
 const userAttendanceInfo = ref();
 let isUserCheckinStatus = ref(false);
 
-// 교육생 입실, 퇴실 출결 정보 조회 
+// 교육생 입실, 퇴실, 과제 정보 조회 
 async function userAttendanceInfoData(mid, adate) {
     try {
         const response = await attendanceAPI.getUserAttendanceInfoData(mid, adate);
@@ -341,6 +357,11 @@ async function userAttendanceInfoData(mid, adate) {
         if(userAttendanceInfo.value.acheckoutstatus) {
             console.log("교육생 퇴실 여부 : " + userAttendanceInfo.value.acheckoutstatus);
             isCheckOut.value = true;
+        }
+
+        if(userAttendanceInfo.value.referencestatus) {
+            console.log("데일리 과제 제출 여부 : " + userAttendanceInfo.value.referencestatus);
+            isDailyNote.value = true;
         }
 
         userInfo();
@@ -372,6 +393,12 @@ function userInfo() {
         // 퇴실 상태 변경
         store.commit("userDailyInfo/setUserCheckOutStatus", isCheckOut.value);
         store.commit("userDailyInfo/setUserCheckOut", checkOutData.value.attendancetime);
+    }
+
+    if (isDailyNote.value) {
+        console.log("isDailyNote: " + isDailyNote.value);
+
+        store.commit("userDailyInfo/setUserDailyNoteStatus", isDailyNote.value);
     }
 }
 
@@ -415,11 +442,6 @@ function submitCheckInDialog(todayCheckIn) {
 
     // 외출하기 버튼 활성화 
     btnShow.value = "";
-
-    console.log("isCheckIn: " + isCheckIn.value);
-    console.log("attendancetime: " + checkInData.value.attendancetime);
-    console.log("store -userCheckInStatus: " + store.state.userDailyInfo.userCheckInStatus);
-    console.log("입실 성공");
 }
 
 
@@ -504,12 +526,8 @@ function submitCheckOutDialog(todayCheckOut) {
     // minutesCheckOut.value = todayCheckOut.value.minutes;
 
     //  퇴실 상태 변경
-    isCheckOut.value = !isCheckOut.value;
-    store.commit("userDailyInfo/setUserCheckOutStatus", isCheckOut.value);
-
-    console.log("isCheckOut: " + isCheckOut.value);
-    console.log("store -userCheckOutStatus: " + store.state.userDailyInfo.userCheckOutStatus);
-    console.log("퇴실 성공");
+    // isCheckOut.value = !isCheckOut.value;
+    // store.commit("userDailyInfo/setUserCheckOutStatus", isCheckOut.value);
 }
 
 
@@ -532,21 +550,69 @@ function showDailyNoteDialog() {
     dailyNoteDialog.show();
 }
 
+// 과제 정보 상태 데이터
+const referenceData = ref(
+    // reftitle: "",
+    // refurl: "",
+    // refdate: ""
+);
+
+
 function handleDailyNoteSubmit(noteData) {
     console.log("DailyNoteSubmitDialog 에서 정의한 이벤트 수신 완료");
-    console.log(JSON.parse(JSON.stringify(noteData.value)));
+
+    referenceData.value = noteData.value;
+    console.log(JSON.parse(JSON.stringify(referenceData)));
+
+    const formData = new FormData();
+    formData.append("reftitle", referenceData.value.reftitle);
+    formData.append("refurl", referenceData.value.refurl);
+    formData.append("refdate", referenceData.value.refdate);
+
+    // 과제 제출 서버 통신 코드 호출
+    userReferenceSubmit(formData);
 
     // 과제 모달 비활성화
     dailyNoteDialog.hide();
 
-    // 과제 제출 여부 상태 변경
-    isDailyNote.value = !isDailyNote.value;
+    // // 과제 제출 여부 상태 변경
+    // isDailyNote.value = !isDailyNote.value;
   
-    store.commit("userDailyInfo/setUserDailyNoteStatus", isDailyNote.value);
-    console.log(store.state.userDailyInfo.userDailyNoteStatus);
+    // store.commit("userDailyInfo/setUserDailyNoteStatus", isDailyNote.value);
+    // console.log(store.state.userDailyInfo.userDailyNoteStatus);
 
     console.log("데일리 과제 제출 완료!");
 }
+
+
+// 교육생 과제 제출 기능
+async function userReferenceSubmit(formData) {
+    try {
+        // 클라이언트가 입력한 값을 -> json 형식의 referenceDate 객체 형태로 변환
+        // const data = JSON.parse(JSON.stringify(referenceData.value));
+        // const data = JSON.stringify(referenceData.value);
+
+        await referenceDataAPI.userReferenceDataSubmit(formData);
+        console.log("교육생 과제 제출 성공");
+
+        isDailyNote.value = true;
+
+    } catch (error) {
+        console.log(error);
+        console.log("교육생 과제 제출 실패");
+    }
+    console.groupEnd();
+}
+
+watch(
+    () => isDailyNote.value,
+    (nv, ov) => {
+        console.log("isDailyNote.value 변경 전 = " + nv);
+        console.log("isDailyNote.value 변경 후 = " + ov);
+         
+        userAttendanceInfoData(mid, adate);
+    }
+)
 
 /*
 async function getClientIP() {

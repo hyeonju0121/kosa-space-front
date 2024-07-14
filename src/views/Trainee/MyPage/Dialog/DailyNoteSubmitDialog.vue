@@ -8,12 +8,16 @@
         <template v-slot:body>
             <form>
                 <div class="mb-3">
+                    <label for="message-text" class="col-form-label">과제 제출일</label>
+                    <textarea class="form-control" id="inputNotionUrl" v-model="noteData.refdate"></textarea>
+                </div>
+                <div class="mb-3">
                     <label for="recipient-name" class="col-form-label">과제 제목</label>
-                    <input type="text" class="form-control" id="inputTitle" v-model="noteData.dtitle">
+                    <input type="text" class="form-control" id="inputTitle" v-model="noteData.reftitle">
                 </div>
                 <div class="mb-3">
                     <label for="message-text" class="col-form-label">Notion URL</label>
-                    <textarea class="form-control" id="inputNotionUrl" v-model="noteData.dnotionurl"></textarea>
+                    <textarea class="form-control" id="inputNotionUrl" v-model="noteData.refurl"></textarea>
                 </div>
             </form>
         </template>
@@ -34,9 +38,11 @@ import { ref } from 'vue';
 const emit = defineEmits(["clickHandler"]);
 
 const noteData = ref({
-    dtitle: "",
-    dnotionurl: ""
+    reftitle: "",
+    refurl: "",
+    refdate: ""
 });
+
 
 function handleDailyNoteSubmit() {
     // 자식 컴포넌트 -> 부모 컴포넌트로 noteData 객체 데이터 보내기
