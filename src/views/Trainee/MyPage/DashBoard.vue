@@ -191,7 +191,7 @@ import DailyNoteSubmitDialog from './Dialog/DailyNoteSubmitDialog.vue';
 import AttendanceErrorDialog from './Dialog/AttendanceErrorDialog.vue';
 import CheckOutDialog from './Dialog/CheckOutDialog.vue';
 import CheckInDialog from './Dialog/CheckInDialog.vue';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { Modal } from "bootstrap";
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
@@ -207,19 +207,27 @@ const store = useStore();
 // router 객체 얻기
 const router = useRoute();
 
-const mid = "2024M2001";
+// const mid = "2024M2001";
+const adate = "2024-07-12";
+const mid = store.state.mid;
 
 // store 에서 사용자 입실 및 퇴실 여부, 데일리 과제 제출 여부 가져오기
 const userCheckInStatus = store.state.userDailyInfo.userCheckInStatus;
 const userCheckOutStatus = store.state.userDailyInfo.userCheckOutStatus;
 const userDailyNoteStatus = store.state.userDailyInfo.userDailyNoteStatus;
 
+const userCheckInTime = store.state.userDailyInfo.userCheckIn;
+const userCheckOutTime = store.state.userDailyInfo.userCheckOut;
+console.log("입실 시간: ", userCheckInTime);
+
 // IP 주소 일치 여부
 let isIPstatus = ref(true);
 // 입실 여부
-let isCheckIn = ref(userCheckInStatus);
+// let isCheckIn = ref(userCheckInStatus);
+let isCheckIn = ref(false);
 // 퇴실 여부
-let isCheckOut = ref(userCheckOutStatus);
+// let isCheckOut = ref(userCheckOutStatus);
+let isCheckOut = ref(false);
 // 데일리 과제 제출 여부 
 let isDailyNote = ref(userDailyNoteStatus);
 // 외출 버튼 활성화 여부 
@@ -235,6 +243,7 @@ let dailyNoteDialog = null;
 let checkOutDialog = null;
 let checkInDialog = null;
 
+
 // 컴포넌트가 생성되고, DOM에 부착될 때 자동으로 실행되는 콜백
 onMounted(() => {
     // modal 객체로 생성 
@@ -242,6 +251,10 @@ onMounted(() => {
     dailyNoteDialog = new Modal(document.querySelector("#dailyNoteSubmitDialog"));
     checkOutDialog = new Modal(document.querySelector("#checkOutSubmitDialog"));
     checkInDialog = new Modal(document.querySelector("#checkInSubmitDialog"));
+
+    userAttendanceInfoData(mid, adate);
+    
+    testCheckIn();
 })
 
 // 사용자 IP 정보 조회 -------------------------------------------------
@@ -284,52 +297,185 @@ function reasonbtn() {
 */
 
 // 입실 시간 상태 데이터
-const hoursCheckIn = ref();
-const minutesCheckIn = ref();
+const hoursCheckIn = ref("");
+const minutesCheckIn = ref("");
 // 퇴실 시간 상태 데이터
 const hoursCheckOut = ref();
 const minutesCheckOut = ref();
+
+function testCheckIn() {
+    if (isCheckIn.value) {
+        hoursCheckIn.value = userCheckInTime.substring(11,13);
+        minutesCheckIn.value = userCheckInTime.substring(14,16);
+    }
+}
+
 
 // 입실 정보 상태 데이터 
 const checkInData = ref({
     "mid": "",
     "attendancetime": "",
-    //"clientip": ""
 });
+
+// 퇴실 정보 상태 데이터 
+const checkOutData = ref({
+    "mid": "",
+    "attendancetime": "",
+});
+
+const userAttendanceInfo = ref();
+let isUserCheckinStatus = ref(false);
+
+// 교육생 입실, 퇴실 출결 정보 조회 
+async function userAttendanceInfoData(mid, adate) {
+    try {
+        const response = await attendanceAPI.getUserAttendanceInfoData(mid, adate);
+        console.log("교육생 출결 정보 조회 성공");
+        userAttendanceInfo.value = response.data;
+        
+        if(userAttendanceInfo.value.acheckinstatus) {
+            console.log("교육생 입실 여부 : " + userAttendanceInfo.value.acheckinstatus);
+            isCheckIn.value = true;
+        }
+
+        if(userAttendanceInfo.value.acheckoutstatus) {
+            console.log("교육생 퇴실 여부 : " + userAttendanceInfo.value.acheckoutstatus);
+            isCheckOut.value = true;
+        }
+
+        userInfo();
+        console.log("userAttendanceInfo: " + JSON.stringify(userAttendanceInfo));
+    } catch (error) {
+        console.log(error);
+        console.log("교육생 출결 정보 조회 성공");
+    }
+    console.groupEnd();
+}
+
+function userInfo() {
+    if (isCheckIn.value) {
+        console.log("isCheckIn: " + isCheckIn.value);
+        hoursCheckIn.value = userAttendanceInfo.value.acheckin.substring(11,13);
+        minutesCheckIn.value = userAttendanceInfo.value.acheckin.substring(14,16);
+
+        // 교육생의 입실 여부가 성공했다면, store 에 입실 시간 저장하기
+        // 입실 상태 변경
+        store.commit("userDailyInfo/setUserCheckInStatus", isCheckIn.value);
+        store.commit("userDailyInfo/setUserCheckIn", checkInData.value.attendancetime);
+    }
+    if (isCheckOut.value) {
+        console.log("isCheckOut: " + isCheckOut.value);
+        hoursCheckOut.value = userAttendanceInfo.value.acheckout.substring(11,13);
+        minutesCheckOut.value = userAttendanceInfo.value.acheckout.substring(14,16);
+
+        // 교육생의 퇴실 여부가 성공했다면, store 에 퇴실 시간 저장하기
+        // 퇴실 상태 변경
+        store.commit("userDailyInfo/setUserCheckOutStatus", isCheckOut.value);
+        store.commit("userDailyInfo/setUserCheckOut", checkOutData.value.attendancetime);
+    }
+}
+
+
 function submitCheckInDialog(todayCheckIn) {
     console.log("CheckInDialog 에서 정의한 이벤트 수신 완료");
+
+    // 입실 서버 통신 --------------------
+    
+    // (1) mid, IP, 현재 날짜와 시간 상태 객체 값 세팅 --------------------
+    checkInData.value.mid = mid;
+    checkInData.value.attendancetime = todayCheckIn.value;
+
+    console.log("checkInData.value.mid: " + checkInData.value.mid);
+    console.log("checkInData.value.attendancetime: " + checkInData.value.attendancetime);
+
+    // (2) 서버 통신 코드 호출
+    userAttendanceCheckIn();
+    // ---------------------------------
+
     // '네' 버튼 클릭시, 모달 비활성화
     checkInDialog.hide();
 
     // 사용자가 입실 버튼을 누른 시간
-    console.log("사용자 입실 버튼 누른 시간: " + todayCheckIn.value.formattedDate);
-    hoursCheckIn.value = todayCheckIn.value.hours;
-    minutesCheckIn.value = todayCheckIn.value.minutes;
+    //console.log("사용자 입실 버튼 누른 시간: " + todayCheckIn.value.formattedDate);
+    //hoursCheckIn.value = todayCheckIn.value.hours;
+    //minutesCheckIn.value = todayCheckIn.value.minutes;
 
     // mid, IP, 현재 날짜와 시간 상태 객체 값 세팅 --------------------
-    checkInData.value.mid = mid;
-    checkInData.value.attendancetime = todayCheckIn.value.formattedDate;
+    // checkInData.value.mid = mid;
+    // checkInData.value.attendancetime = todayCheckIn.value.formattedDate;
     //checkInData.value.clientip = clientIP.value;
 
-    console.log(checkInData.value.mid);
-    console.log(checkInData.value.attendancetime);
     //console.log(checkInData.value.clientip);
 
-    // 입실 API 호출 ------------------------------------------------
-    userCheckIn();
 
-    // 입실 상태 변경
-    isCheckIn.value = !isCheckIn.value;
-    store.commit("userDailyInfo/setUserCheckInStatus", isCheckIn.value);
+    // // 입실 상태 변경
+    // isCheckIn.value = !isCheckIn.value;
+    // store.commit("userDailyInfo/setUserCheckInStatus", isCheckIn.value);
+    // store.commit("userDailyInfo/setUserCheckIn", checkInData.value.attendancetime);
 
     // 외출하기 버튼 활성화 
     btnShow.value = "";
 
     console.log("isCheckIn: " + isCheckIn.value);
+    console.log("attendancetime: " + checkInData.value.attendancetime);
     console.log("store -userCheckInStatus: " + store.state.userDailyInfo.userCheckInStatus);
     console.log("입실 성공");
 }
 
+
+// 교육생 입실 기능
+async function userAttendanceCheckIn() {
+    try {
+        // 클라이언트가 입력한 값을 -> json 형식의 checkInData 객체 형태로 변환
+        const data = JSON.parse(JSON.stringify(checkInData.value));
+        await attendanceAPI.userCheckin(data);
+        console.log("교육생 입실 성공");
+
+        isCheckIn.value = true;
+
+    } catch (error) {
+        console.log(error);
+        console.log("교육생 입실 실패");
+    }
+    console.groupEnd();
+}
+
+// 교육생 퇴실 기능
+async function userAttendanceCheckOut() {
+    try {
+        // 클라이언트가 입력한 값을 -> json 형식의 checkInData 객체 형태로 변환
+        const data = JSON.parse(JSON.stringify(checkOutData.value));
+        await attendanceAPI.userCheckout(data);
+        console.log("교육생 퇴실 성공");
+
+        isCheckOut.value = true;
+
+    } catch (error) {
+        console.log(error);
+        console.log("교육생 퇴실 실패");
+    }
+    console.groupEnd();
+}
+
+watch(
+    () => isCheckIn.value,
+    (nv, ov) => {
+        console.log("isCheckIn.value 변경 전 = " + nv);
+        console.log("isCheckIn.value 변경 후 = " + ov);
+         
+        userAttendanceInfoData(mid, adate);
+    }
+)
+
+watch(
+    () => isCheckOut.value,
+    (nv, ov) => {
+        console.log("isCheckOut.value 변경 전 = " + nv);
+        console.log("isCheckOut.value 변경 후 = " + ov);
+         
+        userAttendanceInfoData(mid, adate);
+    }
+)
 
 // 퇴실하기 모달 활성화
 function showCheckOutDialog() {
@@ -339,6 +485,16 @@ function showCheckOutDialog() {
 
 function submitCheckOutDialog(todayCheckOut) {
     console.log("CheckOutDialog 에서 정의한 이벤트 수신 완료");
+
+    // 퇴실 서버 통신 --------------------
+    // (1) mid, IP, 현재 날짜와 시간 상태 객체 값 세팅 --------------------
+    checkOutData.value.mid = mid;
+    checkOutData.value.attendancetime = todayCheckOut.value;
+
+    // (2) 서버 통신 코드 호출
+    userAttendanceCheckOut();
+    // ---------------------------------
+
     // '네' 버튼 클릭시, 모달 비활성화 
     checkOutDialog.hide();
 
@@ -403,21 +559,6 @@ async function getClientIP() {
   }
 }
 */
-
-
-// 사용자 입실 기능 
-async function userCheckIn() {
-    try {
-        // 클라이언트가 입력한 값을 -> json 형식의 checkInData 객체 형태로 변환
-        const data = JSON.parse(JSON.stringify(checkInData.value));
-        
-        const response = await attendanceAPI.userCheckin(data);
-        console.log(response.data);
-
-    } catch(error) {
-        console.log(error);
-    }
-}
 
 
 </script>

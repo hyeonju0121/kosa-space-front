@@ -30,32 +30,35 @@ import { ref } from 'vue';
 
 const emit = defineEmits(["submitCheckIn"]);
 
+// ----------- 현재 시간 가져오는 부분은 임시로 주석 처리함 (시연할 때, 현재 시간 기준으로 보내게 되면 입실 퇴실 다 못보여줌)
 // 현재 날짜와 시간을 가져오기
-const currentDate = new Date();
+// const currentDate = new Date();
 
-const todayCheckIn = ref({
-    year: "",
-    month: "",
-    day: "",
-    hours: "",
-    minutes: "",
-    seconds: "",
-    formattedDate: ""
-});
+// const todayCheckIn = ref({
+//     year: "",
+//     month: "",
+//     day: "",
+//     hours: "",
+//     minutes: "",
+//     seconds: "",
+//     formattedDate: ""
+// });
 
-// 각 구성 요소를 가져오기
-todayCheckIn.value.year = currentDate.getFullYear();
-todayCheckIn.value.month = currentDate.getMonth() + 1;
-todayCheckIn.value.day = currentDate.getDate();
-todayCheckIn.value.hours = currentDate.getHours();
-todayCheckIn.value.minutes = currentDate.getMinutes();
-todayCheckIn.value.seconds = currentDate.getSeconds();
+// // 각 구성 요소를 가져오기
+// todayCheckIn.value.year = currentDate.getFullYear();
+// todayCheckIn.value.month = currentDate.getMonth() + 1;
+// todayCheckIn.value.day = currentDate.getDate();
+// todayCheckIn.value.hours = currentDate.getHours();
+// todayCheckIn.value.minutes = currentDate.getMinutes();
+// todayCheckIn.value.seconds = currentDate.getSeconds();
 
-// 날짜와 시간을 문자열로 포맷팅
-todayCheckIn.value.formattedDate = `${todayCheckIn.value.year}-${String(todayCheckIn.value.month).padStart(2, '0')}-${String(todayCheckIn.value.day).padStart(2, '0')} ${String(todayCheckIn.value.hours).padStart(2, '0')}:${String(todayCheckIn.value.minutes).padStart(2, '0')}:${String(todayCheckIn.value.seconds).padStart(2, '0')}`;
+// // 날짜와 시간을 문자열로 포맷팅
+// todayCheckIn.value.formattedDate = `${todayCheckIn.value.year}-${String(todayCheckIn.value.month).padStart(2, '0')}-${String(todayCheckIn.value.day).padStart(2, '0')} ${String(todayCheckIn.value.hours).padStart(2, '0')}:${String(todayCheckIn.value.minutes).padStart(2, '0')}:${String(todayCheckIn.value.seconds).padStart(2, '0')}`;
 
 // 포맷팅된 날짜와 시간을 출력
 //console.log(formattedDate);
+
+const todayCheckIn = ref("2024-07-12 08:40:27");
 
 function handleChekinSubmit() {
     // 자식 컴포넌트 -> 부모 컴포넌트로 입실 시간 데이터 보내기

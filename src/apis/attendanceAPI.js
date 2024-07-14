@@ -15,11 +15,19 @@ function getTotalAttendanceList(ecname, cname, adate) {
     return axios.get("/attendance/list?ecname=" + ecname + "&cname=" + cname + "&adate=" + adate); 
 }
 
+// 교육생 입실, 퇴실 출결 정보 조회 기능
+function getUserAttendanceInfoData(mid, adate) {
+    return axios.get("/attendance/user/attendance/time?mid=" + mid + "&adate=" + adate);
+}
 
 // 입실 기능
-
 function userCheckin(attendanceinfo) {
     return axios.post("/attendance/checkin", attendanceinfo);
+}
+
+// 퇴실 기능
+function userCheckout(attendanceinfo) {
+    return axios.post("/attendance/checkout", attendanceinfo);
 }
 
 // 출결 상세 조회
@@ -55,7 +63,9 @@ function getTraineeAttendanceApproveConfirm(mid, adate) {
 
 
 export default {
+    getUserAttendanceInfoData,
     userCheckin,
+    userCheckout,
     getTotalAttendanceList,
     addClientIPHeader,
     getTraineeAttendanceDetail,

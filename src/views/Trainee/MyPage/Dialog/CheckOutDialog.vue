@@ -28,32 +28,34 @@ import { ref } from 'vue';
 const emit = defineEmits(["submitCheckOut"]);
 
 // 현재 날짜와 시간을 가져오기
-const currentDate = new Date();
+// const currentDate = new Date();
 
-const todayCheckOut = ref({
-    year: "",
-    month: "",
-    day: "",
-    hours: "",
-    minutes: "",
-    seconds: "",
-    formattedDate: ""
-});
+// const todayCheckOut = ref({
+//     year: "",
+//     month: "",
+//     day: "",
+//     hours: "",
+//     minutes: "",
+//     seconds: "",
+//     formattedDate: ""
+// });
 
-// 각 구성 요소를 가져오기
-todayCheckOut.value.year = currentDate.getFullYear();
-todayCheckOut.value.month = currentDate.getMonth() + 1;
-todayCheckOut.value.day = currentDate.getDate();
-todayCheckOut.value.hours = currentDate.getHours();
-todayCheckOut.value.minutes = currentDate.getMinutes();
-todayCheckOut.value.seconds = currentDate.getSeconds();
+// // 각 구성 요소를 가져오기
+// todayCheckOut.value.year = currentDate.getFullYear();
+// todayCheckOut.value.month = currentDate.getMonth() + 1;
+// todayCheckOut.value.day = currentDate.getDate();
+// todayCheckOut.value.hours = currentDate.getHours();
+// todayCheckOut.value.minutes = currentDate.getMinutes();
+// todayCheckOut.value.seconds = currentDate.getSeconds();
 
-// 날짜와 시간을 문자열로 포맷팅
-todayCheckOut.value.formattedDate = `${todayCheckOut.value.year}-${String(todayCheckOut.value.month).padStart(2, '0')}-
-    ${String(todayCheckOut.value.day).padStart(2, '0')} ${String(todayCheckOut.value.hours).padStart(2, '0')}:${String(todayCheckOut.value.minutes).padStart(2, '0')}:${String(todayCheckOut.value.seconds).padStart(2, '0')}`;
+// // 날짜와 시간을 문자열로 포맷팅
+// todayCheckOut.value.formattedDate = `${todayCheckOut.value.year}-${String(todayCheckOut.value.month).padStart(2, '0')}-
+//     ${String(todayCheckOut.value.day).padStart(2, '0')} ${String(todayCheckOut.value.hours).padStart(2, '0')}:${String(todayCheckOut.value.minutes).padStart(2, '0')}:${String(todayCheckOut.value.seconds).padStart(2, '0')}`;
 
 // 포맷팅된 날짜와 시간을 출력
 //console.log(formattedDate);
+
+const todayCheckOut = ref("2024-07-12 18:10:27");
 
 function handleChekOutSubmit() {
     // 자식 컴포넌트 -> 부모 컴포넌트로 입실 시간 데이터 보내기
