@@ -1,5 +1,5 @@
 <template>
-    <div class="main p-3" style="margin-left: 25px;">
+    <div class="main p-3" style="margin-left: 25px; width: 800px;">
         <div class="item-section mt-2 mb-2" style="font-size: 12px">
             <span>출결 관리 > 출결 변경 신청</span>
         </div>
@@ -32,8 +32,8 @@
                     </div>
                     <div class="td">
                         <div class="textarea_group_title sm">
-                            <textarea v-model="reasonInfo.anreason" id="anreason" title="사유 입력" placeholder="사유를 입력해주세요."
-                                maxlength="100"></textarea>
+                            <textarea v-model="reasonInfo.anreason" id="anreason" title="사유 입력"
+                                placeholder="사유를 입력해주세요." maxlength="100"></textarea>
                             <p class="form_bytes"><span class="byte">0</span>/100</p>
                         </div>
                     </div>
@@ -46,13 +46,15 @@
                         <div class="attendance_wrap">
                             <div class="attendance_attach">
                                 <div class="attendance_edit">
+                                    <!-- v-if 사용하여 둘 중 하나 나오게 하기 -->
+                                    <img v-if="imgCheck === true" :src="src" width="110" height="150" class="ms-5">
                                     <p class="tit">인증 서류 첨부파일을 업로드해주세요.</p>
-                                    <div class="attach_wrap">
+                                    <div v-if="imgCheck === false" class="attach_wrap">
                                         <p class="guide_txt">파일 1개당 10MB까지 첨부 가능합니다. (JPG, JPEG, PNG, GIF만 첨부 가능)</p>
-                                        <div>
-                                            <input id="anattach" type="file" class="form-control-file mt-3" ref="battach" />
-                                        </div>
                                     </div>
+                                    <input ref="reasonInfo.anattachdata" type="file" class="form-control p-3 mt-2"
+                                        name="anattachdata" id="anattachdata" accept="image/*" @change="addImage"
+                                        style="width: 300px;">
                                 </div>
                             </div>
                         </div>
@@ -62,7 +64,8 @@
                     <RouterLink to="/trainee/attendance/detail">
                         <BaseButtonCancle>취소</BaseButtonCancle>
                     </RouterLink>
-                    <BaseButtonSubmit>완료</BaseButtonSubmit>
+                    <button class="btn btn-info btn-lg ms-3">등록</button>
+                    <!-- <BaseButtonSubmit>완료</BaseButtonSubmit> -->
                 </div>
             </form>
         </div>
@@ -72,20 +75,91 @@
 <script setup>
 import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { ref } from 'vue';
-
-const reasonInfo = ref({
-    ancategory: "",
-    anattach: null,
-    anreason: ""
-})
+import attendanceAPI from '@/apis/attendanceAPI';
+import { useStore } from 'vuex';
 
 const router = useRouter();
+const route = useRoute();
+const store = useStore();
+
+const mid = store.state.mid;
+
+const reasonInfo = ref({
+    adate: "2024-07-10",
+    ancategory: "",
+    anreason: "",
+    anattachdata: null
+});
+
+// 이미지 파일 미리보기
+const src = ref();
+const imgCheck = ref(false);
+
+function addImage(e) {
+    console.log("파일 추가");
+    const file = e.target.files[0];
+    console.log("file = " + file);
+    if (file) {
+        console.log("파일 추가 성공");
+        src.value = URL.createObjectURL(file);
+        imgCheck.value = true;
+        console.log("src.value = " + src.value); // BLOB
+        // console.log("src.value.file = " + src.value.files[0]);
+
+        // file을 formdata에 넣기위해 attach 변수에 저장
+        reasonInfo.value.anattachdata = file;
+        console.log("reasonInfo.value.anattachdata = " + reasonInfo.value.anattachdata);
+    } else {
+        imgCheck.value = false;
+    }
+}
 
 function handleSubmit() {
-    router.push(`/trainee/attendance/detail`)
+    const formData = new FormData();
+
+    //입력값들 넣기
+    formData.append("mid", mid);
+    formData.append("adate", reasonInfo.value.adate);
+    formData.append("ancategory", reasonInfo.value.ancategory);
+    formData.append("anreason", reasonInfo.value.anreason);
+    // 파일 넣기
+    formData.append("anattachdata", reasonInfo.value.anattachdata);
+    // formData.append("tprofiledata", request.value.tprofileimg.files[0]);    // trainee.tprofileimg
+
+    for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+    }
+
+    console.log("formData = " + formData);
+
+    // 사유 등록 요청
+    try {
+        console.log("createAttendanceCreate 실행 전");
+        attendanceAPI.createAttendanceCreate(formData);
+    } catch (error) {
+        console.log(error);
+    }
+
+
+    router.push("/trainee/attendance/detail");
 }
+
+
+// 교육생 출결에 대한 사유 등록하기
+// function attendanceReasonCreate(request) {
+//     try {
+//         console.log("");
+//         attendanceAPI.createAttendanceCreate(request);
+
+//     } catch (error) {
+//         console.log(error);
+//         console.log("교육생 퇴실 실패");
+//     }
+//     console.groupEnd();
+// }
+
 </script>
 
 <style scoped>
@@ -333,5 +407,4 @@ select {
     font-size: 12px;
     color: #999999;
 }
-
 </style>

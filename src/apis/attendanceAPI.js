@@ -30,7 +30,7 @@ function userCheckout(attendanceinfo) {
     return axios.post("/attendance/checkout", attendanceinfo);
 }
 
-// 출결 상세 조회
+// (교육생) 출결 상세 조회
 function getTraineeAttendanceDetail(mid, startdate, enddate) {
     return axios.get("/attendance/trainee/detail?mid="+mid+"&startdate="+startdate+"&enddate="+enddate);
 }
@@ -60,7 +60,10 @@ function getTraineeAttendanceApproveConfirm(mid, adate) {
     return axios.get("/attendance/approve?mid=" + mid + "&adate=" + adate);
 }
 
-
+// (교육생) 대시보드 사유 작성 API
+function createAttendanceCreate(request) {
+    axios.post("/attendance/reason/create", request);
+}
 
 export default {
     getUserAttendanceInfoData,
@@ -73,5 +76,6 @@ export default {
     getTraineeAttendaceReasonCnt,
     getTraineeAttendanceApproveList,
     getTraineeAttendaceReasonApproveConfirm,
-    getTraineeAttendanceApproveConfirm
+    getTraineeAttendanceApproveConfirm,
+    createAttendanceCreate
 }

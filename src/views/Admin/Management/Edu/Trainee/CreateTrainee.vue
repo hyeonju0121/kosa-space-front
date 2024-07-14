@@ -24,7 +24,7 @@
                                 <td colspan="3">
                                     <div style="text-align:left">
                                         <!-- 교육생 이미지 (필수) -->
-                                        <img :src="src" width="110" height="150" class="ms-5" alt="이미지가 없습니다.">
+                                        <img :src="src" width="110" height="150" class="ms-5">
                                         <!-- <input ref="trainee.tprofileimg" type="file" class="form-control p-3 mt-2"
                                             name="tprofileimg" id="tprofileimg" accept="image/*" onchange=""
                                             style="width: 300px;" required> -->
@@ -481,26 +481,6 @@ async function handleSubmit() {
         console.log(error);
     }
 
-
-
-    //교육생 등록 값 잘 넘어가는지 확인
-    // console.log(formData);
-    // console.log(JSON.parse(JSON.stringify(request.value)));
-
-    //유효성 검사 결과가 전부 참일때 등록 가능
-    // 경섭이 방식. --> 스타일의 차이. 좋음! 둘 중 뭘할지 선택. 일단 보류 (주석)
-    /*if (mnameCheck.value && mphoneTotalCheck.value && tsexCheck.value) {
-        submitError.value = false;
-        router.push('/admin/trainee/list');
-    } else {
-        submitError.value = true;
-        namePatternCheck();
-        phonePatternmiddleCheck();
-        phonePatternendCheck();
-        checkSex();
-
-        alert("이름, 성별, 전화번호 유효성에 맞게 작성하여 주세요!");
-    }*/
 }
 
 </script>
