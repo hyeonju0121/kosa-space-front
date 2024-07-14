@@ -287,7 +287,7 @@ const attendanceDashBoardDate = ref({
 });
 
 // adate는 임시 고정 값
-const adate = ref("2024-07-02")
+const adate = ref("2024-07-12")
 // 3. 진행중인 교육과정의 출결 사유 제출 건수 가져오기
 async function progressAttendanceCntInfo(ecname, cname, adate) {
     try {

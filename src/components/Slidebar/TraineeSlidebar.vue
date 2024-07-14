@@ -88,9 +88,9 @@
       <p class="title">Account</p>
       <ul>
         <li>
-          <a href="#">
+          <a href="#" @click="handleLogOut()">
             <i><PhSignOut class="icon"/></i>
-            <span class="text">로그아웃</span>
+            <span class="text" >로그아웃</span>
           </a>
         </li>
       </ul>
@@ -101,7 +101,7 @@
         <img src="@/assets/hyeonju.jpg" alt="" class="user-img-detail">
       </div>
       <div class="user-details">
-        <p class="title">M2001</p>
+        <p class="title">{{ mid }}</p>
         <p class="name">유현주</p>
       </div>
     </div>
@@ -112,8 +112,20 @@
 <script setup>
 import { onMounted, computed } from 'vue';
 import jQuery from 'jquery';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
+const store = useStore();
+const router = useRouter();
 
 const $ = jQuery;
+
+
+const mid = store.state.mid;
+
+
+
+
 
 onMounted(() => {
 $(".menu > ul > li").click(function () {
@@ -133,6 +145,12 @@ $(".menu-btn").click(function() {
 $(".sidebar").toggleClass("active");
 })
 });
+
+function handleLogOut() {
+  console.log("로그아웃");
+  store.dispatch("deleteAuth");
+  router.push("/login");
+}
 
 </script>
 
@@ -363,7 +381,7 @@ text-align: center;
 .sidebar.active .menu ul li .arrow {
 display: none;
 }
-.sidebar.active .menu > ul > li > a {
+.sidebar.active .menu > ul > li > button {
 position: relative;
 display: flex;
 align-items: center;

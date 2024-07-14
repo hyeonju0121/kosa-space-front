@@ -120,7 +120,7 @@
         <p class="title">Account</p>
         <ul>
           <li>
-            <a href="#">
+            <a href="#" @click="handleLogOut()">
               <i>
                 <PhSignOut class="icon" />
               </i>
@@ -146,6 +146,11 @@
 <script setup>
 import { onMounted } from 'vue';
 import jQuery from 'jquery';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
+const store = useStore();
+const router = useRouter();
 
 const $ = jQuery;
 
@@ -167,6 +172,12 @@ onMounted(() => {
     $(".sidebar").toggleClass("active");
   })
 });
+
+function handleLogOut() {
+  console.log("로그아웃");
+  store.dispatch("deleteAuth");
+  router.push("/login");
+}
 
 </script>
 

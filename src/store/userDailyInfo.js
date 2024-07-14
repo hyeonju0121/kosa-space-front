@@ -4,6 +4,12 @@ export default {
     namespaced: true,
 
     state: {
+        // 입실 시간
+        userCheckIn: "",
+
+        // 퇴실 시간
+        userCheckOut: "",
+
         // 과제 제출 여부
         userDailyNoteStatus: false,
         // 입실 여부
@@ -13,6 +19,12 @@ export default {
     },
 
     getters: {
+        getUserCheckIn(state, getters, rootState, rootGetters) {
+            return state.userCheckIn;
+        },
+        getUserCheckOut(state, getters, rootState, rootGetters) {
+            return state.userCheckOut;
+        },
         getUserDailyNoteStatus(state, getters, rootState, rootGetters) {
             return state.userDailyNoteStatus;
         },
@@ -25,6 +37,12 @@ export default {
     },
 
     mutations: {
+        setUserCheckIn(state, payload) {
+            state.userCheckIn = payload;
+        },
+        setUserCheckOut(state, payload) {
+            state.userCheckOut = payload;
+        },
         setUserDailyNoteStatus(state, payload) {
             state.userDailyNoteStatus = payload;
         },
@@ -63,7 +81,11 @@ export default {
             new Promise((resolve, reject) => {
                 // 입실 성공
                 if (true) {
-                    resolve({result: "success", userCheckInStatus: payload.userCheckInStatus})
+                    resolve({
+                        result: "success", 
+                        userCheckInStatus: payload.userCheckInStatus,
+                        userCheckIn: payload.userCheckIn // 2024-07-14 추가
+                })
                 } else {
                     // 입실 실패
                     reject({result: "fail", message: "입실할 수 없습니다."});
@@ -72,6 +94,7 @@ export default {
             .then((data) => {
                 console.log("입실 성공");
                 context.commit("setUserCheckInStatus", data.userCheckInStatus);
+                context.commit("setUserCheckIn", data.userCheckIn); // 2024-07-14 추가
             })
             .catch((error) => {
                 console.log("입실 실패");
@@ -82,7 +105,11 @@ export default {
             new Promise((resolve, reject) => {
                 // 퇴실 성공
                 if (true) {
-                    resolve({result: "success", userCheckOutStatus: payload.userCheckOutStatus})
+                    resolve({
+                        result: "success", 
+                        userCheckOutStatus: payload.userCheckOutStatus,
+                        userCheckOut: payload.userCheckOut
+                    })
                 } else {
                     // 퇴실 실패
                     reject({result: "fail", message: "퇴실할 수 없습니다."});
@@ -91,6 +118,7 @@ export default {
             .then((data) => {
                 console.log("퇴실 성공");
                 context.commit("setUserCheckOutStatus", data.userCheckOutStatus);
+                context.commit("setUserCheckOut", data.userCheckOut);
             })
             .catch((error) => {
                 console.log("퇴실 실패");
