@@ -112,7 +112,7 @@ onMounted(() => {
 })
 
 let mid = ref(route.query.mid || '');
-const adate = ref(route.query.adate || "2024-07-10");
+const adate = ref(route.query.adate || "2024-07-15");
 
 console.log("mid: " + mid.value);
 

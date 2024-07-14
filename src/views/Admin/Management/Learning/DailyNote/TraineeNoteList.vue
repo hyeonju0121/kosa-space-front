@@ -153,7 +153,7 @@ async function traineeList(ecname, cname) {
     }
 }
 
-const adate = "2024-07-02";
+const adate = "2024-07-15";
 const rPageNo = ref(route.query.rPageNo || 1);
 
 // 4. 교육생 번호를 눌렀을때 교육생 상세조회가 된다.

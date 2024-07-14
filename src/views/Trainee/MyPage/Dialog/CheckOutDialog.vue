@@ -55,7 +55,7 @@ const emit = defineEmits(["submitCheckOut"]);
 // 포맷팅된 날짜와 시간을 출력
 //console.log(formattedDate);
 
-const todayCheckOut = ref("2024-07-12 18:10:27");
+const todayCheckOut = ref("2024-07-15 18:10:27");
 
 function handleChekOutSubmit() {
     // 자식 컴포넌트 -> 부모 컴포넌트로 입실 시간 데이터 보내기

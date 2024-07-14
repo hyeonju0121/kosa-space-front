@@ -80,7 +80,7 @@ const route = useRoute();
 const mid = ref(route.query.mid || "");
 const rPageNo = ref(route.query.rPageNo || 1);
 const refweek = ref(route.query.refweek || "");
-const adate = "2024-07-02";
+const adate = "2024-07-15";
 
 const traineeData = ref({});
 

@@ -58,7 +58,7 @@ const emit = defineEmits(["submitCheckIn"]);
 // 포맷팅된 날짜와 시간을 출력
 //console.log(formattedDate);
 
-const todayCheckIn = ref("2024-07-12 08:40:27");
+const todayCheckIn = ref("2024-07-15 08:48:27");
 
 function handleChekinSubmit() {
     // 자식 컴포넌트 -> 부모 컴포넌트로 입실 시간 데이터 보내기

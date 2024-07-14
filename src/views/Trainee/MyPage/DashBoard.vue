@@ -210,7 +210,7 @@ const store = useStore();
 const router = useRoute();
 
 // const mid = "2024M2001";
-const adate = "2024-07-12";
+const adate = "2024-07-15";
 const mid = store.state.mid;
 
 // store 에서 사용자 입실 및 퇴실 여부, 데일리 과제 제출 여부 가져오기

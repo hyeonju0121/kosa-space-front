@@ -145,7 +145,7 @@ const filter = ref({
     cname: route.query.cname || "MSA 2차 Full Stack 개발자 양성과정"
 });
 
-const adate = "2024-07-10";
+const adate = "2024-07-15";
 
 // route.query값이 있다면 셀렉트 버튼 활성화 / 비활성화
 let btnEnable = ref("");
