@@ -1,13 +1,13 @@
 <template>
     <div class="main p-4" style="margin-left: 20px; width: 1400px">
         <div>
-            <div class="dashboard" style="background-color:rgba(206, 206, 206, 0.205);">
+            <div class="dashboard" style="background-color:rgba(215, 240, 220, 0.575);">
                 <div class="row">
                     <div class="profile-wrap col-md-4">
                         <div class="profile-background">
                             <img src="@/assets/dashboard/dashboard_myinfo.jpg" style="width:400px;">
                         </div>
-                        <div class="profile-contents" style="width:430px; height:620px; background-color: white;">
+                        <div class="profile-contents" style="width:430px; height:620px; background-color: rgb(255, 255, 255);">
                             <div class="user-info" style="padding-left: 10%;">
                                 <div style="margin-top: 60px;">
                                     <h5 class="contents-title">{{ headerInfo.mname }}
@@ -666,6 +666,7 @@ select {
 .dashboard {
     border-radius: 30px;
     overflow: hidden;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
 .community-title {
@@ -728,7 +729,7 @@ select {
 .profile-contents {
     position: absolute;
     top: 60%;
-    left: 42.7%;
+    left: 44.7%;
     width: 100%;
     transform: translate(-50%, -50%);
 }
