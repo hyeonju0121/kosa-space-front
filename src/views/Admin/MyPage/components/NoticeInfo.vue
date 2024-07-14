@@ -18,7 +18,7 @@
                                 <span class="new_mark_complete ms-2">{{ item.ncategory }}</span>
                             </span>
                             <span>
-                                <span @click="goNoticeDetail(item.nno)"
+                                <span @click="goNoticeDetail(item.nno, goNoticeDetail)"
                                     style="text-decoration-line: none; color:black; cursor: pointer;">{{ item.ntitle }}</span>
                             </span>
                             <span>{{ item.ncreatedat.substring(0, 10) }}</span>
@@ -113,7 +113,12 @@ function goNoticeDetail(nno) {
     router.push({
         path: "/admin/notice/detail",
         query: {
-            nno: nno
+            nno: nno,
+            nPageNo: nPageNo.value,
+            // ecname: filter.value.ecname,
+            // cname: filter.value.cname,
+            // ncategory: filter.value.ncategory,
+            // mid: noticeList.value.notice.mid
         }
     })
 }

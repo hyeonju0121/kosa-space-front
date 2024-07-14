@@ -78,7 +78,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import educenterAPI from '@/apis/educenterAPI';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -167,6 +167,16 @@ function centerChange() {
 
     console.groupEnd();
 }
+
+// 요청 경로의 변경을 감시
+watch(route, (newRoute, oldRoute) => {
+    if (newRoute.query.ecname) { // 쿼리에 pageNo가 들어있으면 해당 페이지로 요청
+        handleCourseCnt(ecname.value);
+        handleCourseInfoStatus1();
+        handleAttendanceInfo();
+        handleNoticeInfo();
+    } 
+});
 </script>
 
 <style scoped>

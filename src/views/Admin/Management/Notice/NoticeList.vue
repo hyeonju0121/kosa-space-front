@@ -286,8 +286,22 @@ function changePageNo(argPageNo) {
     console.log("changePageNo 함수 실행");
     console.log("argPageNo = " + argPageNo);
     nPageNo.value = argPageNo;
-    getNoticeList(filter.value.ecname, filter.value.cname, filter.value.ncategory, argPageNo);
+
+    router.push(`/admin/notice/list?nPageNo=${argPageNo}`);
 }
+
+
+// 요청 경로의 변경을 감시
+watch(route, (newRoute, oldRoute) => {
+    if(newRoute.query.nPageNo) { // 쿼리에 pageNo가 들어있으면 해당 페이지로 요청
+        getNoticeList(filter.value.ecname, filter.value.cname, filter.value.ncategory, newRoute.query.nPageNo);
+        nPageNo.value =newRoute.query.nPageNo;
+    } else { // 안들어왔으면 1페이지 그대로
+        getNoticeList(filter.value.ecname, filter.value.cname, filter.value.ncategory, 1);
+        nPageNo.value = 1;
+    }
+});
+
 </script>
 
 <style scoped>

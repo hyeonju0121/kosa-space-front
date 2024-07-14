@@ -73,19 +73,19 @@
 
                 <div class="mt-2" style="display: flex; justify-content: center;">
                     <div>
-                        <button class="btn btn-outline-primary btn-sm me-1" @click="changePageNo(1)">처음</button>
+                        <button class="btn btn-outline-primary btn-sm me-1" @click="changePageNo(mid, adate, 1)">처음</button>
                         <button v-if="traineeData.pager.groupNo > 1" class="btn btn-outline-info btn-sm me-1"
-                            @click="changePageNo(traineeData.pager.startPageNo - 1)">이전</button>
+                            @click="changePageNo(mid, adate, traineeData.pager.startPageNo - 1)">이전</button>
                         <button v-for="pageNo in traineeData.pager.pageArray" :key="pageNo"
                             :class="(traineeData.pager.pageNo === pageNo) ? 'btn-danger' : 'btn-outline-success'"
-                            class="btn btn-sm me-1" @click="changePageNo(pageNo)">
+                            class="btn btn-sm me-1" @click="changePageNo(mid, adate, pageNo)">
                             {{ pageNo }}
                         </button>
                         <button v-if="traineeData.pager.groupNo < traineeData.pager.totalGroupNo"
                             class="btn btn-outline-info btn-sm me-1"
-                            @click="changePageNo(traineeData.pager.endPageNo + 1)">다음</button>
+                            @click="changePageNo(mid, adate, traineeData.pager.endPageNo + 1)">다음</button>
                         <button class="btn btn-outline-info btn-sm me-1"
-                            @click="changePageNo(traineeData.pager.totalPageNo)">맨끝</button>
+                            @click="changePageNo(mid, adate, traineeData.pager.totalPageNo)">맨끝</button>
                     </div>
                 </div>
             </div>
@@ -112,7 +112,7 @@ onMounted(() => {
 })
 
 let mid = ref(route.query.mid || '');
-const adate = ref("2024-07-10");
+const adate = ref(route.query.adate || "2024-07-10");
 
 console.log("mid: " + mid.value);
 
@@ -163,11 +163,23 @@ function goPersonalNoteDetail(mid, refweek, pageNo) {
 
 
 // -- 페이징 처리 --
-function changePageNo(argPageNo) {
+function changePageNo(mid, adate, argPageNo) {
     console.log("changePageNo 함수 실행");
     console.log("argPageNo = " + argPageNo);
+    
+    console.log("mid.value = " + mid);
+    console.log("rPageNo.value = " + argPageNo);
     rPageNo.value = argPageNo;
-    traineeList(mid.value, adate.value, argPageNo);
+
+    // router.push(`/admin/dailynote/trainee/note/list?rPageNo=${argPageNo}`);
+    // router.push(`/admin/dailynote/trainee/note/list?mid=${mid}&adate=${adate.value}&rPageNo=${argPageNo}`);
+    router.push( { path: "/admin/dailynote/trainee/note/list", 
+            query: {
+                mid: mid,
+                adate: adate.value,
+                rPageNo: argPageNo
+            }
+    }); 
 }
 
 // watch(
@@ -182,10 +194,14 @@ function changePageNo(argPageNo) {
 // 요청 경로의 변경을 감시
 watch(route, (newRoute, oldRoute) => {
     if (newRoute.query.rPageNo) { // 쿼리에 pageNo가 들어있으면 해당 페이지로 요청
-        traineeList(traineeData.value.result.mid, traineeData.value.result.refweek, newRoute.query.pageNo);
-        rPageNo.value = newRoute.query.pageNo;
+        // traineeList(traineeData.value.result.mid, traineeData.value.result.refweek, newRoute.query.rPageNo);
+        //traineeList(mid.value, traineeData.value.result.refweek, newRoute.query.rPageNo);
+        traineeList(mid.value, adate.value, newRoute.query.rPageNo);
+        rPageNo.value = newRoute.query.rPageNo;
     } else { // 안들어왔으면 1페이지 그대로
-        traineeList(traineeData.value.result.mid, traineeData.value.result.refweek, 1);
+        // traineeList(traineeData.value.result.mid, traineeData.value.result.refweek, 1);
+        //traineeList(mid.value, traineeData.value.result.refweek, 1);
+        traineeList(mid.value, adate.value, 1);
         rPageNo.value = 1;
     }
 });
