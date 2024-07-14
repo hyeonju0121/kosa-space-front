@@ -63,9 +63,10 @@
             <div class="search-input-box">
                 <div class="search-input-group">
                     <div class="lpart">
-                        <select id="columnName" class="dsgn-select" title="검색 구분 선택">
+                        <select id="columnName" class="dsgn-select" title="검색 구분 선택"
+                            v-model="filter.ncategory">
                             <!-- <option value="">카테고리 선택</option> -->
-                            <option :value="filter.ncategory">{{ filter.ncategory }}</option>
+                            <!-- <option :value="filter.ncategory">{{ filter.ncategory }}</option> -->
                             <option value="all">전체</option>
                             <option value="출결">출결</option>
                             <option value="수업">수업</option>
@@ -94,7 +95,7 @@
                 <tbody>
                     <!-- <tr v-for="item in noticeList.notice" :key="item" :class="{ 'highlight': notice.highlight }"> -->
                     <tr v-for="item in noticeList.notice" :key="item">
-                        <td class="label">{{ item.nno }}</td>
+                        <td class="label">{{ item.rnum }}</td>
                         <td class="label">
                             <span class="d-flex">
                                 <span class="new_mark2">전체</span>
@@ -239,6 +240,15 @@ watch(
 
 watch(
     () => filter.value.cname,
+    (nv, ov) => {
+        console.log("filter.value.cname 변경 전 = " + nv);
+        console.log("filter.value.cname 변경 후 = " + ov);
+        getNoticeList(filter.value.ecname, nv, filter.value.ncategory, nPageNo.value);
+    }
+)
+
+watch(
+    () => filter.value.ncategory,
     (nv, ov) => {
         console.log("filter.value.cname 변경 전 = " + nv);
         console.log("filter.value.cname 변경 후 = " + ov);
