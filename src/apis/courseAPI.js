@@ -44,7 +44,10 @@ function getCourseNameList(ecname) {
     return axios.get("/edu/course/cnamelist?ecname=" + ecname);
 }
 
-
+// 교육과정 강사진 목록 조회
+function getCourseProfessorList(ecname) {
+    return axios.get("/edu/course/cprofessor/list?ecname=" + ecname);
+}
 
 export default {
     create,
@@ -53,5 +56,6 @@ export default {
     getCourseByCno,
     update,
     getCourseNameList,
-    getInprogressCourseList
+    getInprogressCourseList,
+    getCourseProfessorList
 }

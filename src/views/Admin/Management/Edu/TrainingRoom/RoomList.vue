@@ -13,9 +13,9 @@
         <!-- 필터부분 -->
         <div class="align" style="display: flex;">
             <div class="InpBox">
-                <select id="room" title="교육장 선택" @change="handleFilterChange" v-model="filter.ecname">
-                    <option disabled seleceted value="교육장 선택">교육장 선택</option>
-                    <option v-for="name in nameList" :value=name :key="name">{{ name }}</option>                    
+                <select id="room" title="교육장 선택" v-model="filter.ecname">
+                    <option seleceted :value="filter.ecname">{{ filter.ecname }}</option>
+                    <option v-for="ecname in ecnames" :value=ecname :key="ecname">{{ ecname }}</option>
                 </select>
             </div>
 
@@ -23,15 +23,14 @@
             <div class="search_interview">
                 <div class="InpBox search_order" style="margin-left:10px;">
                     <!-- 승인여부 -->
-                    <select id="status" title="강의실 사용 여부"  @change="handleFilterChange" v-model="filter.trenable">
-                        <option selected disabled value="">강의실 사용 여부</option>
-                        <option value="전체">전체</option>
+                    <select id="status" title="강의실 사용 여부" v-model="filter.trenable">
+                        <option :value="filter.trenable" selected>{{ filter.trenable }}</option>
                         <option value="사용중">사용중</option>
                         <option value="사용가능">사용가능</option>
                     </select>
                 </div>
             </div>
-            
+
             <button type="button" class="BtnType SizeM" @click="handleCreateBtn" style="margin-left: 1%;">
                 강의실 등록
             </button>
@@ -43,13 +42,13 @@
 
         <!-- 조회 안했을 때 ---------------------------------------------------------->
         <!-- <div class="interview_list" v-if="!submitStatus"> -->
-            <!-- 면접 요청 리스트 없을 경우 -->
-            <!-- <div class="empty_data">
+        <!-- 면접 요청 리스트 없을 경우 -->
+        <!-- <div class="empty_data">
                 <img src="//www.saraminimage.co.kr/sri/person/resume/img_empty_announce.png">
                 <strong class="tit">교육장이 선택되지 않았습니다.</strong>
                 <div class="txt">교육장을 선택하고 강의실 조회를 눌러주세요!</div>
             </div> -->
-        
+
 
         <div id="career_growth_contents">
             <section class="careerplus alljob_category">
@@ -65,13 +64,14 @@
                                     <span class="new_mark_complete" v-if="room.trenableResult === '사용중'">{{
                                         room.trenableResult }}</span>
                                     <span class="new_mark2" v-if="room.trenableResult === '사용가능'">{{ room.trenableResult
-                                    }}</span>
+                                        }}</span>
                                     <span class="new_mark1"> {{ room.ecname }}</span>
                                 </div>
                                 <div class="keywords" v-if="room.trenableResult === '사용중'">
                                     <span class="date_author">현재 {{ room.cname }} 진행중</span>
                                     <br>
-                                    <span class="date_author">{{ room.cstartdate }}~{{ room.cenddate }}까지 강의실 사용불가</span>
+                                    <span class="date_author">{{ room.cstartdate }}~{{ room.cenddate }}까지 강의실
+                                        사용불가</span>
                                 </div>
                             </div>
                         </RouterLink>
@@ -81,153 +81,57 @@
         </div>
     </div>
 
-        <!--
-        <div class="container mt-3">
-            <table class="styled-table">
-                <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">강의실 명</th>
-                        <th scope="col">수용 가능 인원</th>
-                        <th scope="col">사용 가능 여부</th>
-                        <th scope="col">현재 진행중인 교육과정</th>
-                        <th scope="col">등록일</th>
-                        <th scope="col">비고</th>
-                    </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                    <tr>
-                        <td>1</td>
-                        <td>L1</td>
-                        <td>34 명</td>
-                        <td>불가능</td>
-                        <td>MSA 기반 Full Stack 개발 전문가 양성과정 2차</td>
-                        <td>2024-06-18 19:26</td>
-                        <td>
-                            <button type="button" class="btn btn-outline-dark" @click="handleUpdateBtn">수정</button>
-                            <button type="button" class="btn btn-outline-dark">삭제</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>L2</td>
-                        <td>30 명</td>
-                        <td>불가능</td>
-                        <td>MSA 기반 Full Stack 개발 전문가 양성과정 2차</td>
-                        <td>2024-06-18 19:26</td>
-                        <td>
-                            <button type="button" class="btn btn-outline-dark" @click="handleUpdateBtn">수정</button>
-                            <button type="button" class="btn btn-outline-dark">삭제</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>L3</td>
-                        <td>25 명</td>
-                        <td>불가능</td>
-                        <td>MSA 기반 Full Stack 개발 전문가 양성과정 2차</td>
-                        <td>2024-06-18 19:26</td>
-                        <td>
-                            <button type="button" class="btn btn-outline-dark" @click="handleUpdateBtn">수정</button>
-                            <button type="button" class="btn btn-outline-dark">삭제</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>L4</td>
-                        <td>34 명</td>
-                        <td>가능</td>
-                        <td></td>
-                        <td>2024-06-18 19:26</td>
-                        <td>
-                            <button type="button" class="btn btn-outline-dark" @click="handleUpdateBtn">수정</button>
-                            <button type="button" class="btn btn-outline-dark">삭제</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    -->
-    
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router';
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import educenterAPI from '@/apis/educenterAPI';
 import trainingroomAPI from '@/apis/trainingroomAPI';
 
-
-// const room = ref({    
-//     trno:"",
-//     attachments:[],
-//     eanoList:[],
-//     ecname:"",
-//     trenable:""
-// });
-
-
-
-
 const router = useRouter();
+
+onMounted(() => {
+    educenterNameList();
+    trainingroomList(filter.value.ecname, filter.value.trenable);
+})
 
 // 필터 상태 객체 정의
 const filter = ref({
-    ecname: "교육장 선택",
-    trenable: ""
+    ecname: "송파교육센터",
+    trenable: "전체"
 });
 
 
 // 교육장 이름 전체 목록을 가져오는 메소드
-const nameList = ref([]);
+const ecnames = ref();
 
+// 교육장 목록 불러오기
 async function educenterNameList() {
     try {
         const response = await educenterAPI.educenterNameList();
-        nameList.value = response.data;
-
+        ecnames.value = response.data.splice(1);
     } catch (error) {
         console.log(error);
     }
 }
 
-
 //교육장 이름 기준으로 강의실 목록을 가져오는 메소드
 const roomList = ref([]);
 const roomattach = ref(null);
 let roomListlength = ref(roomList.value.length);
-async function trainingroomList() {
-    // try {
-    //     const response = await trainingroomAPI.getTrainingroomList(filter.value.ecname, filter.value.trenable);
-    //     roomList.value = response.data;
-    //     console.log(response.data);
-    //     roomListlength.value = roomList.value.length;
 
-    //     //각 강의실 첨부파일 URL 가져오기
-    //     for (const room of roomList.value) {
-    //         if (room.eanoList && room.eanoList.length > 0) {
-    //             room.attachments = [];
-    //             for (const eano of room.eanoList) {
-    //                 const url = await getAttach(eano);
-    //                 room.attachments.push(url);
-    //             }
-    //         }
-    //     }
-
-    // } catch (error) {
-    //     console.log(error)
-    // }
-    
-    
+// 강의실 리스트 불러오기
+async function trainingroomList(ecname, trenable) {
     try {
-        const response = await trainingroomAPI.getTrainingroomList(
-            filter.value.ecname, filter.value.trenable);
+        console.log("ecname = " + ecname);
+        console.log("trenable = " + trenable);
+        if (trenable === "" || trenable === undefined || trenable === "전체") trenable = "all";
+        console.log("trenable = " + trenable);
+        const response = await trainingroomAPI.getTrainingroomList(ecname, trenable);
         roomList.value = response.data;
-        // console.log(response.data);
-        // console.log(JSON.parse(JSON.stringify(roomList)));
 
         roomListlength.value = roomList.value.length;
-        // console.log(roomListlength.value);
 
         //사진 얻기위해 eano를 얻음
         const data = roomList.value;
@@ -235,7 +139,7 @@ async function trainingroomList() {
         console.log(eano);
         getAttach(eano);
 
-        
+
     } catch (error) {
         console.log(error);
     }
@@ -248,50 +152,31 @@ async function getAttach(eano) {
     try {
         const response = await trainingroomAPI.getRoomAttach(eano);
         const blob = response.data;
-        roomattach.value = URL.createObjectURL(blob);       
+        roomattach.value = URL.createObjectURL(blob);
     } catch (error) {
         console.log(error);
     }
 }
 
-onMounted(() => {
-    educenterNameList();
-    console.log(nameList);    
-})
-
-
-
-
+// 강의실 등록 버튼 이벤트
 function handleCreateBtn() {
     router.push('/admin/room/create');
 }
 
+// 교육장 선택에 따라 강의실 목록 바꾸어 주기.
+watch(() => filter.value.ecname,
+    (nv, ov) => {
+        filter.value.trenable = "전체";
+        trainingroomList(nv, filter.value.trenable);
+    }
+)
 
-
-
-//선택된 필터의 상태값 정의
-const selectedRoom = ref('');
-const selectedStatus = ref('');
-
-
-//필터링된 교육과정 목록을 반환하는 계산된 속성
-const filteredRoomList = computed(() => {
-    return roomList.value.filter(room => {
-        const roomMatch = selectedRoom.value === '' || selectedRoom.value === '전체' || room.ecname === selectedRoom.value;
-        const statusMatch = selectedStatus.value === '' || selectedStatus.value === '전체' || room.trenableResult === selectedStatus.value;
-        
-        return roomMatch && statusMatch;
-    });
-});
-
-//선택된 필터 값 변경 시 호출되는 메소드
-function handleFilterChange() {
-    selectedRoom.value = document.getElementById('room').value;
-    selectedStatus.value = document.getElementById('status').value;    
-    trainingroomList();
-}
-
-
+// 강의실 상태 선택에 따라 강의실 목록 바꾸어 주기.
+watch(() => filter.value.trenable,
+    (nv, ov) => {
+        trainingroomList(filter.value.ecname, nv);
+    }
+)
 
 </script>
 

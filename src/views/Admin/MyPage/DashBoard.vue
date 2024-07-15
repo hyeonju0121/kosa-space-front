@@ -13,10 +13,10 @@
 
                 <!-- 스피너 -->
                 <!-- <div v-if="isLoading === true" class="spinner d-flex justify-content-center align-items-center" -->
-                    <!-- style="height: 800px"> -->
-                    <!-- <div class="spinner d-flex justify-content-center align-items-center"
+                <!-- style="height: 800px"> -->
+                <!-- <div class="spinner d-flex justify-content-center align-items-center"
                     style="height: 800px">-->
-                    <!-- <div class="d-flex flex-column">
+                <!-- <div class="d-flex flex-column">
                         <div class="spinner-border"
                             style="width: 8rem; height: 8rem; border-width: 1rem; color:#22C55E;" role="status">
                         </div>
@@ -41,8 +41,8 @@
 
                         <!-- 교육장 조회(필터) 안했을 때 ---------------------------------------------------------->
                         <!-- <div class="interview_list" v-if="ecname === ''"> -->
-                            <!-- 면접 요청 리스트 없을 경우 -->
-                            <!-- <div class="empty_data">
+                        <!-- 면접 요청 리스트 없을 경우 -->
+                        <!-- <div class="empty_data">
                                 <img src="//www.saraminimage.co.kr/sri/person/resume/img_empty_announce.png">
                                 <strong class="tit">교육장이 선택되지 않았습니다.</strong>
                                 <div class="txt">교육장을 선택하고 강의실 조회를 눌러주세요!</div>
@@ -62,14 +62,13 @@
                             <div class="col-7">
                                 <div class="d-flex flex-column" style="height: 900px;">
                                     <!-- 교육과정 진행 현황 -->
-                                    <CourseInfo :ecname="ecname" ref="$courseInfo" style="height: 450px;"/>
+                                    <CourseInfo :ecname="ecname" ref="$courseInfo" style="height: 450px;" />
                                     <!-- 교육과정 출결 현황 -->
-                                    <AttendanceInfo :ecname="ecname" ref="$attendanceInfo" style="height: 450px;"/>
-
+                                    <AttendanceInfo :ecname="ecname" ref="$attendanceInfo" style="height: 450px;" />
                                 </div>
-
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -175,7 +174,7 @@ watch(route, (newRoute, oldRoute) => {
         handleCourseInfoStatus1();
         handleAttendanceInfo();
         handleNoticeInfo();
-    } 
+    }
 });
 </script>
 

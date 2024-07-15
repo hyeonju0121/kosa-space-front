@@ -12,12 +12,7 @@ function create(FormData) {
 
 // 강의실 목록 
 function getTrainingroomList(ecname, trenable) {
-    return axios.get("/edu/room/list", {
-        params: {
-            ecname: ecname,
-            trenable: trenable
-        }
-    })
+    return axios.get("/edu/room/list?ecname=" + ecname + "&trenable=" + trenable);
 }
 
 // 강의실 사진 가져오기(캐러셀)
@@ -39,10 +34,16 @@ function update(FormData) {
     return axios.put("/edu/room/update", FormData);
 }
 
+// 강의실 전체 목록 조회
+function getTrainingRoomList(ecname) {
+    return axios.get("edu/room/namelist?ecname=" + ecname);
+}
+
 export default {
     getTrainingroomList,
     getRoomAttach,
     create,
     getTrainingroomByTrno,
-    update
+    update,
+    getTrainingRoomList
 }
