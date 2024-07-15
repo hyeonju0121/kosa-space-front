@@ -118,7 +118,7 @@
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
-                                                <div class="modal-header">
+                                                <div class="modal-header" style="background-color: #22C55E; color: white;">
 
                                                     <p class="title" style="margin-top: 5%;">조퇴 및 결석 사유</p>
 
@@ -133,9 +133,11 @@
                                                     <p class="title_mark">인증 서류</p>
                                                     <p class="contents">인증 서류 : {{ reasonInfo.anattach }}</p>
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">닫기</button>
+                                                <div class="modal-footer" style="display: flex; margin-left: 3%; justify-content: center;">
+                                                    <!-- <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">닫기</button> -->
+                                                    <BaseButtonUpdate type="button" data-bs-dismiss="modal" 
+                                                        style="margin-right: 1%;">닫기</BaseButtonUpdate>
                                                 </div>
                                             </div>
                                         </div>
@@ -163,7 +165,7 @@
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
-                                                <div class="modal-header">
+                                                <div class="modal-header" style="background-color: #22C55E; color: white;">
 
                                                     <p class="title" style="margin-top: 5%;">조퇴 및 결석 사유</p>
 
@@ -179,9 +181,9 @@
                                                     <p class="contents">인증 서류 : {{ reasonInfo.anattach }}</p>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">닫기</button>
-                                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="anconfirmCheck(item.mid, adate)">승인</button>
+                                                    <BaseButtonUpdate type="button" data-bs-dismiss="modal" 
+                                                        style="margin-right: 1%;">닫기</BaseButtonUpdate>
+                                                    <BaseButtonUpdate type="button" data-bs-dismiss="modal" @click="anconfirmCheck(item.mid, adate)">승인</BaseButtonUpdate>
                                                 </div>
                                             </div>
                                         </div>
@@ -223,6 +225,7 @@ import ApproveDialog from './Dialog/ApproveDialog.vue';
 import courseAPI from '@/apis/courseAPI';
 import educenterAPI from '@/apis/educenterAPI';
 import attendanceAPI from '@/apis/attendanceAPI';
+import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
 
 import { ref, onMounted, watch } from 'vue';
 
@@ -497,6 +500,28 @@ td {
     font-family: 'Noto Sans KR', sans-serif;
 }
 
+.title {
+    font-weight: 600;
+}
+
+.contents {
+    font-weight: 400;
+    font-size: 1.0rem;
+    margin-left: 3%;
+    text-align: left;
+}
+
+.title_mark {
+    width: 90px;
+    height: 24px;
+    border-radius: 4px;
+    color: rgb(127, 127, 127);
+    font-size: 13px;
+    line-height: 24px;
+    text-align: center;
+    background-color: rgba(226, 229, 231, 0.69);
+}
+
 .headingArea {
     position: relative;
     padding: 22px 0 0;
@@ -546,7 +571,7 @@ td {
 .BtnType {
     display: block;
     margin-bottom: 8px;
-    width: 150px;
+    width: 130px;
     position: relative;
     border: 1px solid black;
     border-radius: 4px;
@@ -704,5 +729,10 @@ table {
     color: #475067;
     font-size: 14px;
     line-height: 24px;
+}
+
+.modal-footer {
+    text-align: center;
+    display: inline-block;
 }
 </style>
