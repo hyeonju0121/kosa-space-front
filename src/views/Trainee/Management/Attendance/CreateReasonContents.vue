@@ -64,7 +64,7 @@
                     <RouterLink to="/trainee/attendance/detail">
                         <BaseButtonCancle>취소</BaseButtonCancle>
                     </RouterLink>
-                    <button class="btn btn-info btn-lg ms-3">등록</button>
+                    <button class="btn btn-dark btn-lg ms-3">등록</button>
                     <!-- <BaseButtonSubmit>완료</BaseButtonSubmit> -->
                 </div>
             </form>
@@ -124,9 +124,11 @@ function handleSubmit() {
     formData.append("adate", reasonInfo.value.adate);
     formData.append("ancategory", reasonInfo.value.ancategory);
     formData.append("anreason", reasonInfo.value.anreason);
+
     // 파일 넣기
-    formData.append("anattachdata", reasonInfo.value.anattachdata);
-    // formData.append("tprofiledata", request.value.tprofileimg.files[0]);    // trainee.tprofileimg
+    if (reasonInfo.value.anattachdata) {
+        formData.append("anattachdata", reasonInfo.value.anattachdata);
+    }
 
     for (let [key, value] of formData.entries()) {
         console.log(key, value);
