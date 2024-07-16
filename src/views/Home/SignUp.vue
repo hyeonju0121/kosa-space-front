@@ -30,18 +30,11 @@
                                 <div class="col-12">
                                     <div class="d-flex justify-content-center col-12">
                                         <!-- 아이디 입력과 동시에 유효성 검사 -->
-                                        <div class="form-floating" style="width: 70%">
+                                        <div class="form-floating" style="width: 80%">
                                             <input type="text" class="form-control" name="mid" id="mid"
                                                 v-model.trim="member.mid" placeholder="아이디" @input="idPatternCheck()"
                                                 required>
                                             <label for="mid" class="form-label ms-2">ID</label>
-                                        </div>
-                                        <!-- 중복 아이디 검사 버튼 -->
-                                        <div class="d-flex align-items-center ms-1">
-                                            <span class="btn btn-secondary btn-sm" @click="handleIdCheck()">
-                                                중복<br>
-                                                체크
-                                            </span>
                                         </div>
                                     </div>
                                     <!-- 아이디 유효성 검사를 통한 DOM 생성 여부 -->
@@ -49,6 +42,12 @@
                                         <p v-if="midCheck === false" class="text-center text-danger"
                                             style="font-size: 0.9em; height: 4px;">
                                             영어 소문자와 숫자로 입력해주세요. (길이 5 ~ 12 공백 X)
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-content-center align-content-center col-12 m-0 p-0 mb-1">
+                                        <p v-if="idDu === true" class="text-center text-danger"
+                                            style="font-size: 0.9em; height: 4px;">
+                                            중복된 아이디가 있습니다.
                                         </p>
                                     </div>
                                 </div>
@@ -127,6 +126,12 @@
                                             ex: abcd@gmail.com 의 형식으로 기입해주십시오.
                                         </p>
                                     </div>
+                                    <div class="d-flex justify-content-center align-content-center col-12 m-0 p-0 mb-1">
+                                        <p v-if="emailDu === true" class="text-center text-danger"
+                                            style="font-size: 0.9em; height: 4px;">
+                                            중복된 이메일이 있습니다.
+                                        </p>
+                                    </div>
                                 </div>
 
                                 <!-- 휴대폰입력 -->
@@ -165,6 +170,12 @@
                                         휴대폰 끝번호 4자리를 입력해주세요.
                                     </p>
                                 </div>
+                                <div class="d-flex justify-content-center align-content-center col-12 m-0 p-0 mb-1">
+                                    <p v-if="phoneDu === true" class="text-center text-danger"
+                                        style="font-size: 0.9em; height: 4px;">
+                                        중복된 휴대폰 번호가 있습니다.
+                                    </p>
+                                </div>
                                 <div class="col-12 mt-4">
                                     <div class="d-grid d-flex justify-content-center">
                                         <RouterLink to="/" class="btn btn-outline-danger btn-lg me-4">
@@ -188,9 +199,9 @@
                                                 style="font-size: 0.8rem">
                                                 비밀번호 찾기</RouterLink>
                                             <span class="ms-2 me-2" style="font-size: 0.8rem"> | </span>
-                                            <RouterLink to="/signUp" class="link-secondary text-decoration-none"
+                                            <RouterLink to="/" class="link-secondary text-decoration-none"
                                                 style="font-size: 0.8rem">
-                                                회원가입</RouterLink>
+                                                로그인</RouterLink>
                                         </div>
                                     </div>
                                 </div>
@@ -251,6 +262,11 @@ let mphoneMiddleCheck = ref(null);
 let mphoneEndCheck = ref(null);
 let mphoneTotalCheck = ref(null);
 
+// 중복 검사에 대한 DOM 생성 여부 변수
+let idDu = ref(false);
+let emailDu = ref(false);
+let phoneDu = ref(false);
+
 // 비밀번호 2차 검증을 위한 변수 선언
 let mpasswordDoubleCheck = ref("");
 
@@ -268,6 +284,7 @@ function idPatternCheck() {
     } else {
         midCheck.value = false;
     }
+    idDuplication(member.value.mid);
     onState();
 }
 // 이름 유효성 검사
@@ -309,6 +326,7 @@ function emailPatternCheck() {
     } else {
         memailCheck.value = false;
     }
+    emailDuplication(member.value.memail);
     onState();
 }
 
@@ -342,39 +360,49 @@ function phonePatternCheck() {
     console.log("member.value.mphone : " + member.value.mphone);
     console.log("mphonenummiddle : " + mphonenummiddle.value);
     console.log("mphonenumend : " + mphonenumend.value);
-    // mphoneTotalCheck.value = mphonePattern.test(member.value.mphone);
     if (mphonePattern.test(member.value.mphone)) {
         mphoneTotalCheck.value = true;
     } else {
         mphoneTotalCheck.value = false;
     }
+    phoneDuplication(member.value.mphone);
 }
 // --------------------------------------------------
 
-// 아이디 중복 체크 (데이터베이스가 있다는 가정하에 작성하는 코드)
-const midVal = store.state.member.mid;  // 현재 M2001 로 고정 (현재는 store에 임의로 데이터를 저장해놓고 불러옴. 추후에 데이터베이스에 있는 아이디로 비교해야함.)
-let idCheckBtn = ref(false);
-// 아이디 중복검사 버튼 이벤트
-function handleIdCheck() {
-    if (midPattern.test(member.value.mid) && member.value.mid.length >= 4) {
-        if (member.value.mid === midVal) {
-            alert("중복된 아이디가 있습니다!", member.value.mid);
-            member.value.mid = "";
-            idCheckBtn.value = false;
-        } else if (member.value.mid !== midVal) {
-            alert("사용가능한 아이디입니다!");
-            idCheckBtn.value = true;
-        }
+// 중복된 아이디 체크
+async function idDuplication(mid) {
+    try {
+        const response = await authAPI.checkId(mid);
+        idDu.value = response.data;
+        console.log("ID 중복 확인 값 : " + idDu.value);
+        onState();
+    } catch (error) {
+        console.log(error);
     }
-    else {
-        alert("유효성 검사에 적합하지 않습니다.");
-        member.value.mid = "";
-        idCheckBtn.value = false;
-    }
-    onState();
+}
 
-    // 처음에 사용가능한 아이디를 중복체크 했다가, 다시 아이디 입력란을 변경시키면 idCheckBtn.value를 false로 바꾸어줘야한다. (보충)
-    // --> handleSubmit에 2중으로 하나 더 조건을 달자...
+// 중복된 이메일 체크
+async function emailDuplication(email) {
+    try {
+        const response = await authAPI.checkEmail(email);
+        emailDu.value = response.data;
+        console.log("Email 중복 확인 값 : " + emailDu.value);
+        onState();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+// 중복된 핸드폰 체크
+async function phoneDuplication(phone) {
+    try {
+        const response = await authAPI.checkPhone(phone);
+        phoneDu.value = response.data;
+        console.log("Phone number 중복 확인 값 : " + phoneDu.value);
+        onState();
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 // 전체 입력값 확인하기
@@ -388,26 +416,27 @@ function onState() {
     console.log("mpasswordCheck2 : " + mpasswordCheck2.value);
     console.log("memailCheck : " + memailCheck.value);
     console.log("mphoneTotalCheck : " + mphoneTotalCheck.value);
-    console.log("idCheckBtn : " + idCheckBtn.value);
+    console.log("중복된 아이디 검사 값 = " + idDu.value);
+    console.log("중복된 아이디 검사 값 = " + emailDu.value);
+    console.log("중복된 아이디 검사 값 = " + phoneDu.value);
     console.groupEnd();
     // 전체 유효성 검사를 통과하면 회원가입 버튼 활성화
     if (midCheck.value && mnameCheck.value && mpasswordCheck.value
         && mpasswordCheck2.value && memailCheck.value
-        && mphoneTotalCheck.value && idCheckBtn.value) {
+        && mphoneTotalCheck.value && !idDu.value
+        && !emailDu.value && !phoneDu.value) {
         btnShow.value = ""
     } else {
         btnShow.value = "disabled"
     }
 }
 
+
+
 // 회원가입 버튼 이벤트
 async function handleSubmit() {
-    if (member.value.memail === store.state.member.memail) {
-        alert("해당 이메일로 이미 가입한 아이디가 있습니다.");
-        // 아이디 찾기로 넘어가시겠습니까? --> 모달 추가해볼까..
-    } else if (member.value.mid === midVal) {
-        alert("중복된 아이디가 있습니다! 다시 한번 중복 체크해주세요!")
-    }
+
+
 
     console.log("member.value = " + member.value);
     console.log("JSON.stringify(member.value) = " + JSON.stringify(member.value));

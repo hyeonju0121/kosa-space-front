@@ -28,12 +28,6 @@ function findId(mphone, memail) {
 }
 
 // 비밀번호 찾기
-// function findPassword(member) {
-//     console.log("authAPI findPassword 메소드 실행");
-//     return axios.get("/find/password", member);
-// }
-
-// 비밀번호 찾기
 function findPassword(mname, mid, memail) {
     console.log("authAPI findPassword 메소드 실행");
     return axios.get("/auth/find/password", {
@@ -48,10 +42,28 @@ function findPassword(mname, mid, memail) {
 // (운영진) 회원정보수정
 
 
+// 아이디 중복 검사
+function checkId(mid) {
+    return axios.get("/auth/idcheck?mid=" + mid);
+}
+
+// 이메일 중복 검사
+function checkEmail(memail) {
+    return axios.get("/auth/emailcheck?memail=" + memail);
+}
+
+// 휴대폰 번호 중복 검사
+function checkPhone(mphone) {
+    return axios.get("/auth/phonecheck?mphone=" + mphone);
+}
+
 export default {
     signup,
     login,
     findId,
-    findPassword
+    findPassword,
+    checkId,
+    checkEmail,
+    checkPhone
 
 }

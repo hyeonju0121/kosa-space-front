@@ -86,7 +86,7 @@ async function handleSubmit() {
     
     //multipart form-data 객체 생성
     const formData = new FormData();
-
+4
     //문자 파트 넣기
     formData.append("ecname", centerInfo.value.ecname);
     formData.append("ecpostcode", centerInfo.value.ecpostcode);
