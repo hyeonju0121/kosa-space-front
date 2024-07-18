@@ -1,5 +1,5 @@
 <template>
-    <div class="main p-3" style="margin-left: 25px;">
+    <div class="main p-3" style="margin-left: 25px; width: 1200px;">
         <div class="item-section mt-2 mb-2" style="font-size: 12px">
             <span>마이페이지 > 회원정보수정</span>
         </div>
@@ -67,7 +67,7 @@
                                             v-model.trim="mpasswordDoubleCheck" @input="passwordDoubleCheck()"
                                             placeholder="비밀번호 확인" style="width: 300px;">
                                         <label for="password" class="form-label">Password Check</label>
-                                        <button class="btn btn-danger" @click="pwChange()">변경 취소</button>
+                                        <button class="btn btn-danger ms-2" @click="pwChange()">변경 취소</button>
                                     </div>
                                     <span v-if="mpasswordCheck2 === false" class="text-danger"
                                         style="font-size: 0.9em; height: 4px;">
@@ -92,7 +92,7 @@
                                         <input type="text" class="form-control p-3 ms-2" name="emailBack" id="emailBack"
                                             v-model.trim="memailBack" @input="emailPatternCheck()"
                                             style="width: 150px;" />
-                                        <button class="btn btn-danger" @click="emailChangeBtn()">취소</button>
+                                        <button class="btn btn-danger ms-2" @click="emailChangeBtn()">취소</button>
                                     </div>
                                     <span v-if="memailCheck === false" class="text-danger"
                                         style="font-size: 0.9em; height: 4px;">
@@ -125,7 +125,7 @@
                                                 id="mphonenumber3" value="1234" style="width: 100px;"
                                                 v-model.trim="mphonenumend" @input="phonePatternendCheck()"
                                                 placeholder="End Number" required>
-                                            <button class="btn btn-danger" @click="phoneChange()">취소</button>
+                                            <button class="btn btn-danger ms-2" @click="phoneChange()">취소</button>
                                         </div>
                                         <p v-if="mphoneMiddleCheck === false" class="text-center text-danger"
                                             style="font-size: 0.9em; height: 4px;">

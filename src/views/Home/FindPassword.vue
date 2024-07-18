@@ -122,10 +122,11 @@
                         </form>
                     </div>
                 </div>
-                <div class="shadow col-12 col-md-6" style="height: 100%; border: 2px solid red">
-                    <img class="img-fluid rounded-start w-100 h-100 object-fit-cover" loading="lazy"
+                <div class="shadow col-12 col-md-6" style="height: 100%;">
+                    <!-- <img class="img-fluid rounded-start w-100 h-100 object-fit-cover" loading="lazy"
                         src="https://cdn.dribbble.com/users/3578290/screenshots/16190754/media/24bf4cc8a0b3bfddd2bcdfb2c4d12e73.jpg?resize=1000x750&vertical=center"
-                        alt="Welcome back you've been missed!" height="100%">
+                        alt="Welcome back you've been missed!" height="100%"> -->
+                    <img src="@/assets/login_background.svg" class="img-fluid rounded-start w-100 h-100" height="100%">
                 </div>
             </div>
         </div>
