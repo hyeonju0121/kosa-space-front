@@ -144,8 +144,6 @@ async function handleLogin() {
         const data = JSON.parse(JSON.stringify(member.value));
         console.log("member 객체 확인" + data);
         const response = await authAPI.login(data);
-        // response는 Rest API에서 map을 반환받는다.
-        // Keys: {"result", "mid", "accessToken"}, values: {"success / fail", mid, accessToken}
         if (response.data.result === "success") {
             const payload = {
                 mid: response.data.mid,

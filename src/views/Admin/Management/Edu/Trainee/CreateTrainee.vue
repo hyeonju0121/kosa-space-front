@@ -1,5 +1,5 @@
 <template>
-    <div class="main p-3" style="margin-left: 25px;">
+    <div class="main p-3" style="margin-left: 25px; width: 1200px;">
         <div class="item-section mt-2 mb-2" style="font-size: 12px">
             <span>교육관리 > 교육과정 관리 > 교육생 등록</span>
         </div>
@@ -176,8 +176,8 @@
                     </table>
                     <!-- 버튼부분 -->
                     <div style="text-align: center;">
-                        <button class="btn btn-info btn-sm me-3" :class="btnShow">등록</button>
-                        <input class="btn btn-danger btn-sm" value="취소" @click="handleCancle()">
+                        <button class="btn btn-dark btn-sm me-3" :class="btnShow">등록</button>
+                        <span class="btn btn-danger btn-sm" @click="handleCancle()">취소</span>
                     </div>
                 </div>
             </form>

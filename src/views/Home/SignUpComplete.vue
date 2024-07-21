@@ -35,7 +35,7 @@
                         <div class="col-12 mb-5">
                             <p class="text-center" style="font-size: 1.2em">
                                 <b class="text-info">{{ name }}</b>님 회원가입을 축하합니다.<br>
-                                Kosa Space의 새로운 아이디는 <b style="color: red">'{{ id }}'</b>입니다.
+                                Kosa Space의 새로운 아이디는 <b style="color: red">'2024M2002'</b>입니다.
                                 <br><br>
                                 소중한 개인정보는 암호화 처리 되어 보관되며<br>
                                 비밀번호는 주기적으로 변경하시기 바랍니다.
