@@ -7,7 +7,7 @@
         <div class="headingArea">
             <div class="title">
                 <h1 id="itemTitle">교육생 등록 </h1>
-                <div id="itemDetail">| {{ request.ecname }} - {{ request.cname }}</div>
+                <div id="itemDetail"><h5 class="course-title">| {{ request.ecname }} - {{ request.cname }}</h5></div>
             </div>
 
             <!-- 교육생 등록 폼 -->
@@ -175,9 +175,11 @@
                         </tbody>
                     </table>
                     <!-- 버튼부분 -->
-                    <div style="text-align: center;">
-                        <button class="btn btn-dark btn-sm me-3" :class="btnShow">등록</button>
-                        <span class="btn btn-danger btn-sm" @click="handleCancle()">취소</span>
+                    <div style="text-align: center; margin-top: 3%;">
+                        <!-- <button class="btn btn-dark btn-sm me-3" :class="btnShow">등록</button> -->
+                        <BaseButtonSubmit :class="btnShow">등록</BaseButtonSubmit>
+                        <BaseButtonCancle @click="handleCancle()" style="margin-left: 1%;">취소</BaseButtonCancle>
+                        <!-- <span class="btn btn-danger btn-sm" @click="handleCancle()">취소</span> -->
                     </div>
                 </div>
             </form>
@@ -190,6 +192,8 @@ import { useRouter, useRoute } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import DaumPostCode3 from './DaumPostCode3.vue';
 import traineeInfoAPI from '@/apis/traineeInfoAPI';
+import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
+import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 
 //라우터 객체 얻기
 const router = useRouter();
@@ -500,7 +504,11 @@ p,
 span,
 small,
 textarea,
-select {
+select,
+strong,
+th,
+td,
+button {
     font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -512,6 +520,11 @@ select {
 
 .headingArea .title {
     border-bottom: 2px solid #2a3954;
+}
+
+.course-title {
+    font-weight: 600;
+    color:#575757;
 }
 
 #itemTitle {

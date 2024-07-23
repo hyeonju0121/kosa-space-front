@@ -203,11 +203,11 @@
                         <td>
                             <div v-if="item.aconfirm === false">
                             <!-- adate는 현재 2024-07-02 고정값 -->
-                            <button class="btn btn-primary btn-sm" @click="handlerApproveBtn(item.mid)">미승인</button>
+                            <button class="btn btn-primary btn-sm" @click="handlerApproveBtn(item.mid)" style="width: 55%;">미승인</button>
                             <ApproveDialog :id="`approveDialog${item.mid}`" :mid="item.mid" :adate="adate" @result="attendanceApproveResult"/>
                             </div>
                             <div v-if="item.aconfirm === true">
-                                <button class="btn btn-danger btn-sm" disabled>승인완료</button>
+                                <button class="btn btn-danger btn-sm" disabled style="width: 55%;">승인완료</button>
                             </div>
                         </td>
                     </tr>

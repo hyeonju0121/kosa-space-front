@@ -177,7 +177,11 @@ p,
 span,
 small,
 textarea,
-select {
+select,
+strong,
+th,
+td,
+button {
     font-family: 'Noto Sans KR', sans-serif;
 }
 .register-btn{
