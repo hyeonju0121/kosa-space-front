@@ -11,28 +11,30 @@
             </div>
 
             <!-- 해당 교육생 프로필 헤더 -->
-            <div class="mb-3">
-                    <div class="acc_cont">
-                        <div class="img-td">
-                            <div class="profile_wrap">
-                                <div class="profile profile_attach">
-                                    <div class="user-img">
-                                        <img :src="`${axios.defaults.baseURL}/edu/download/traineeattach/${headerInfo.mid}`"
-                                            class="user-img-detail" />
-                                    </div>
-                                    <div class="profile_info">
-                                        <h6 class="user-name">{{ headerInfo.mname }} ({{ headerInfo.mid }})</h6>
-                                        <div class="profile-info-contents">
-                                            <h5 class="user-course">{{ headerInfo.cname }}</h5>
-                                            <span class="user-course-requireddate">({{ headerInfo.cstartdate }} ~ {{
-                                                headerInfo.cenddate }})</span>
-                                        </div>
+            <div class="resume_item represent mb-3">
+                <div class="acc_cont">
+                    <div class="img-td">
+                        <div class="profile_wrap">
+                            <div class="profile profile_attach">
+                                <div class="user-img">
+                                    <img :src="`${axios.defaults.baseURL}/edu/download/traineeattach/${headerInfo.mid}`"
+                                        class="user-img-detail" />
+                                </div>
+                                <div class="profile_info">
+                                    <p class="header"><span>교육생 프로필</span></p>
+                                    <h6 class="user-name">{{ headerInfo.mname }} ({{ headerInfo.mid }})</h6>
+                                    <div class="profile-info-contents">
+                                        <h5 class="user-course">{{ headerInfo.cname }}</h5>
+                                        <span class="user-course-requireddate">
+                                            ({{ headerInfo.cstartdate }} ~ {{ headerInfo.cenddate }})
+                                        </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
             
             <div class="table">
                 <table class="" style="width: 1000px;">
@@ -145,7 +147,11 @@ p,
 span,
 small,
 textarea,
-select {
+select,
+strong,
+th,
+td,
+button {
     font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -183,7 +189,6 @@ select {
     align-items: center;
     margin-top: 5px;
     padding: 0;
-    background: white;
 }
 
 .profile_attach {
@@ -233,7 +238,7 @@ select {
 
 .user-course {
     line-height: normal;
-    font-weight: 500;
+    font-weight: 600;
     border-collapse: collapse;
     box-sizing: border-box;
     margin-top: 10px;
@@ -263,5 +268,45 @@ profile-info-contents span {
     flex: 1;
     margin: 0;
     margin-left: 30px;
+}
+
+/*  header*/
+.resume_item.represent {
+    padding: 20px;
+    border-top: none;
+    border-radius: 16px;
+    background-color: #f3fffb;
+}
+
+.resume_item {
+    display: block;
+    position: relative;
+    padding: 32px;
+    border-top: 1px solid #dcdcdc;
+    font-size: 0;
+    text-align: left;
+}
+
+.resume_item.type_profile .header {
+    width: 100px;
+}
+
+.resume_item .header {
+    display: flex;
+    position: relative;
+    color: #116d3f;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 16px;
+}
+
+.header>span {
+    position: relative;
+    box-shadow: inset 0 -8px 0 #dbfee8;
+}
+
+.resume_item.type_profile .profile_info {
+    margin-left: 22px;
+    width: 100%;
 }
 </style>

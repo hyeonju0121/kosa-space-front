@@ -11,7 +11,7 @@
             </div>
 
             <!-- 해당 교육생 프로필 헤더 -->
-            <div class="mb-3">
+            <div class="resume_item represent mb-3">
                 <div class="acc_cont">
                     <div class="img-td">
                         <div class="profile_wrap">
@@ -21,11 +21,13 @@
                                         class="user-img-detail" />
                                 </div>
                                 <div class="profile_info">
+                                    <p class="header"><span>교육생 프로필</span></p>
                                     <h6 class="user-name">{{ headerInfo.mname }} ({{ headerInfo.mid }})</h6>
                                     <div class="profile-info-contents">
                                         <h5 class="user-course">{{ headerInfo.cname }}</h5>
-                                        <span class="user-course-requireddate">({{ headerInfo.cstartdate }} ~ {{
-                                            headerInfo.cenddate }})</span>
+                                        <span class="user-course-requireddate">
+                                            ({{ headerInfo.cstartdate }} ~ {{ headerInfo.cenddate }})
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -49,12 +51,12 @@
                             <td>{{ item.mname }}</td>
                             <td>{{ item.mid }}</td>
                             <td>
-                                <div class="btn btn-dark" style="padding: 6px 20px;">{{ item.submitstatus }}</div>
+                                <div class="btn btn-dark" style="padding: 6px 20px; width: 30%;">{{ item.submitstatus }}</div>
                             </td>
                             <td style="vertical-align: middle;">
                                 <!-- <button class="detail-btn" style="margin-top: 10px; margin-bottom: 10px;" @click="handleDailyNoteBtn"> -->
-                                <button @click="goPersonalNoteDetail(item.mid, item.refweek, rPageNo)"
-                                    class="detail-btn" style="margin-top: 10px; margin-bottom: 10px;">
+                                <button @click="goPersonalNoteDetail(item.mid, item.refweek, rPageNo)" class="detail-btn"
+                                    style="margin-top: 10px; margin-bottom: 10px;">
                                     과제 상세 보기
                                 </button>
                             </td>
@@ -166,20 +168,21 @@ function goPersonalNoteDetail(mid, refweek, pageNo) {
 function changePageNo(mid, adate, argPageNo) {
     console.log("changePageNo 함수 실행");
     console.log("argPageNo = " + argPageNo);
-    
+
     console.log("mid.value = " + mid);
     console.log("rPageNo.value = " + argPageNo);
     rPageNo.value = argPageNo;
 
     // router.push(`/admin/dailynote/trainee/note/list?rPageNo=${argPageNo}`);
     // router.push(`/admin/dailynote/trainee/note/list?mid=${mid}&adate=${adate.value}&rPageNo=${argPageNo}`);
-    router.push( { path: "/admin/dailynote/trainee/note/list", 
-            query: {
-                mid: mid,
-                adate: adate.value,
-                rPageNo: argPageNo
-            }
-    }); 
+    router.push({
+        path: "/admin/dailynote/trainee/note/list",
+        query: {
+            mid: mid,
+            adate: adate.value,
+            rPageNo: argPageNo
+        }
+    });
 }
 
 // watch(
@@ -227,7 +230,11 @@ p,
 span,
 small,
 textarea,
-select {
+select,
+strong,
+th,
+td,
+button {
     font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -277,7 +284,7 @@ select {
     align-items: center;
     margin-top: 5px;
     padding: 0;
-    background: white;
+    /*background: white;*/
 }
 
 .profile_attach {
@@ -327,7 +334,7 @@ select {
 
 .user-course {
     line-height: normal;
-    font-weight: 500;
+    font-weight: 600;
     border-collapse: collapse;
     box-sizing: border-box;
     margin-top: 10px;
@@ -358,4 +365,46 @@ profile-info-contents span {
     margin: 0;
     margin-left: 30px;
 }
+
+
+/*  header*/
+.resume_item.represent {
+    padding: 20px;
+    border-top: none;
+    border-radius: 16px;
+    background-color: #f3fffb;
+}
+
+.resume_item {
+    display: block;
+    position: relative;
+    padding: 32px;
+    border-top: 1px solid #dcdcdc;
+    font-size: 0;
+    text-align: left;
+}
+
+.resume_item.type_profile .header {
+    width: 100px;
+}
+
+.resume_item .header {
+    display: flex;
+    position: relative;
+    color: #116d3f;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 16px;
+}
+
+.header>span {
+    position: relative;
+    box-shadow: inset 0 -8px 0 #dbfee8;
+}
+
+.resume_item.type_profile .profile_info {
+    margin-left: 22px;
+    width: 100%;
+}
+
 </style>

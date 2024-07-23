@@ -35,10 +35,12 @@
             <div class="d-flex align-content-center mb-4">
 
             </div>
+
             <div class="select-course-contents ms-3 mb-4">
-                <h5 class="course-name">MSA 기반 Full Stack 개발 전문가 양성과정 2차</h5>
+                <h5 class="course-name">{{ filter.cname }}</h5>
                 <span class="course-requireddate">(2024.02.26 ~ 2024.07.26)</span>
             </div>
+
             <div class="dailynote-table">
                 <table class="styled-table" style="width: 100%;" v-if="length >= 1">
                     <thead class="table-header text-center align-middle"
@@ -208,7 +210,11 @@ p,
 span,
 small,
 textarea,
-select {
+select,
+strong,
+th,
+td,
+button {
     font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -294,4 +300,7 @@ select {
     height: 40px;
     font-size: 14px;
     line-height: 24px;
-}</style>
+}
+
+
+</style>
