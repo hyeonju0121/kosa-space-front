@@ -132,11 +132,11 @@
 
       <div class="user">
         <div class="user-img">
-          <img src="@/assets/hyeonju.jpg" alt="" class="user-img-detail">
+          <img src="@/assets/20240715_090246.png" alt="" class="user-img-detail">
         </div>
         <div class="user-details">
           <p class="title">KOSA_운영진</p>
-          <p class="name">유현주</p>
+          <p class="name">진승범</p>
         </div>
       </div>
     </aside>

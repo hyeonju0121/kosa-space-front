@@ -6,7 +6,8 @@
         </template>
         
         <template v-slot:body>
-            <p class="contents">현재 시간은 오전 {{ todayCheckIn.hours }}시 {{ todayCheckIn.minutes }}분 {{ todayCheckIn.seconds }}초 입니다. (서버시간 기준)</p>
+           <!-- <p class="contents">현재 시간은 오전 {{ todayCheckIn.hours }}시 {{ todayCheckIn.minutes }}분 {{ todayCheckIn.seconds }}초 입니다. (서버시간 기준)</p>-->
+            <p class="contents">현재 시간은 오전 8시 48분 27초 입니다. (서버시간 기준)</p>
             <p class="contents">입실처리하시겠습니까?</p>
             <p class="contents">퇴실 시 반드시 퇴실처리를 하셔야 출석으로 인정됩니다.</p>
         </template>
@@ -58,7 +59,7 @@ const emit = defineEmits(["submitCheckIn"]);
 // 포맷팅된 날짜와 시간을 출력
 //console.log(formattedDate);
 
-const todayCheckIn = ref("2024-07-15 08:48:27");
+const todayCheckIn = ref("2024-07-16 08:48:27");
 
 function handleChekinSubmit() {
     // 자식 컴포넌트 -> 부모 컴포넌트로 입실 시간 데이터 보내기

@@ -7,7 +7,7 @@
         
         <template v-slot:body>
             <!--<p class="contents">현재 시간은 오후 {{ todayCheckOut.hours }}시 {{ todayCheckOut.minutes }}분 {{ todayCheckOut.seconds }}입니다. (서버시간 기준)</p>-->
-            <p class="contents">현재 시간은 오후 5시 55분 입니다. (서버시간 기준)</p>
+            <p class="contents">현재 시간은 오후 6시 10분 입니다. (서버시간 기준)</p>
             <p class="contents">퇴실시 재입실이 불가합니다.</p>
             <p class="contents">퇴실처리하시겠습니까?</p>
         </template>
@@ -55,7 +55,7 @@ const emit = defineEmits(["submitCheckOut"]);
 // 포맷팅된 날짜와 시간을 출력
 //console.log(formattedDate);
 
-const todayCheckOut = ref("2024-07-15 18:10:27");
+const todayCheckOut = ref("2024-07-16 18:10:27");
 
 function handleChekOutSubmit() {
     // 자식 컴포넌트 -> 부모 컴포넌트로 입실 시간 데이터 보내기

@@ -59,7 +59,11 @@
 
             <!-- 필터 -->
             <div class="search_interview">
-                <div class="TypoBox search_area" style="margin-left: 2%;">
+                <button type="button" style="background-color:transparent; border: none;" @click="refreshBtnHandler()">
+                    <PhArrowClockwise :size="40" color="#525252" weight="light" />
+                </button>
+
+                <div class="TypoBox search_area" style="margin-left: 3%;">
                     <input type="text" class="Typo search" id="search_keyword" v-model="filter.mname" value=""
                         placeholder="교육생 입력">
                     <button type="button" id="keyword_search">
@@ -290,7 +294,7 @@ const attendanceDashBoardDate = ref({
 });
 
 // adate는 임시 고정 값
-const adate = ref("2024-07-15")
+const adate = ref("2024-07-16")
 // 3. 진행중인 교육과정의 출결 사유 제출 건수 가져오기
 async function progressAttendanceCntInfo(ecname, cname, adate) {
     try {
@@ -475,6 +479,23 @@ watch(()=> check2.value,
     check2.value = false;
 })
 
+
+const refresh = ref(false);
+// 새로고침
+function refreshBtnHandler() {
+    console.log("리프레쉬 버튼 클릭");
+
+    refresh.value = true;
+}
+
+watch(()=> refresh.value,
+(nv, ov)=> {
+    console.log("리프레쉬 버튼이 클릭됨");
+    // 필터 초깃값 설정 후 리스트 불러오기
+    approveAttendanceInfo(filter.value.ecname, filter.value.cname, adate.value);
+    progressAttendanceCntInfo(filter.value.ecname, filter.value.cname, adate.value);
+    refresh.value = false;
+})
 
 
 </script>
