@@ -15,6 +15,13 @@ function getEcnameNoticeList(ecname, pageNo) {
     // axios.post("/community/dashboard/notice/list", "ecname=" + ecname + "&pageNo=" + pageNo);
 }
 
+// (교육생 대시보드) ecname 기준으로 공지사항 조회
+function getEcnameTraineeNoticeList(ecname, pageNo) {
+    console.log("getEcnameNoticeList 실행")
+    return axios.get("/community/dashboard/trainee/notice/list?ecname=" + ecname + "&pageNo=" + pageNo);
+    // axios.post("/community/dashboard/notice/list", "ecname=" + ecname + "&pageNo=" + pageNo);
+}
+
 // (운영진 대시보드) nno 기준으로 공지사항 단건 조회
 function getNoticeInfo(nno){
     console.log("getNoticeInfo 실행");
@@ -24,4 +31,5 @@ function getNoticeInfo(nno){
 export default {
     createNotice,
     getEcnameNoticeList,
+    getEcnameTraineeNoticeList
 }

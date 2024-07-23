@@ -1,13 +1,13 @@
 <template>
     <div class="main p-4" style="margin-left: 20px; width: 1400px">
         <div>
-            <div class="dashboard" style="background-color:rgba(215, 240, 220, 0.575); width:1400px; height:830px;">
+            <div class="dashboard" style="background-color:rgba(215, 240, 220, 0.575); width:1400px; height:910px;">
                 <div class="row">
                     <div class="profile-wrap col-md-4">
                         <div class="profile-background">
                             <img src="@/assets/dashboard/dashboard_myinfo.jpg" style="width:400px;">
                         </div>
-                        <div class="profile-contents" style="width:430px; height:680px; background-color: rgb(255, 255, 255);">
+                        <div class="profile-contents" style="width:430px; height:820px; background-color: rgb(255, 255, 255);">
                             <div class="user-info" style="padding-left: 10%;">
                                 <div style="margin-top: 60px;">
                                     <h5 class="contents-title">{{ headerInfo.mname }}
@@ -173,6 +173,11 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="content3 mt-5" style="height: 400px;">
+                            <h5 class="community-title mt-3">공지사항</h5>
+                             <!-- 공지목록 들어갈 부분 -->
+                             <NoticeInfo :ecname="ecname" ref="$noticeInfo"/>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -197,6 +202,7 @@ import { Modal } from "bootstrap";
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import memberAPI from '@/apis/memberAPI';
+import NoticeInfo from './Dialog/NoticeInfo.vue';
 import attendanceAPI from '@/apis/attendanceAPI';
 import axios from 'axios';
 import traineeInfoAPI from '@/apis/traineeInfoAPI';
@@ -210,8 +216,9 @@ const store = useStore();
 const router = useRoute();
 
 // const mid = "2024M2001";
-const adate = "2024-07-15";
+const adate = "2024-07-16";
 const mid = store.state.mid;
+const ecname = ref("");
 
 // store 에서 사용자 입실 및 퇴실 여부, 데일리 과제 제출 여부 가져오기
 const userCheckInStatus = store.state.userDailyInfo.userCheckInStatus;
@@ -258,6 +265,8 @@ onMounted(() => {
     userAttendanceInfoData(mid, adate);
     
     testCheckIn();
+
+    //handleNoticeInfo();
 })
 
 // 교육생 정보 가져오기
@@ -266,6 +275,9 @@ async function traineeHeader(mid) {
     try {
         const response = await traineeInfoAPI.getTraineeProfileHeader(mid);
         headerInfo.value = response.data;
+        ecname.value = headerInfo.value.ecname;
+
+        handleNoticeInfo();
         console.log("헤더 정보 받아오기 : " + headerInfo.value);
     } catch (error) {
         console.log(error);
@@ -627,6 +639,14 @@ watch(
     }
 )
 
+// ----- 자식 컴포넌트의 함수를 부모 컴포넌트에서 호출 --------------------------------------------
+const $noticeInfo = ref();
+
+function handleNoticeInfo() {
+    $noticeInfo.value.submit();
+}
+
+
 /*
 async function getClientIP() {
   try {
@@ -678,6 +698,7 @@ select {
 
 .dashboard {
     border-radius: 30px;
+    height: auto;
     overflow: hidden;
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
@@ -744,7 +765,7 @@ select {
     top: 70%;
     left: 41.7%;
     width: 100%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -59%);
 }
 
 /*사용자 이미지 틀 (원형)*/
