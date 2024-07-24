@@ -63,8 +63,7 @@
             <div class="search-input-box">
                 <div class="search-input-group">
                     <div class="lpart">
-                        <select id="columnName" class="dsgn-select" title="검색 구분 선택"
-                            v-model="filter.ncategory">
+                        <select id="columnName" class="dsgn-select" title="검색 구분 선택" v-model="filter.ncategory">
                             <!-- <option value="">카테고리 선택</option> -->
                             <!-- <option :value="filter.ncategory">{{ filter.ncategory }}</option> -->
                             <option value="all">전체</option>
@@ -157,7 +156,7 @@ const noticeList = ref({
 let filter = ref({
     ecname: route.query.ecname || "송파교육센터",
     cname: route.query.cname || "MSA 2차 Full Stack 개발자 양성과정",
-    ncategory: route.query.ncategory || "전체"
+    ncategory: route.query.ncategory || "all"
 });
 
 const btnEnable = ref("");
@@ -293,9 +292,9 @@ function changePageNo(argPageNo) {
 
 // 요청 경로의 변경을 감시
 watch(route, (newRoute, oldRoute) => {
-    if(newRoute.query.nPageNo) { // 쿼리에 pageNo가 들어있으면 해당 페이지로 요청
+    if (newRoute.query.nPageNo) { // 쿼리에 pageNo가 들어있으면 해당 페이지로 요청
         getNoticeList(filter.value.ecname, filter.value.cname, filter.value.ncategory, newRoute.query.nPageNo);
-        nPageNo.value =newRoute.query.nPageNo;
+        nPageNo.value = newRoute.query.nPageNo;
     } else { // 안들어왔으면 1페이지 그대로
         getNoticeList(filter.value.ecname, filter.value.cname, filter.value.ncategory, 1);
         nPageNo.value = 1;
