@@ -31,15 +31,15 @@
                                     <p class="tit">교육과정 이미지를 등록해주세요.</p>
                                     <div class="attach_wrap">
                                         <p class="guide_txt">파일 1개당 10MB까지 첨부 가능합니다. (JPG, JPEG, PNG, GIF만 첨부 가능)</p>
-                                        <div>
+                                        <!--<div>
                                             <input ref="cattach" type="file" class="form-control p-3 mt-2"
                                                 name="cattach" id="cattach" accept="image/*" @change="addImage"
                                                 style="width: 300px;" required>
-                                        </div>
-                                        <p v-if="imgCheck === false" class="text-danger"
+                                        </div>-->
+                                        <!--<p v-if="imgCheck === false" class="text-danger"
                                             style="font-size: 0.9em; height: 4px;">
                                             교육과정 이미지는 필수입력사항입니다.
-                                        </p>
+                                        </p>-->
                                     </div>
                                 </div>
                             </div>
@@ -68,11 +68,11 @@
                     </div>
                     <div class="td">
                         <div class="InpBox">
-                            <select id="room" title="강의실 선택" v-model="courseInfo.trname">
+                            <select id="room" v-model="courseInfo.trname">
                                 <option :value="courseInfo.trname" disabled selected>{{ courseInfo.trname }}</option>
                                 <option v-for="name in trainingRooms" :value="name" :key="name">{{ name }}</option>
                             </select>
-                            <p v-show="!isTrainingRoom" style="color: rgb(247, 78, 27);">강의실 선택은 필수입니다.</p>
+                            <!--<p v-show="!isTrainingRoom" style="color: rgb(247, 78, 27);">강의실 선택은 필수입니다.</p>-->
                         </div>
                     </div>
                 </div>
@@ -155,19 +155,35 @@
                     </div>
                     <div class="td">
                         <div class="InpBox">
-                            <select id="room" title="강사진 선택" v-model="courseInfo.cprofessor" @change="checkCprofessor">
+                            <!-- <select id="room" title="강사진 선택" v-model="courseInfo.cprofessor" @change="checkCprofessor"> -->
+                            <select id="room" v-model="courseInfo.cprofessor">
                                 <option :value="courseInfo.cprofessor" selected>{{ courseInfo.cprofessor }}</option>
                                 <option v-for="name in professors" :value="name" :key="name">{{ name }}</option>
                             </select>
-                            <p v-show="!isEcname" style="color: rgb(247, 78, 27);">
+                            <!-- <p v-show="!isEcname" style="color: rgb(247, 78, 27);">
                                 교육장을 먼저 선택해주세요.
                             </p>
                             <p v-show="!isCprofessor" style="color: rgb(247, 78, 27);">
                                 강사진 선택은 필수입니다.
-                            </p>
+                            </p> -->
                         </div>
                     </div>
                 </div>
+                <div class="tr">
+                <div class="th">
+                    <p class="form_label required">진행여부 </p>
+                </div>
+                <div class="td">
+                    <div class="InpBox">
+                        <select id="room" title="강사진 선택" v-model="courseInfo.cstatus">
+                            <option :value="courseInfo.cstatus" selected>{{ courseInfo.cstatus }}</option>
+                            <option value="진행예정">진행예정</option>
+                            <option value="진행중">진행중</option>
+                            <option value="진행완료">진행완료</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
                 <div class="btn_big_wrap">
                     <RouterLink to="/admin/course/list">
                         <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
@@ -385,6 +401,7 @@ async function handleSubmit() {
     formData.append("cstatus", courseInfo.value.cstatus);
 
     //파일 파트 넣기
+    /*
     let elCattach = cattach.value;
 
     if (elCattach.files.length != 0) {
@@ -392,6 +409,7 @@ async function handleSubmit() {
             formData.append("cattachdata", elCattach.files[i]);
         }
     }
+        */
     //교육과정 수정 요청
     try {
         await courseAPI.update(formData);
@@ -465,8 +483,8 @@ async function courseProfessorList(ecname) {
 watch(() => courseInfo.value.ecname,
     (nv, ov) => {
         isEcname.value = true;
-        courseInfo.value.trname = "강의실 선택";
-        courseInfo.value.cprofessor = "강사진 선택";
+        //courseInfo.value.trname = "강의실 선택";
+        // courseInfo.value.cprofessor = "강사진 선택";
         trainingRoomList(nv);
         courseProfessorList(nv)
     }
