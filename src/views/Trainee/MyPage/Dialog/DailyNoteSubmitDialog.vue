@@ -38,9 +38,9 @@ import { ref } from 'vue';
 const emit = defineEmits(["clickHandler"]);
 
 const noteData = ref({
-    reftitle: "",
-    refurl: "",
-    refdate: ""
+    reftitle: "(프로젝트) DAY 93 2024-07-16 프로젝트 수정 필요",
+    refurl: "https://www.notion.so/DAY-93-2024-07-15-eb02fee48a80429c9091ec117b538cd6?pvs=4",
+    refdate: "2024-07-16"
 });
 
 

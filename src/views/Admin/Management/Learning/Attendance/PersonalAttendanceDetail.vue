@@ -235,7 +235,10 @@ p,
 span,
 small,
 textarea,
-select {
+select,
+td,
+th,
+tr {
     font-family: 'Noto Sans KR', sans-serif;
 }
 

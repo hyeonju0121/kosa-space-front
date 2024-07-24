@@ -67,7 +67,7 @@
                                         <div style="width: 340px; margin-top: 5%; margin-left: 10px;">
                                             <div class="d-flex flex-row justify-content-between">
                                                 <span style="font-size: 14px;"> 2024-07-26기준</span>
-                                                <span style="font-size: 14px;">{{ item.percentage }}% ({{ item.approvecnt
+                                                <span style="font-size: 15px; font-weight: 500;">{{ item.percentage }}% ({{ item.approvecnt
                                                 }}일 / {{ item.crequireddate }}일)</span>
                                             </div>
                                             <div class="progress" :aria-valuenow="item.percentage">

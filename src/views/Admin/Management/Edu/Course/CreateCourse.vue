@@ -214,8 +214,8 @@ onMounted(() => {
 
 const courseInfo = ref({
     ecname: "교육장 선택",
-    cname: "MSA 13차 Full Stack 개발자 양성과정",
-    ccode: "2024M13",
+    cname: "MSA 14차 Full Stack 개발자 양성과정",
+    ccode: "2024M14",
     cstartdate: "",
     cenddate: "",
     crequireddate: "150",

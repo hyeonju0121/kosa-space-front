@@ -223,20 +223,20 @@ let request = ref({
     ecname: "",
     cname: "",
     mid: "",
-    mname: "",
+    mname: "홍길동",
     mpassword: "",
     mphone: "",
     memail: "",
     // cno: "",
     // cstartdate: "",
     // cenddate: "",
-    tsex: "성별 선택",
+    tsex: "1",
     tpostcode: "",
     taddress: "",
-    tage: "",
+    tage: "28",
     tfield: false,
-    tacademic: "학력",
-    tschoolname: "",
+    tacademic: "고등학교",
+    tschoolname: "서울고등학교",
     tmajor: "",
     tminor: "",
     tgrade: "",
@@ -298,12 +298,12 @@ let imgCheck = ref(false);
 let tschoolNameCheck = ref(false);
 
 // 이메일 앞, 뒤의 값을 받고 확인할 변수
-let memailFront = ref("");
-let memailBack = ref("");
+let memailFront = ref("gildong123");
+let memailBack = ref("naver.com");
 
 // 휴대폰 번호 중간, 끝 번호의 값을 받고 확인할 변수 선언
-let mphonenummiddle = ref("");
-let mphonenumend = ref("");
+let mphonenummiddle = ref("9264");
+let mphonenumend = ref("1947");
 
 // 학교명 입력 확인
 function schCheck() {

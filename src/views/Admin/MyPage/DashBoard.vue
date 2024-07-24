@@ -96,7 +96,7 @@ const router = useRouter();
 let ecnames = ref("");
 
 // 교육장 리스트에서 선택한 값을 받아올 변수
-let ecname = ref(route.query.ecname || "송파교육센터");
+let ecname = ref(route.query.ecname || "혜화교육센터");
 
 // 컴포넌트가 마운트 된 후 실행
 onMounted(() => {
