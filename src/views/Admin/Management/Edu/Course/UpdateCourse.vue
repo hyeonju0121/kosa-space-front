@@ -22,7 +22,8 @@
                             <div class="course_attach">
                                 <div class="img_box d-flex">
                                     <div id="defaultImg" style="object-fit: cover;">
-                                        <img v-if="imgCheck === true" :src="courseInfo.attachments[0]" width="200" height="150">
+                                        <img v-if="imgCheck === true" :src="courseInfo.attachments[0]" width="200"
+                                            height="150">
                                         <PhImage v-if="imgCheck === false" :size="32" color="#636462"
                                             weight="duotone" />
                                     </div>
@@ -101,7 +102,8 @@
                     <div class="th">
                         <p class="form_label required">교육과정 기간</p>
                     </div>
-                    <VueDatePicker class="mt-4" style="width:50%; margin-left: 20px" v-model="date" range />
+                    <VueDatePicker class="mt-4" style="width:50%; margin-left: 20px" v-model="date"
+                        :enable-time-picker="false" range />
                 </div>
                 <div class="tr">
                     <div class="th">
@@ -170,20 +172,20 @@
                     </div>
                 </div>
                 <div class="tr">
-                <div class="th">
-                    <p class="form_label required">진행여부 </p>
-                </div>
-                <div class="td">
-                    <div class="InpBox">
-                        <select id="room" title="강사진 선택" v-model="courseInfo.cstatus">
-                            <option :value="courseInfo.cstatus" selected>{{ courseInfo.cstatus }}</option>
-                            <option value="진행예정">진행예정</option>
-                            <option value="진행중">진행중</option>
-                            <option value="진행완료">진행완료</option>
-                        </select>
+                    <div class="th">
+                        <p class="form_label required">진행여부 </p>
+                    </div>
+                    <div class="td">
+                        <div class="InpBox">
+                            <select id="room" title="강사진 선택" v-model="courseInfo.cstatus">
+                                <option :value="courseInfo.cstatus" selected>{{ courseInfo.cstatus }}</option>
+                                <option value="진행예정">진행예정</option>
+                                <option value="진행중">진행중</option>
+                                <option value="진행완료">진행완료</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
                 <div class="btn_big_wrap">
                     <RouterLink to="/admin/course/list">
                         <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
@@ -314,8 +316,10 @@ function addImage(e) {
 const date = ref();
 
 onMounted(async () => {
-    const startDate = new Date();
-    const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
+    // const startDate = new Date();
+    // const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
+    const startDate = new Date("2024/02/26");
+    const endDate = new Date("2024/07/26");
     date.value = [startDate, endDate];
     educenterNameList();
     trainingRoomList();
