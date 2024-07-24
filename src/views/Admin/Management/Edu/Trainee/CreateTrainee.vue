@@ -7,182 +7,181 @@
         <div class="headingArea">
             <div class="title">
                 <h1 id="itemTitle">교육생 등록 </h1>
-                <div id="itemDetail"><h5 class="course-title">| {{ request.ecname }} - {{ request.cname }}</h5></div>
+                <div id="itemDetail">
+                    <h5 class="course-title">| {{ request.ecname }} - {{ request.cname }}</h5>
+                </div>
             </div>
 
-            <!-- 교육생 등록 폼 -->
-            <form @submit.prevent="handleSubmit">
-                <!-- 테이블 + 버튼 -->
-                <div class="container" style="text-align: left;">
-                    <!-- 테이블 -->
-                    <table class="table">
-                        <tbody>
-                            <tr>
-                                <td style="vertical-align: middle;">
-                                    교육생 이미지
-                                </td>
-                                <td colspan="3">
-                                    <div style="text-align:left">
-                                        <!-- 교육생 이미지 (필수) -->
-                                        <img :src="src" width="110" height="150" class="ms-5">
-                                        <!-- <input ref="trainee.tprofileimg" type="file" class="form-control p-3 mt-2"
+            <!-- 테이블 + 버튼 -->
+            <div class="container" style="text-align: left;">
+                <!-- 테이블 -->
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td style="vertical-align: middle;">
+                                교육생 이미지
+                            </td>
+                            <td colspan="3">
+                                <div style="text-align:left">
+                                    <!-- 교육생 이미지 (필수) -->
+                                    <img :src="src" width="110" height="150" class="ms-5">
+                                    <!-- <input ref="trainee.tprofileimg" type="file" class="form-control p-3 mt-2"
                                             name="tprofileimg" id="tprofileimg" accept="image/*" onchange=""
                                             style="width: 300px;" required> -->
-                                        <input ref="trainee.tprofileimg" type="file" class="form-control p-3 mt-2"
-                                            name="tprofileimg" id="tprofileimg" accept="image/*" @change="addImage"
-                                            style="width: 300px;" required>
-                                        <p v-if="imgCheck === false" class="text-danger"
-                                            style="font-size: 0.9em; height: 4px;">
-                                            교육생 이미지는 필수입력사항입니다.
-                                        </p>
-                                    </div>
-                                </td>
+                                    <input ref="trainee.tprofileimg" type="file" class="form-control p-3 mt-2"
+                                        name="tprofileimg" id="tprofileimg" accept="image/*" @change="addImage"
+                                        style="width: 300px;" required>
+                                    <p v-if="imgCheck === false" class="text-danger"
+                                        style="font-size: 0.9em; height: 4px;">
+                                        교육생 이미지는 필수입력사항입니다.
+                                    </p>
+                                </div>
+                            </td>
 
-                            </tr>
-                            <tr>
-                                <td>교육생 이름</td>
-                                <td colspan="3">
-                                    <input type="text" name="mname" id="mname" v-model.trim="request.mname"
-                                        placeholder="이름" style="width: 150px;" @input="namePatternCheck()" required>
-                                    <!-- 이름 유효성 검사를 통한 DOM 생성 여부 -->
-                                    <p v-if="mnameCheck === false" class="text-danger"
-                                        style="font-size: 0.9em; height: 4px;">
-                                        2글자 이상 한글만 입력 가능합니다. (길이 2 ~ 6 공백 X)
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>학력</td>
-                                <td colspan="3">
-                                    <!-- 팀원 셀렉트 옵션 태그 확인하고 수정(통일시키기) -->
-                                    <select id="tacademic" name="tacademic" style="width: 150px;"
-                                        v-model.trim="request.tacademic" required>
-                                        <option value="학력" selected disabled>학력</option>
-                                        <option value="고등학교">고등학교</option>
-                                        <option value="대학교">대학교</option>
-                                    </select>
+                        </tr>
+                        <tr>
+                            <td>교육생 이름</td>
+                            <td colspan="3">
+                                <input type="text" name="mname" id="mname" v-model.trim="request.mname" placeholder="이름"
+                                    style="width: 150px;" @input="namePatternCheck()" required>
+                                <!-- 이름 유효성 검사를 통한 DOM 생성 여부 -->
+                                <p v-if="mnameCheck === false" class="text-danger"
+                                    style="font-size: 0.9em; height: 4px;">
+                                    2글자 이상 한글만 입력 가능합니다. (길이 2 ~ 6 공백 X)
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>학력</td>
+                            <td colspan="3">
+                                <!-- 팀원 셀렉트 옵션 태그 확인하고 수정(통일시키기) -->
+                                <select id="tacademic" name="tacademic" style="width: 150px;"
+                                    v-model.trim="request.tacademic" required>
+                                    <option value="학력" selected disabled>학력</option>
+                                    <option value="고등학교">고등학교</option>
+                                    <option value="대학교">대학교</option>
+                                </select>
 
-                                    <!-- 고등학교를 선택했을 시 -->
-                                    <div class="form-floating mt-2" style="width: 300px">
-                                        <input v-model.trim="request.tschoolname" type="text" class="form-control"
-                                            @input="schCheck()" name="tschoolname" placeholder="" style="width: 150px;">
-                                        <label for="tschoolname" class="form-label">학교명</label>
-                                        <p v-if="tschoolNameCheck === false" class="text-danger"
-                                            style="font-size: 0.9em; height: 4px;">
-                                            학교명 입력은 필수입력사항입니다.
-                                        </p>
-                                    </div>
-                                    <!-- 대학교를 선택했을 시 -->
-                                    <div v-if="request.tacademic === '대학교'">
-                                        <div class="form-floating mt-2" style="width: 150px">
-                                            <input v-model.trim="request.tmajor" type="text" class="form-control"
-                                                name="tmajor" placeholder="" style="width: 150px;">
-                                            <label for="tmajor" class="form-label">주전공</label>
-                                        </div>
-                                        <div class="form-floating mt-2" style="width: 150px">
-                                            <input v-model.trim="request.tminor" type="text" class="form-control"
-                                                name="tminor" placeholder="" style="width: 150px;">
-                                            <label for="tminor" class="form-label">부전공</label>
-                                        </div>
-                                        <!-- 학점에 대한 유효성 검사 #.### ? -->
-                                        <div class="form-floating mt-2" style="width: 150px">
-                                            <input v-model.trim="request.tgrade" type="text" class="form-control"
-                                                name="tgrade" placeholder="" style="width: 150px;">
-                                            <label for="tgrade" class="form-label">평균학점</label>
-                                        </div>
-                                        <div class="form-floating mt-2" style="width: 150px">
-                                            <select v-model.trim="request.tfield" name="check" class="form-control"
-                                                style="width: 150px;" required>
-                                                <option value=1>전공</option>
-                                                <option value=0>비전공</option>
-                                            </select>
-                                            <label for="check" class="form-label">전공 여부</label>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>나이</td>
-                                <td><input type="text" v-model.trim="request.tage" style="width: 80px;" required></td>
-                                <td>성별</td>
-                                <td>
-                                    <select v-model.trim="request.tsex" @change="checkSex()" required>
-                                        <option value="성별 선택" selected disabled>성별 선택</option>
-                                        <option value=1>남자</option>
-                                        <option value=0>여자</option>
-                                    </select>
-                                    <!-- 성별 유효성 검사를 통한 DOM 생성 여부 -->
-                                    <p v-if="tsexCheck === false" class="text-center text-danger"
+                                <!-- 고등학교를 선택했을 시 -->
+                                <div class="form-floating mt-2" style="width: 300px">
+                                    <input v-model.trim="request.tschoolname" type="text" class="form-control"
+                                        @input="schCheck()" name="tschoolname" placeholder="" style="width: 150px;">
+                                    <label for="tschoolname" class="form-label">학교명</label>
+                                    <p v-if="tschoolNameCheck === false" class="text-danger"
                                         style="font-size: 0.9em; height: 4px;">
-                                        성별을 선택해주세요.
+                                        학교명 입력은 필수입력사항입니다.
                                     </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>주소</td>
-                                <td colspan="3">
-                                    <div class="td">
-                                        <DaumPostCode3 @send-daumpostcode="postcodeinfo" />
-                                        <input type="text" v-model.trim="request.taddressdetail" placeholder="상세주소"
-                                            style="width:500px; margin-top: 3%;">
+                                </div>
+                                <!-- 대학교를 선택했을 시 -->
+                                <div v-if="request.tacademic === '대학교'">
+                                    <div class="form-floating mt-2" style="width: 150px">
+                                        <input v-model.trim="request.tmajor" type="text" class="form-control"
+                                            name="tmajor" placeholder="" style="width: 150px;">
+                                        <label for="tmajor" class="form-label">주전공</label>
                                     </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>이메일</td>
-                                <td colspan="3">
-                                    <div class="d-flex align-items-center">
-                                        <input type="text" class="form-control me-2" name="emailFront" id="emailFront"
-                                            v-model.trim="memailFront" @input="emailPatternCheck()"
-                                            style="width: 150px;" required />
-                                        <span> @ </span>
-                                        <input type="text" class="form-control ms-2" name="emailBack" id="emailBack"
-                                            v-model.trim="memailBack" @input="emailPatternCheck()" style="width: 150px;"
-                                            required />
-                                        <span v-if="memailCheck === false" class="text-danger"
-                                            style="font-size: 0.9em; height: 4px;">
-                                            ※ 이메일 형식이 올바르지 않습니다. (ex. kosaspace@naver.com)
-                                        </span>
+                                    <div class="form-floating mt-2" style="width: 150px">
+                                        <input v-model.trim="request.tminor" type="text" class="form-control"
+                                            name="tminor" placeholder="" style="width: 150px;">
+                                        <label for="tminor" class="form-label">부전공</label>
                                     </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>핸드폰 번호</td>
-                                <td colspan="3">
-                                    <!-- 휴대폰 앞번호 -->
-                                    <input type="text" name="mphonenumver1" id="mphonenumber1" value="010"
-                                        style="width: 80px;" readonly>
-                                    <span class="ms2-2 me-2">-</span>
-                                    <!-- 휴대폰 중간 번호 -->
-                                    <input maxlength="4" type="text" name="mphonenumber2" id="mphonenumber2"
-                                        style="width: 100px;" v-model.trim="mphonenummiddle"
-                                        @input="phonePatternmiddleCheck()" required>
-                                    <span class="ms-2 me-2">-</span>
-                                    <!-- 휴대폰 뒷 번호 -->
-                                    <input maxlength="4" type="text" name="mphonenumber3" id="mphonenumber3" value=""
-                                        style="width: 100px;" v-model.trim="mphonenumend"
-                                        @input="phonePatternendCheck()" required>
-                                    <p v-if="mphoneMiddleCheck === false" class="text-center text-danger"
+                                    <!-- 학점에 대한 유효성 검사 #.### ? -->
+                                    <div class="form-floating mt-2" style="width: 150px">
+                                        <input v-model.trim="request.tgrade" type="text" class="form-control"
+                                            name="tgrade" placeholder="" style="width: 150px;">
+                                        <label for="tgrade" class="form-label">평균학점</label>
+                                    </div>
+                                    <div class="form-floating mt-2" style="width: 150px">
+                                        <select v-model.trim="request.tfield" name="check" class="form-control"
+                                            style="width: 150px;" required>
+                                            <option value=1>전공</option>
+                                            <option value=0>비전공</option>
+                                        </select>
+                                        <label for="check" class="form-label">전공 여부</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>나이</td>
+                            <td><input type="text" v-model.trim="request.tage" style="width: 80px;" required></td>
+                            <td>성별</td>
+                            <td>
+                                <select v-model.trim="request.tsex" @change="checkSex()" required>
+                                    <option value="성별 선택" selected disabled>성별 선택</option>
+                                    <option value=1>남자</option>
+                                    <option value=0>여자</option>
+                                </select>
+                                <!-- 성별 유효성 검사를 통한 DOM 생성 여부 -->
+                                <p v-if="tsexCheck === false" class="text-center text-danger"
+                                    style="font-size: 0.9em; height: 4px;">
+                                    성별을 선택해주세요.
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>주소</td>
+                            <td colspan="3">
+                                <div class="td">
+                                    <DaumPostCode3 @send-daumpostcode="postcodeinfo" />
+                                    <input type="text" v-model.trim="request.taddressdetail" placeholder="상세주소"
+                                        style="width:500px; margin-top: 3%;">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>이메일</td>
+                            <td colspan="3">
+                                <div class="d-flex align-items-center">
+                                    <input type="text" class="form-control me-2" name="emailFront" id="emailFront"
+                                        v-model.trim="memailFront" @input="emailPatternCheck()" style="width: 150px;"
+                                        required />
+                                    <span> @ </span>
+                                    <input type="text" class="form-control ms-2" name="emailBack" id="emailBack"
+                                        v-model.trim="memailBack" @input="emailPatternCheck()" style="width: 150px;"
+                                        required />
+                                    <span v-if="memailCheck === false" class="text-danger"
                                         style="font-size: 0.9em; height: 4px;">
-                                        휴대폰 중간번호 4자리를 입력해주세요.
-                                    </p>
-                                    <p v-if="mphoneEndCheck === false" class="text-center text-danger"
-                                        style="font-size: 0.9em; height: 4px;">
-                                        휴대폰 끝번호 4자리를 입력해주세요.
-                                    </p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <!-- 버튼부분 -->
-                    <div style="text-align: center; margin-top: 3%;">
-                        <!-- <button class="btn btn-dark btn-sm me-3" :class="btnShow">등록</button> -->
-                        <BaseButtonSubmit :class="btnShow">등록</BaseButtonSubmit>
-                        <BaseButtonCancle @click="handleCancle()" style="margin-left: 1%;">취소</BaseButtonCancle>
-                        <!-- <span class="btn btn-danger btn-sm" @click="handleCancle()">취소</span> -->
-                    </div>
+                                        ※ 이메일 형식이 올바르지 않습니다. (ex. kosaspace@naver.com)
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>핸드폰 번호</td>
+                            <td colspan="3">
+                                <!-- 휴대폰 앞번호 -->
+                                <input type="text" name="mphonenumver1" id="mphonenumber1" value="010"
+                                    style="width: 80px;" readonly>
+                                <span class="ms2-2 me-2">-</span>
+                                <!-- 휴대폰 중간 번호 -->
+                                <input maxlength="4" type="text" name="mphonenumber2" id="mphonenumber2"
+                                    style="width: 100px;" v-model.trim="mphonenummiddle"
+                                    @input="phonePatternmiddleCheck()" required>
+                                <span class="ms-2 me-2">-</span>
+                                <!-- 휴대폰 뒷 번호 -->
+                                <input maxlength="4" type="text" name="mphonenumber3" id="mphonenumber3" value=""
+                                    style="width: 100px;" v-model.trim="mphonenumend" @input="phonePatternendCheck()"
+                                    required>
+                                <p v-if="mphoneMiddleCheck === false" class="text-center text-danger"
+                                    style="font-size: 0.9em; height: 4px;">
+                                    휴대폰 중간번호 4자리를 입력해주세요.
+                                </p>
+                                <p v-if="mphoneEndCheck === false" class="text-center text-danger"
+                                    style="font-size: 0.9em; height: 4px;">
+                                    휴대폰 끝번호 4자리를 입력해주세요.
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- 버튼부분 -->
+                <div style="text-align: center; margin-top: 3%;">
+                    <!-- <button class="btn btn-dark btn-sm me-3" :class="btnShow">등록</button> -->
+                    <BaseButtonSubmit :class="btnShow" @click="handleSubmit()">등록</BaseButtonSubmit>
+                    <BaseButtonCancle @click="handleCancle()" style="margin-left: 1%;">취소</BaseButtonCancle>
+                    <!-- <span class="btn btn-danger btn-sm" @click="handleCancle()">취소</span> -->
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </template>
@@ -524,7 +523,7 @@ button {
 
 .course-title {
     font-weight: 600;
-    color:#575757;
+    color: #575757;
 }
 
 #itemTitle {
