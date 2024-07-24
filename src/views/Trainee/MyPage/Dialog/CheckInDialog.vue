@@ -6,8 +6,8 @@
         </template>
         
         <template v-slot:body>
-           <!-- <p class="contents">현재 시간은 오전 {{ todayCheckIn.hours }}시 {{ todayCheckIn.minutes }}분 {{ todayCheckIn.seconds }}초 입니다. (서버시간 기준)</p>-->
-            <p class="contents">현재 시간은 오전 8시 48분 27초 입니다. (서버시간 기준)</p>
+           <!-- <p class="contents">현재 시간은 오전 {{ todayCheckIn.hours }}시 {{ todayCheckIn.minutes }}분 {{ todayCheckIn.seconds }}초 입니다. (서버시간 기준)</p> -->
+            <p class="contents">현재 시간은 오전 8시 50분 27초 입니다. (서버시간 기준)</p>
             <p class="contents">입실처리하시겠습니까?</p>
             <p class="contents">퇴실 시 반드시 퇴실처리를 하셔야 출석으로 인정됩니다.</p>
         </template>
@@ -45,7 +45,7 @@ const emit = defineEmits(["submitCheckIn"]);
 //     formattedDate: ""
 // });
 
-// // 각 구성 요소를 가져오기
+// 각 구성 요소를 가져오기
 // todayCheckIn.value.year = currentDate.getFullYear();
 // todayCheckIn.value.month = currentDate.getMonth() + 1;
 // todayCheckIn.value.day = currentDate.getDate();
@@ -53,13 +53,13 @@ const emit = defineEmits(["submitCheckIn"]);
 // todayCheckIn.value.minutes = currentDate.getMinutes();
 // todayCheckIn.value.seconds = currentDate.getSeconds();
 
-// // 날짜와 시간을 문자열로 포맷팅
+// 날짜와 시간을 문자열로 포맷팅
 // todayCheckIn.value.formattedDate = `${todayCheckIn.value.year}-${String(todayCheckIn.value.month).padStart(2, '0')}-${String(todayCheckIn.value.day).padStart(2, '0')} ${String(todayCheckIn.value.hours).padStart(2, '0')}:${String(todayCheckIn.value.minutes).padStart(2, '0')}:${String(todayCheckIn.value.seconds).padStart(2, '0')}`;
 
 // 포맷팅된 날짜와 시간을 출력
-//console.log(formattedDate);
+// console.log(formattedDate);
 
-const todayCheckIn = ref("2024-07-16 08:48:27");
+const todayCheckIn = ref("2024-07-24 08:50:27");
 
 function handleChekinSubmit() {
     // 자식 컴포넌트 -> 부모 컴포넌트로 입실 시간 데이터 보내기

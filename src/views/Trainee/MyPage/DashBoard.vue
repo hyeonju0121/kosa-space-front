@@ -216,7 +216,7 @@ const store = useStore();
 const router = useRoute();
 
 // const mid = "2024M2001";
-const adate = "2024-07-16";
+const adate = "2024-07-24";
 const mid = store.state.mid;
 const ecname = ref("");
 
