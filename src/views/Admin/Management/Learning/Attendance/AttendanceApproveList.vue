@@ -55,7 +55,7 @@
         </div>
 
         <div class="interview_list_header">
-            <div class="total_interviews">총 15건</div>
+            <div class="total_interviews">총 15건<span>(2024-07-26 19:50 기준)</span></div>
 
             <!-- 필터 -->
             <div class="search_interview">
@@ -294,7 +294,7 @@ const attendanceDashBoardDate = ref({
 });
 
 // adate는 임시 고정 값
-const adate = ref("2024-07-24")
+const adate = ref("2024-07-26")
 // 3. 진행중인 교육과정의 출결 사유 제출 건수 가져오기
 async function progressAttendanceCntInfo(ecname, cname, adate) {
     try {

@@ -78,7 +78,7 @@
                                     <div class="attendance-box" style="width: 120%; height: 80px;">
                                         <div style="width: 340px; margin-top: 5%; margin-left: 10px;">
                                             <div class="d-flex flex-row justify-content-between">
-                                                <span style="font-size: 14px;">2024.07-15 기준</span>
+                                                <span style="font-size: 14px;">2024.07-26 기준</span>
                                                 <span style="font-size: 14px;">{{ userDashboardAttendanceInfo.percentage }}% ({{userDashboardAttendanceInfo.approvecnt}}일 / {{userDashboardAttendanceInfo.crequireddate}}일)</span>
                                             </div>
                                             <div class="progress" :aria-valuenow="`${userDashboardAttendanceInfo.percentage}`">
@@ -216,7 +216,7 @@ const store = useStore();
 const router = useRoute();
 
 // const mid = "2024M2001";
-const adate = "2024-07-24";
+const adate = "2024-07-26";
 const mid = store.state.mid;
 const ecname = ref("");
 

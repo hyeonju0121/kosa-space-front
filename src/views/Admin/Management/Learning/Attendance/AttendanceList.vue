@@ -33,7 +33,7 @@
         </form>
 
         <div class="interview_list_header" style="margin-top: 2%;">
-            <div class="total_interviews">총 14건 <span>(2024-07-24 19:50 기준)</span></div>
+            <div class="total_interviews">총 14건 <span>(2024-07-26 19:50 기준)</span></div>
         </div>
 
         <div class="mt-3">
@@ -66,7 +66,7 @@
                                     <div class="attendance-box" style="width: 120%; height: 80px;">
                                         <div style="width: 340px; margin-top: 5%; margin-left: 10px;">
                                             <div class="d-flex flex-row justify-content-between">
-                                                <span style="font-size: 14px;"> 2024-07-24기준</span>
+                                                <span style="font-size: 14px;"> 2024-07-26기준</span>
                                                 <span style="font-size: 14px;">{{ item.percentage }}% ({{ item.approvecnt
                                                 }}일 / {{ item.crequireddate }}일)</span>
                                             </div>
@@ -145,7 +145,7 @@ const filter = ref({
     cname: route.query.cname || "MSA 2차 Full Stack 개발자 양성과정"
 });
 
-const adate = "2024-07-24";
+const adate = "2024-07-26";
 
 // route.query값이 있다면 셀렉트 버튼 활성화 / 비활성화
 let btnEnable = ref("");
