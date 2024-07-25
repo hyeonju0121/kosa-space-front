@@ -77,7 +77,8 @@ const aPageNo = ref(route.query.aPageNo || 1);
 
 onBeforeMount(() => {
     console.group("AttendanceInfo 컴포넌트 마운트 직전");
-    totalAttendanceInfo(educenter.ecname, aPageNo.value, adate.value.formattedDate);
+    //totalAttendanceInfo(educenter.ecname, aPageNo.value, adate.value.formattedDate);
+    totalAttendanceInfo(educenter.ecname, aPageNo.value, '2024-07-26');
     console.groupEnd();
 });
 
@@ -117,12 +118,14 @@ async function totalAttendanceInfo(ecname, pageNo, adate) {
 }
 
 function submit() {
-    totalAttendanceInfo(educenter.ecname, aPageNo.value, adate.value.formattedDate);
+    //totalAttendanceInfo(educenter.ecname, aPageNo.value, adate.value.formattedDate);
+    totalAttendanceInfo(educenter.ecname, aPageNo.value, '2024-07-26');
 }
 
 // -- 페이징 처리 --
 function changePageNo(argPageNo) {
-    totalAttendanceInfo(educenter.ecname, argPageNo, adate.value.formattedDate);
+    //totalAttendanceInfo(educenter.ecname, argPageNo, adate.value.formattedDate);
+    totalAttendanceInfo(educenter.ecname, argPageNo, '2024-07-26');
 }
 
 function goAttendanceList(cname) {

@@ -16,7 +16,7 @@
             <Vue3Lottie :loop="3" :animationData="lottie2" class="h-100 w-100 position-absolute top-0 start-0"/>
             <!-- <Vue3Lottie :animationData="lottie" :height="300" :width="300" /> -->
             <h1 style="font-weight: 600;">교육과정 수정이 완료됐습니다.</h1>
-            <h5>그동안 고생많으셨습니다.</h5>
+            <h4>그동안 고생많으셨습니다.</h4>
 
         </div>
     </div>

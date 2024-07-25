@@ -297,12 +297,12 @@ let imgCheck = ref(false);
 let tschoolNameCheck = ref(false);
 
 // 이메일 앞, 뒤의 값을 받고 확인할 변수
-let memailFront = ref("gildong123");
+let memailFront = ref("gildong128");
 let memailBack = ref("naver.com");
 
 // 휴대폰 번호 중간, 끝 번호의 값을 받고 확인할 변수 선언
-let mphonenummiddle = ref("9264");
-let mphonenumend = ref("1947");
+let mphonenummiddle = ref("9534");
+let mphonenumend = ref("1447");
 
 // 학교명 입력 확인
 function schCheck() {

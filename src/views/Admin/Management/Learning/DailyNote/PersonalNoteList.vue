@@ -17,7 +17,7 @@
                         <div class="profile_wrap">
                             <div class="profile profile_attach">
                                 <div class="user-img">
-                                    <img :src="`${axios.defaults.baseURL}/edu/download/traineeattach/${headerInfo.mid}`"
+                                    <img :src="`${axios.defaults.baseURL}/edu/download/traineeattach/${mid}`"
                                         class="user-img-detail" />
                                 </div>
                                 <div class="profile_info">
@@ -113,7 +113,8 @@ onMounted(() => {
     traineeList(mid.value, adate.value, rPageNo.value);
 })
 
-let mid = ref(route.query.mid || '');
+//let mid = ref(route.query.mid || '2024M2001');
+let mid = ref('2024M2001');
 const adate = ref(route.query.adate || "2024-07-15");
 
 console.log("mid: " + mid.value);
