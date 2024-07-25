@@ -190,7 +190,7 @@
                     <RouterLink to="/admin/course/list">
                         <BaseButtonCancle @click="handleCancle">취소</BaseButtonCancle>
                     </RouterLink>
-                    <BaseButtonSubmit type="submit">완료</BaseButtonSubmit>
+                    <BaseButtonSubmit type="submit" @click="showLottie">완료</BaseButtonSubmit>
                 </div>
             </form>
         </div>
@@ -207,6 +207,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import courseAPI from "@/apis/courseAPI";
 import educenterAPI from '@/apis/educenterAPI';
 import trainingroomAPI from '@/apis/trainingroomAPI';
+import lottie from '@/assets/lottie_complete.json';
 
 
 //QueryString으로 전달된 cno 얻기
@@ -417,7 +418,7 @@ async function handleSubmit() {
     //교육과정 수정 요청
     try {
         await courseAPI.update(formData);
-        router.push('/admin/course/list');
+        router.push('/admin/course/complete');
     } catch (error) {
         console.log(error);
     }

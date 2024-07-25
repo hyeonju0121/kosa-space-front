@@ -40,6 +40,10 @@ const routes = [
                 component: () => import(/* webpackChunkName: "course" */ '@/views/Admin/Management/Edu/Course/UpdateCourse.vue')
             },
             {
+                path: "course/complete", // "/admin/course/update"
+                component: () => import(/* webpackChunkName: "course" */ '@/views/Admin/Management/Edu/Course/CompleteCourse.vue')
+            },
+            {
                 // 교육과정 > 강의실 --------------------------------------------------------------------------------------
                 path: "room/list", // "/admin/room/list"
                 component: () => import(/* webpackChunkName: "room" */ '@/views/Admin/Management/Edu/TrainingRoom/RoomList.vue')

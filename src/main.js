@@ -19,12 +19,16 @@ import axiosConfig from './apis/axiosConfig';
 // Daum postcode import
 import VueDaumPostcode from "vue-daum-postcode"
 
+// main.js
+import Vue3Lottie from 'vue3-lottie'
+
 createApp(App)
 .use(store)
 .use(router)
 .use(PhosphorIcons)
 .use(VueDaumPostcode)
 .use(jQuery)
+.use(Vue3Lottie)
 .mount('#app')
 
 global.$ = jQuery
