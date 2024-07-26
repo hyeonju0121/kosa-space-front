@@ -205,8 +205,10 @@ const professors = ref();
 
 //시작일 종료일 세팅
 onMounted(() => {
-    const startDate = new Date();
-    const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
+    //const startDate = new Date();
+    //const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
+    const startDate = new Date("2024/12/20");
+    const endDate = new Date("2025/04/20");
     date.value = [startDate, endDate];
     educenterNameList();
     trainingRoomList();
